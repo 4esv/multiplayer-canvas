@@ -1,0 +1,16 @@
+node_modules/
+.git/
+.gitignore
+.env*
+# macOS/Windows junk: never bake into the image (it would be served at /.DS_Store).
+**/.DS_Store
+Thumbs.db
+# Root-level docs only (README, CLAUDE.md, scratch notes); the glob does
+# not cross directory separators, so content/**/*.md is kept and served.
+*.md
+test/
+.github/
+docker-compose*.yml
+.editorconfig
+.prettierrc
+eslint.config.js

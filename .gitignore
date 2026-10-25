@@ -1,0 +1,47 @@
+# Dependencies
+node_modules
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Claude Code per-project config + project notes (local-only)
+.claude/
+CLAUDE.md
+plan.md
+
+# Build
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# Data (tokens, etc.)
+# the runtime volume at the repo root only; src/data (checked-in snapshots) stays tracked
+/data/
+
+# Content
+CONTENT.md
+
+# Local-only scratch (prototypes, asset experiments). Never deployed; kept
+# out of lint/format/build scans too.
+sandbox/
+# the prod-volume store; a dev symlink here must never ship (a broken
+# symlink in CI makes mkdir throw and 500s /login, found 2026-07-31)
+/data

@@ -1,0 +1,18 @@
+node_modules/
+.claude/
+src/static/css/highlight.css
+src/static/js/vendor/
+package-lock.json
+# app.js is exempt from the FORMATTER only. eslint has covered it since
+# 2026-08-19; this line is what keeps the two decisions separate. Rules find
+# real defects and cost a diff proportional to what they find. A reformat of
+# 2365 lines finds nothing and costs a diff that buries the next real change
+# and every `git blame` through it, so the file keeps its own style until it
+# is broken up. Everything else under src/static/canvas/ IS formatted. This
+# replaced a bare `canvas/` wildcard that predated the directory and had been
+# swallowing the whole canvas by accident.
+src/static/canvas/app.js
+src/static/canvas/vendor/
+sandbox/
+test-results/
+coverage/
