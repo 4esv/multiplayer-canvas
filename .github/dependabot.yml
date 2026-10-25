@@ -1,0 +1,19 @@
+# Weekly dependency PRs, pre-tested by the pull_request trigger in
+# ci.yml. Minor and patch bumps arrive grouped as one PR to keep the
+# noise down; majors and security fixes come individually.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

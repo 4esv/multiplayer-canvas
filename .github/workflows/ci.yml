@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Full history: test/sitemap.test.js asks git when each content
+          # file last changed, to prove `updated:` was not just typed.
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run check
+      # Every registered mutation is applied in a scratch copy and must turn
+      # the test that names it red.
+      - run: npm run verify:mutate

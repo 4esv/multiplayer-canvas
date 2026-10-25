@@ -1,0 +1,19 @@
+# One container, bound to loopback: put a reverse proxy (Caddy, nginx) in
+# front of it for TLS. data/ holds the passkey store, rooms and the audit
+# trail, so it lives on a named volume that survives rebuilds.
+services:
+  site:
+    build: .
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:3000:3000'
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+    volumes:
+      - site-data:/app/data
+
+volumes:
+  site-data:
