@@ -1,0 +1,37 @@
+{%- if grid.isTerminal or grid.isRetro -%}
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+key
+===
+
+This door opens with a passkey, in a graphical browser.
+
+{{ identity.host.padEnd(12) }}/
+{% endblock %}
+{%- else -%}
+{% extends "canvas-base.njk" %}
+{% block content %}
+  <main class="cv-door" data-claimed="{{ '1' if claimed else '' }}" data-next="{{ next }}">
+    {# the name is the way back, as a site's name is everywhere: the door
+       was a page with no way out but the browser's back #}
+    <p class="cv-wordmark"><a href="/">{{ identity.name }}</a></p>
+    {{ 'key' | pixelTitle }}
+    {% if claimed %}
+    <p class="cv-status" id="status" aria-live="polite">waiting for your passkey.</p>
+    <button class="k-btn k-solid" id="passkey" type="button" hidden>use passkey</button>
+    {% else %}
+    <p class="cv-status" id="status" aria-live="polite">unclaimed. the setup code is in the server log.</p>
+    <form id="claim" class="cv-claim">
+      <label class="cv-visually-hidden" for="code">setup code</label>
+      <div class="k-field"><input id="code" name="code" placeholder="setup code" autofocus
+             autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" required><span class="k-caret"></span></div>
+      <button class="k-btn k-solid" type="submit">create passkey</button>
+    </form>
+    {% endif %}
+    <noscript><p class="cv-status">this door needs JavaScript for the passkey ceremony.</p></noscript>
+  </main>
+{% endblock %}
+{% block scripts %}
+  <script defer src="{{ asset('/js/login.js') }}"></script>
+{% endblock %}
+{%- endif -%}

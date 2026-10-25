@@ -1,0 +1,54 @@
+{# The one meta head, included by both canvas shells (canvas/home.njk and
+   canvas-base.njk): title, description, canonical, og: and twitter: are
+   declared once and can never drift apart. Values come from the route's
+   `meta` payload object. A route that sets no canonical gets none: the
+   error pages are not alternates of the home page. #}
+{% if meta.canonical %}<link rel="canonical" href="{{ meta.canonical }}">{% endif %}
+<link rel="alternate" type="application/rss+xml" title="{{ identity.name }} / feed" href="/feed.xml">
+{# A meta cannot read a custom property, so this pair is the one place in a
+   template where a color literal is mandatory. It mirrors --cv-ground on both
+   sides: the browser paints its chrome with these before a line of our CSS
+   parses, and app.js re-pins both to the active ground when the ink flips by
+   hand. palette.test.js asserts each against the resolved token now. It used
+   to drop the line instead, which is how the retired two-ink pair survived
+   two skins and painted the dark chrome a different near-black than the
+   page. #}
+{# One ground, so one theme-color: eigengrau, the same value --cv-ground
+   carries. There is nothing for the OS to choose between any more. #}
+<meta name="theme-color" content="#e4e4e7">
+{# Defaults fall through only to the home page; every other route declares its
+   own meta. Hoisted so <title>, og:, and twitter: can never drift apart. #}
+{% set defaultTitle = identity.name %}
+{% set defaultDescription = identity.tagline %}
+<title>{{ meta.title or defaultTitle }}</title>
+<meta name="description" content="{{ meta.description or defaultDescription }}">
+{% set ogImg = meta.ogImage or imgUrl(identity.url + '/img/og/default.png') %}
+{% set ogAlt = meta.ogImageAlt or meta.title or defaultTitle %}
+<meta property="og:type" content="{{ meta.ogType or 'website' }}">
+<meta property="og:title" content="{{ meta.title or defaultTitle }}">
+<meta property="og:description" content="{{ meta.description or defaultDescription }}">
+<meta property="og:url" content="{{ meta.canonical or identity.url + '/' }}">
+<meta property="og:site_name" content="{{ identity.name }}">
+<meta property="og:image" content="{{ ogImg }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{{ ogAlt }}">
+{% if meta.ogType == 'article' %}
+{% if meta.publishedTime %}<meta property="article:published_time" content="{{ meta.publishedTime }}">{% endif %}
+<meta property="article:author" content="{{ identity.author.name }}">
+{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ meta.title or defaultTitle }}">
+<meta name="twitter:description" content="{{ meta.description or defaultDescription }}">
+<meta name="twitter:image" content="{{ ogImg }}">
+<meta name="twitter:image:alt" content="{{ ogAlt }}">
+{% if meta.robots %}<meta name="robots" content="{{ meta.robots }}">{% endif %}
+{# rel=me: every profile in site.config.js `social`, so a profile that links
+   back (GitHub, Mastodon) can verify the site. #}
+{% for name, href in identity.social %}<link rel="me" href="{{ href }}">
+{% endfor %}
+{# Structured data: the route hands a pre-serialized JSON-LD payload (built in
+   src/lib/identity.js). A data block, not an executed script, so CSP
+   script-src does not apply and crawlers read it raw. #}
+{% if meta.jsonld %}<script type="application/ld+json">{{ meta.jsonld | safe }}</script>{% endif %}

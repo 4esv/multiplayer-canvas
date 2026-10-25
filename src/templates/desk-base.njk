@@ -1,0 +1,36 @@
+{# The desk: the shell every owner page wears (/admin, /admin/sessions,
+   /admin/kit). It rides canvas-base.njk
+   (same head, same tokens, the kit and its hands) and adds the one thing
+   those pages share: the tool navigation from src/lib/desk.js, drawn as a
+   bottom tab bar on a phone and a rail on a desktop, and its own manifest
+   so the desk installs standalone as its own home-screen app. A page
+   fills `desk` (its sections) and `deskhead` (its stylesheet). Routes pass
+   `desk: '<tool id>'` and renderPage expands it. #}
+{% extends "canvas-base.njk" %}
+{% block manifest %}/desk.webmanifest{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{{ asset('/css/desk.css') }}">
+  {% block deskhead %}{% endblock %}
+{% endblock %}
+{% block content %}
+  <div class="dk">
+    {% include "partials/desk-nav.njk" %}
+    <div class="dk-page">
+      <header class="dk-top">
+        {# the way back to the site where a phone app keeps it, top left
+           before the title: the bar below holds the tools and is full, and
+           the rail's mark (desk-nav.njk) is the desktop's #}
+        <a class="dk-home" href="/" aria-label="{{ identity.name }}, the canvas">{{ desk.mark | safe }}</a>
+        <h1 class="cv-h1">{{ desk.title }}</h1>
+        {% block actions %}{% endblock %}
+      </header>
+      <main class="dk-main">
+        {% block desk %}{% endblock %}
+      </main>
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ asset('/js/desk.js') }}" type="module"></script>
+  {% block deskscripts %}{% endblock %}
+{% endblock %}

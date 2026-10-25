@@ -1,0 +1,36 @@
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+{{ site.name }}
+{{ '=' | repeat(site.name | length) }}
+
+{{ identity.tagline }}
+
+work        /work
+feed        /feed
+about       /about
+
+stacks
+------
+{% for s in stacks -%}
+- {{ s.label }}
+  {{ identity.url }}{{ s.route }}
+{% endfor %}
+writing & web
+-------------
+{% for e in entries -%}
+{{ e.title | safe }}{% if e.date %} ({{ e.date }}){% endif %}
+{% if e.summary %}{{ e.summary | safe }}
+{% endif %}{{ entryUrl(e) }}
+{% endfor %}
+email       {{ identity.author.email }}
+{% for name, url in profiles -%}
+{{ name.padEnd(12) }}{{ url }}
+{% endfor -%}
+{# Live lines are text, not HTML: autoescape turns O'Sullivan into O&#39;Sullivan
+   for curl (and the retro filter escaped it again). base-retro's retroText
+   escapes the whole block afterwards, so `safe` here is right on both paths. #}
+{% if weather %}
+weather: {{ weather.tempF }}F {{ weather.condition | safe }} ({{ weather.place | safe }}){% endif %}
+
+MIT License. {{ now | date('Y') }}.
+{% endblock %}

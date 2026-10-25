@@ -1,0 +1,40 @@
+{# Shell for the canvas door pages (/login, /admin, 404, 500). They follow BIBLE.md section 0: one ground,
+   the type face, one-cell lines, no shadows, no radii, and every control is
+   the kit's (css/kit.css with its baked parts, js/kit.js for the drawn
+   hands). The private pages are reached by direct URL only: no navbar, no
+   footer, no analytics, never indexed. Head furniture comes from
+   partials/meta-head.njk (one head, same as the home shell); tokens + fonts
+   live in css/canvas-tokens.css; canvas.css carries only the page chrome. #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  {% include "partials/importmap.njk" %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  {# Same as the home shell: no disabled-adaptations tag. The watch keeps the
+     adapted layout every other site gets, and these door pages are ordinary
+     documents for it to shrink-to-fit. #}
+  {# The doors default to noindex; meta-head emits robots only when the
+     route sets one, so the safety default lives here. #}
+  {% if not meta.robots %}<meta name="robots" content="noindex, nofollow">{% endif %}
+  {% include "partials/meta-head.njk" %}
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="{% block manifest %}/manifest.json{% endblock %}">
+  <link rel="preload" href="/fonts/dotgothic16-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ asset('/primitives/kit/canvas-tokens.css') }}">
+  <link rel="stylesheet" href="{{ asset('/primitives/kit/kit.css') }}">
+  {% include "kit/parts.njk" %}
+  <link rel="stylesheet" href="{{ asset('/css/ptitle.css') }}">
+  <link rel="stylesheet" href="{{ asset('/css/canvas.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body class="cv k-ground">
+  {% block content %}{% endblock %}
+  <script src="{{ asset('/js/kit.js') }}" type="module"></script>
+  {# a title set in the pixel face is dust here as it is on the canvas #}
+  <script src="{{ asset('/js/door.js') }}" type="module"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

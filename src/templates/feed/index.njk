@@ -1,0 +1,20 @@
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+feed
+====
+
+{% for e in entries -%}
+{{ e.title | safe }}{% if e.date %} ({{ e.date }}){% endif %}
+{% if e.summary %}{{ e.summary | safe }}
+{% endif %}{{ entryUrl(e) }}
+{% endfor %}
+{{ identity.host.padEnd(12) }}/
+work        /work
+feed        /feed
+about       /about
+
+email       {{ identity.author.email }}
+{% for name, href in identity.social -%}
+{{ name.padEnd(12) }}{{ href }}
+{% endfor -%}
+{% endblock %}

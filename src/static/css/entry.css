@@ -1,0 +1,423 @@
+/* =========================================================
+   ENTRY: detail pages under /feed and /work, mounted in the
+   canvas sheet. Reading-first prose, code, math, footnotes.
+   Speaks the cv tokens (canvas-tokens.css, linked by the
+   shell) and BIBLE.md's ladder; the sheet chrome and reading
+   column live in canvas-home.css. This file owns the prose
+   kit (blockquote, hr, table, lists, code), footnotes, anchor
+   behaviour, and print. Every rule about the prose is here,
+   the case-study page's included; the figures in it are
+   case-study.css's.
+   ========================================================= */
+
+/* The reading column is #sheet .inner (canvas-home.css); the article is
+   .prose. Keep long tokens from tearing the column open. */
+.prose {
+  overflow-wrap: anywhere;
+}
+.prose * {
+  min-width: 0;
+}
+
+/* One overflow language: any strip that can outgrow the column scrolls
+   inside itself on a thin bar, never widening the page (a code block's is
+   code.css's). */
+.prose table {
+  scrollbar-width: thin;
+}
+
+#sheetInner .prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- Code: where a block stands in the column ----------
+   The block itself (its ground and ink, Hasklig, the gutter) is the code
+   block's, one part wherever the site shows code: highlight.css paints the
+   tokens and code.css dresses the block. This is only its place in the
+   sheet: the padding it is read in and the strip it is. Long lines scroll
+   inside the block instead of tearing the sheet open. */
+#sheetInner .prose pre {
+  border: 0;
+  border-radius: var(--cv-r);
+  padding: var(--cv-sp-4) var(--cv-sp-5);
+  margin: var(--cv-sp-4) 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* ---------- The numbered block in the sheet (issue #360) ----------
+   Every fence is lines (lib/code-lines.js, the gutter is code.css's); a
+   named block (```lang id=name) has each number a link to its own line.
+   The copy key is the kit's button, added by canvas/code-refs.js, pinned to
+   the block's top right on the ground so it reads over any line. */
+#sheetInner .prose .code {
+  position: relative;
+}
+#sheetInner .prose .code pre {
+  padding-inline: 0;
+  /* a band above line one for the copy key, so the key never covers code
+     however far the block is scrolled */
+  padding-top: calc(var(--cv-ctrl-h) + var(--cv-sp-2) * 2);
+}
+#sheetInner .prose .code-copy {
+  position: absolute;
+  top: var(--cv-sp-2);
+  right: var(--cv-sp-2);
+  /* on the ground, so it reads over One Dark in either scheme (the file page's
+     slide tag does the same) */
+  background: var(--cv-ground);
+}
+
+/* ---------- The mapping (issue #361) ----------
+   The author marks the words that map to something as <a class="ref"
+   href="#target">: a dashed line under them, not the plain link's. One
+   class on either end says it is lit, by the URL (:target on a line) or by
+   canvas/code-refs.js under the pointer, the focus or a tap: the theme's
+   title blue tinting a line or a whole block, the ink ring on a figure, and
+   the ref's words inked. No third colour, no motion. */
+#sheetInner .prose a.ref {
+  text-decoration: underline dashed;
+  text-decoration-thickness: var(--cv-px);
+  text-underline-offset: 0.2em;
+}
+/* forced-ok: the ring is .prose a:focus-visible's, and it comes back in system colours under @media (forced-colors: active) at the foot of this file */
+#sheetInner .prose a.ref.is-lit,
+#sheetInner .prose a.ref:hover,
+#sheetInner .prose a.ref:focus-visible {
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+  text-decoration: none;
+}
+#sheetInner .prose .code.is-lit pre,
+#sheetInner .prose .code:target pre {
+  background: color-mix(in srgb, var(--cv-code-title) 18%, var(--cv-code-bg));
+}
+#sheetInner .prose .figure.is-lit,
+#sheetInner .prose img.is-lit,
+#sheetInner .prose video.is-lit {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-sp-1);
+}
+#sheetInner .prose :not(pre) > code {
+  font-family: var(--cv-font-code);
+  font-size: var(--cv-fs-meta);
+  border: var(--cv-bd);
+  border-radius: var(--cv-r);
+  padding: 0 var(--cv-sp-1);
+  overflow-wrap: anywhere;
+}
+/* code breaks out of the reading column at the desktop density: a wider
+   centered strip means most lines fit without a scrollbar. Below it the
+   block stays in-column and side-scrolls. The strip still overflow-x
+   scrolls for lines longer than itself. */
+@media (min-width: 1008px) {
+  #sheetInner .prose pre {
+    width: 50rem;
+    max-width: none;
+    margin-inline: calc((100% - 50rem) / 2);
+  }
+}
+
+/* ---------- Prose kit: the marks markdown emits that need dressing ---------- */
+.prose blockquote {
+  margin: var(--cv-sp-5) 0;
+  padding: var(--cv-sp-1) 0 var(--cv-sp-1) var(--cv-sp-5);
+  border-left: var(--cv-px) solid var(--cv-ink);
+  color: var(--cv-mute);
+}
+.prose blockquote > :first-child {
+  margin-top: 0;
+}
+.prose blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* A short centred rule, one gutter wide: a soft-spoken section break. */
+.prose hr {
+  width: var(--cv-gutter);
+  height: 0;
+  margin: var(--cv-air) auto;
+  border: 0;
+  border-top: var(--cv-px) solid var(--cv-ink);
+}
+
+.prose li::marker {
+  color: var(--cv-ink);
+}
+
+/* Tables read at meta size, header underruled in ink; a wide table scrolls
+   inside its own block so it never tears the reading column open. The rows
+   are divided in the cut tone. */
+.prose table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: var(--cv-fs-meta);
+  line-height: var(--cv-lh-prose);
+  margin: var(--cv-sp-5) 0;
+}
+.prose thead th {
+  border-bottom: var(--cv-px) solid var(--cv-ink);
+  text-align: left;
+}
+.prose th,
+.prose td {
+  padding: var(--cv-sp-2) var(--cv-sp-3);
+  border-bottom: var(--cv-bd);
+  vertical-align: top;
+}
+
+/* ---------- The ring: every stop in the prose wears the kit's ----------
+   A link, a footnote mark, a video and a code block (it can scroll
+   sideways, so markdown.js gives it the keyboard) are ringed in the ink a
+   cell thick and a cell out, the same as every kit control. A video's own
+   controls take the keyboard inside it, where no page rule reaches, so the
+   video is ringed while any of them has it. */
+.prose a:focus-visible,
+.prose video:focus-within,
+#sheetInner .prose pre:focus-visible {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-px);
+}
+
+/* ---------- Anchor targets: clear the floating topbar, glide by default ---- */
+#mscroll {
+  scroll-behavior: smooth;
+}
+.prose [id] {
+  scroll-margin-top: var(--cv-sp-8);
+}
+/* A deep-linked heading gets the same quiet ink bar the footnotes use (a mark of where you are is ink,
+   never brick: brick is live, #336), so
+   the reader lands with a cue instead of guessing where the jump ended.
+   The mark is a held frame: it lands whole once the jump has, never fading
+   in (BIBLE.md section 9). */
+.prose :is(h1, h2, h3, h4, h5, h6):target {
+  background: color-mix(in srgb, var(--cv-ink) 12%, transparent);
+  border-left: var(--cv-px) solid var(--cv-ink);
+  padding-left: var(--cv-sp-3);
+  margin-left: calc(-1 * var(--cv-sp-3) - var(--cv-px));
+  transition: background var(--cv-dur-drift) var(--cv-ease-hold);
+}
+@media (prefers-reduced-motion: reduce) {
+  #mscroll {
+    scroll-behavior: auto;
+  }
+  .prose :is(h1, h2, h3, h4, h5, h6):target {
+    transition: none;
+  }
+}
+
+/* ---------- Footnotes: first-class citation style ----------
+   A reference is a link, and a link is ink (#336): brick is kept for what
+   is live or armed, so it is not spent on an accent. The mark is on the
+   ladder like every word (the face is only crisp there), raised off the
+   line rather than shrunk. */
+.prose .footnote-ref {
+  font-size: var(--cv-fs-meta);
+  vertical-align: super;
+  line-height: 0;
+  margin: 0 0 0 var(--cv-px);
+}
+.prose .footnote-ref a {
+  text-decoration: none;
+  font-family: var(--cv-font);
+  font-weight: 700;
+  color: var(--cv-ink);
+  padding: 0 var(--cv-sp-1);
+  background: color-mix(in srgb, var(--cv-ink) 12%, transparent);
+  transition:
+    background var(--cv-dur-press) var(--cv-ease-hold),
+    color var(--cv-dur-press) var(--cv-ease-hold);
+}
+@media (hover: hover) {
+  .prose .footnote-ref a:hover {
+    background: var(--cv-ink);
+    color: var(--cv-bright);
+  }
+}
+/* forced-ok: the ring is .prose a:focus-visible's, and it comes back in system colours under @media (forced-colors: active) at the foot of this file */
+.prose .footnote-ref a:focus-visible {
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+}
+.prose .footnote-item:target {
+  background: color-mix(in srgb, var(--cv-ink) 12%, transparent);
+  border-left: var(--cv-px) solid var(--cv-ink);
+  padding-left: var(--cv-sp-3);
+  margin-left: calc(-1 * var(--cv-sp-3) - var(--cv-px));
+  transition: background var(--cv-dur-drift) var(--cv-ease-hold);
+}
+.prose .footnotes {
+  margin-top: var(--cv-air);
+  padding-top: var(--cv-sp-6);
+  border-top: var(--cv-px) solid var(--cv-ink);
+  font-size: var(--cv-fs-meta);
+  line-height: var(--cv-lh-prose);
+  color: var(--cv-ink);
+  position: relative;
+}
+.prose .footnotes::before {
+  content: 'Notes';
+  display: block;
+  font-family: var(--cv-font);
+  font-size: var(--cv-fs-1);
+  letter-spacing: -0.01em;
+  color: var(--cv-ink);
+  margin-bottom: var(--cv-sp-4);
+}
+.prose .footnotes ol,
+.prose .footnotes-list {
+  padding-left: var(--cv-sp-6);
+  margin: 0;
+  counter-reset: footnote;
+}
+.prose .footnote-item {
+  margin: 0 0 var(--cv-sp-4) 0;
+  padding: var(--cv-sp-1) 0;
+}
+.prose .footnote-item p {
+  margin: 0;
+}
+/* the way back up lifts a cell up and left under a hand, the lift every
+   thing on the ground takes (--cv-lift-x, --cv-lift-y), in a held frame */
+.prose .footnote-backref {
+  text-decoration: none;
+  display: inline-block;
+  margin-left: var(--cv-sp-2);
+  color: var(--cv-mute);
+  font-family: var(--cv-font);
+  transition:
+    color var(--cv-dur-press) var(--cv-ease-hold),
+    transform var(--cv-dur-press) var(--cv-ease-hold);
+}
+@media (hover: hover) {
+  .prose .footnote-backref:hover {
+    color: var(--cv-ink);
+    transform: translate(var(--cv-lift-x), var(--cv-lift-y));
+  }
+}
+/* forced-ok: the ring is .prose a:focus-visible's, and it comes back in system colours under @media (forced-colors: active) at the foot of this file */
+.prose .footnote-backref:focus-visible {
+  color: var(--cv-ink);
+  transform: translate(var(--cv-lift-x), var(--cv-lift-y));
+}
+
+/* Anchor link on headings */
+.prose .header-anchor {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ---------- The case-study page's prose ----------
+   `:has(> h1.ptitle)` is every case-study page and no other (canvas-home.css,
+   THE CASE-STUDY PAGE, which holds the column and says why). There the
+   column IS the measure: the sheet's 60ch paragraph cap is lifted, a code
+   block is the column's width on the text's edges at every width (the 50rem
+   strip above is the sheet's, and this measure is wider than it), the body
+   sits at the ladder's root on the 24px rhythm, and the prose holds its own
+   hung figures, so the foot comes after the longest of them. */
+#modal.fullpage #sheetInner:has(> h1.ptitle) .prose p {
+  max-width: none;
+}
+#modal.fullpage #sheetInner:has(> h1.ptitle) .prose pre {
+  width: auto;
+  max-width: 100%;
+  margin-inline: 0;
+}
+#modal.fullpage #sheetInner:has(> h1.ptitle) .prose {
+  font-size: var(--cv-fs-0);
+  line-height: var(--cv-lh-prose);
+  display: flow-root;
+}
+
+/* =========================================================
+   Print: the case studies recruiters save as PDF. Only the
+   reading column prints; the canvas and floating chrome are
+   screen furniture, and the sheet's dimming scrim is off.
+   ========================================================= */
+@media print {
+  /* Force dark ink on white, tokens only. The screen ground is
+     eigengrau; ground is still ground. */
+  :root {
+    --cv-ink: var(--cv-ink-fixed);
+    --cv-ground: var(--cv-ground-fixed);
+    --cv-mute: color-mix(in srgb, var(--cv-ink-fixed) 58%, var(--cv-ground-fixed));
+  }
+  #stage,
+  #topbar,
+  #hint,
+  #backdrop,
+  #burger {
+    display: none !important;
+  }
+  /* On screen the modal is fixed and scrolls; in print it is just the flow. */
+  #modal,
+  #modal.open,
+  #mscroll,
+  #sheet {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: var(--cv-ground) !important;
+    color: var(--cv-ink) !important;
+  }
+  .backlink {
+    display: none;
+  }
+  /* Keep the citation reachable off-screen: spell the external target out. */
+  .prose a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: var(--cv-fs-meta);
+    color: var(--cv-mute);
+    word-break: break-all;
+  }
+  /* Hand-built figures, pipelines, and code must not split across a page. */
+  .figure,
+  .pipeline,
+  .sweep,
+  .prose pre {
+    break-inside: avoid;
+  }
+}
+
+/* =========================================================
+   The watch density (under 360px wide, layout.js BAR_MIN_W):
+   the reading measure narrows so lines do not run long against
+   the tighter shell. Type does NOT change face or size here,
+   and prose reads at --cv-lh-prose, one value, everywhere
+   (BIBLE.md section 3: below the 360px floor the stage scales
+   uniformly, the watch is the phone smaller). A second, private
+   edge at 280px that loosened the lines and narrowed again went
+   with the density law (BIBLE.md section 8).
+   ========================================================= */
+@media (max-width: 359.98px) {
+  .prose {
+    max-width: 28ch;
+  }
+}
+
+/* =========================================================
+   Forced colors: the OS takes the palette
+   Chromium and Gecko only. WebKit's forced-colors query is a hardcoded
+   stub that always answers `none` (bug 225281) and it has no
+   forced-color-adjust, so this never runs in Safari (BIBLE.md section 13).
+
+   The prose survives the forcing on its own: the measure, the rules and
+   the footnote frame are all borders. The two footnote controls invert on
+   focus, and a colour is precisely what the OS takes away, so they keep
+   the ring, and under a forced palette it is the system's own ink: the
+   UA paints its text backplate over an author plate, so the usual
+   `Highlight` / `HighlightText` pair would put the marker's own digit
+   black on black (measured in Chrome).
+   ========================================================= */
+@media (forced-colors: active) {
+  .prose .footnote-ref a:focus-visible,
+  .prose .footnote-backref:focus-visible {
+    outline: var(--cv-px) solid Highlight;
+    outline-offset: var(--cv-px);
+  }
+}

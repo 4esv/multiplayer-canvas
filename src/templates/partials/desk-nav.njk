@@ -1,0 +1,23 @@
+{# The desk's navigation: one markup, two placements. desk.css lays it out
+   as a fixed bottom bar on a phone (only the `bar` tools, the current one
+   down) and as a sticky left rail on a desktop (every tool in two groups,
+   the mark on top, log out at the foot). A nav is one of many, so every
+   tool is the kit's labelled radio push-button (.k-rk.k-wide) and the page
+   you are on is the one that is down (aria-current). The rail-only parts
+   carry `is-rail` and are display:none under the desktop density. #}
+<nav class="dk-nav" aria-label="desk">
+  <a class="dk-mark is-rail" href="/" aria-label="{{ identity.name }}, the canvas">{{ desk.mark | safe }}<span>desk</span></a>
+  <p class="dk-group k-meta is-rail">here</p>
+  {% for t in desk.tools %}
+  {% if not t.external %}
+  <a class="dk-tab k-rk k-wide{% if not t.bar %} is-rail{% endif %}" href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }}</a>
+  {% endif %}
+  {% endfor %}
+  <p class="dk-group k-meta is-rail">elsewhere</p>
+  {% for t in desk.tools %}
+  {% if t.external %}
+  <a class="dk-tab k-rk k-wide{% if not t.bar %} is-rail{% endif %}" href="{{ t.href }}" rel="noopener">{{ t.label }}</a>
+  {% endif %}
+  {% endfor %}
+  <button class="dk-out k-btn is-rail" type="button" data-logout>log out</button>
+</nav>

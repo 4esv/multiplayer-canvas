@@ -1,0 +1,4 @@
+{# a document from lib/docs.js: the plain text, the same template its canvas sheet is built from. #}
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+{% include "text/" + doc + ".njk" %}{% endblock %}

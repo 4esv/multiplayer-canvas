@@ -1,0 +1,207 @@
+/* The specimen's own layout (/admin/kit). The controls themselves are
+   kit.css and nothing here restyles them; this file only lays the boards
+   out and paints the two grounds. Prefix ks-. */
+
+/* the drawn hands are js/kit.js's: it sets them from presence.js and
+   wears them on <html> itself, so no page needs a cursor rule and every
+   control inherits (kit.css) */
+
+.ks {
+  display: grid;
+  gap: var(--cv-sp-7);
+  min-width: 0;
+}
+
+/* ---- the reference beside the title ---- */
+.ks-live {
+  display: grid;
+  gap: var(--cv-sp-6);
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 1008px) {
+  .ks-live {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+}
+.ks-intro {
+  display: grid;
+  gap: var(--cv-sp-4);
+  align-content: start;
+}
+.ks-intro p {
+  margin: 0;
+  max-width: var(--cv-reading);
+}
+.ks-title .px {
+  display: block;
+  width: auto;
+  height: calc(20 * var(--cv-px));
+}
+
+/* ---- the two grounds ---- */
+.ks-ground {
+  display: grid;
+  gap: var(--cv-sp-6);
+  padding: var(--cv-sp-6);
+  color: var(--cv-ink);
+}
+/* ground is ground wherever it is stood: the page's own */
+.ks-grey,
+.ks-grammar {
+  background: var(--cv-ground);
+}
+.ks-white {
+  background: var(--cv-white);
+}
+.ks-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--cv-sp-4);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ---- the board ---- */
+.ks-board {
+  display: grid;
+  gap: var(--cv-sp-7);
+}
+.ks-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cv-sp-4);
+  align-items: flex-end;
+}
+.ks-hardware {
+  gap: var(--cv-sp-6);
+}
+.ks-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cv-sp-2);
+}
+.ks-left {
+  align-items: flex-start;
+}
+.ks-field {
+  min-width: calc(60 * var(--cv-px));
+}
+.ks-off {
+  align-items: center;
+}
+/* the form parts take their column's width, the way they do in a form */
+.ks-forms {
+  align-items: flex-start;
+}
+.ks-forms .ks-field > * {
+  width: 100%;
+}
+.ks-forms .ks-field > .ks-row > * {
+  width: auto;
+}
+/* the snap scrollbar's seat: the flat one takes the row's width with its
+   name after it, the one on end runs eleven cells tall */
+.ks-scrollbar {
+  display: flex;
+  align-items: center;
+  gap: var(--cv-sp-3);
+  width: 100%;
+}
+.ks-scrollbar > .k-scroll {
+  flex: 1 1 auto;
+  min-width: calc(60 * var(--cv-px));
+}
+.ks-scrollbar > .k-scroll.k-vert {
+  flex: none;
+  min-width: 0;
+  height: calc(44 * var(--cv-px));
+}
+/* a piano and a scope are wider than a phone: they scroll sideways inside
+   their stack rather than pushing the page wider than the screen */
+.ks-wide {
+  max-width: 100%;
+}
+/* a bank is as wide as the row it is given (a door gives it the page); here,
+   room for four keys */
+.ks-bankrow {
+  width: calc(120 * var(--cv-px));
+  max-width: 100%;
+}
+.ks-wide > :first-child {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.ks-states .ks-row {
+  gap: var(--cv-sp-6);
+}
+.ks-states .ks-stack .ks-row {
+  gap: var(--cv-sp-2);
+  align-items: flex-start;
+}
+
+/* the grammar: one row per job, its everyday reference beside it, and the
+   part working at the end of the row; on a phone the part drops under */
+.ks-gram {
+  display: grid;
+  gap: var(--cv-sp-3);
+  margin: 0;
+}
+.ks-gram > div {
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 12rem) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--cv-sp-2) var(--cv-sp-4);
+  padding-top: var(--cv-sp-3);
+  border-top: var(--cv-px) solid var(--cv-ink);
+}
+.ks-gram dt,
+.ks-gram dd {
+  margin: 0;
+}
+.ks-show {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cv-sp-3);
+  min-width: 0;
+}
+.ks-show .k-field {
+  width: min(100%, 22rem);
+}
+.ks-show .k-range {
+  width: min(100%, 16rem);
+}
+.ks-tabs {
+  align-items: flex-end;
+  gap: calc(2 * var(--cv-px));
+  border-bottom: var(--cv-px) solid var(--cv-ink);
+}
+.ks-tabs .k-tab {
+  width: calc(36 * var(--cv-px));
+}
+/* the lit tab stands in the rule and its floor is the ground under it,
+   as on a page bar */
+.ks-tabs .k-tab.is-on {
+  margin-bottom: calc(-1 * var(--cv-px));
+  background: var(--cv-ground);
+}
+.ks-mini {
+  width: min(100%, 18rem);
+}
+.ks-frame {
+  display: inline-flex;
+  align-items: flex-start;
+  width: calc(40 * var(--cv-px));
+  height: calc(20 * var(--cv-px));
+  padding: var(--cv-sp-2);
+  border: calc(2 * var(--cv-px)) solid var(--cv-brick);
+  box-sizing: border-box;
+}
+/* one column under thirteen modules (the desk's page is the container) */
+@container (max-width: 623.98px) {
+  .ks-gram > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

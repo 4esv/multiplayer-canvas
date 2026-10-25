@@ -1,0 +1,27 @@
+{%- if grid.isTerminal or grid.isRetro -%}
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+500 · server error
+==================
+
+Something broke on my end. I'll see it in the logs.
+{% if reqId %}Quote {{ reqId }} if you write in.
+{% endif %}
+If it's urgent, {{ identity.author.email }}.
+
+{{ site.url }}/
+{% endblock %}
+{%- else -%}
+{% extends "canvas-base.njk" %}
+{% block content %}
+  <main class="cv-door">
+    {{ '500' | pixelTitle }}
+    <p class="cv-status">Something broke on my end. I'll see it in the logs. If it's urgent, send me a note.</p>
+    {% if reqId %}<p class="cv-status">Quote <code class="cv-path">{{ reqId }}</code> if you write in.</p>{% endif %}
+    <nav class="k-dock" aria-label="somewhere real">
+      <a class="k-btn is-on" href="/">&#8592; canvas</a>
+      <a class="k-btn" href="mailto:{{ identity.author.email }}">{{ identity.author.email }} &#8599;</a>
+    </nav>
+  </main>
+{% endblock %}
+{%- endif -%}

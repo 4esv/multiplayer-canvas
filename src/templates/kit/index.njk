@@ -1,0 +1,262 @@
+{%- if grid.isTerminal or grid.isRetro -%}
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+kit
+===
+
+the controls are drawn in a browser, not here.
+
+{% for p in parts -%}
+  {{ p.name }}: {{ p.states | join(', ') }}
+{% endfor %}
+plates
+------
+{% for p in plates -%}
+  {{ p.no }} {{ p.title }}: {{ p.note }}
+{% endfor %}
+motion
+------
+{% for m in sheet.motion.moves -%}
+  {{ m.name }}: {{ m.what }}
+{% endfor %}
+gags
+----
+{% for k in sheet.personality.kinds -%}
+{% for g in k.gags -%}
+  {{ g.name }} ({{ k.name }}): {{ g.trigger }}, {{ g.what }}
+{% endfor -%}
+{% endfor %}
+missing
+-------
+{% for m in sheet.missing.missing -%}
+  {{ m.name }}: {{ m.why }}
+{% endfor -%}
+{% endblock %}
+{%- else -%}
+{% extends "desk-base.njk" %}
+{% import "kit/plates.njk" as pl %}
+{% block deskhead %}
+  {# kit.css, its parts and js/kit.js ride every door page from canvas-base.njk #}
+  <link rel="stylesheet" href="{{ asset('/css/kit-specimen.css') }}">
+  <link rel="stylesheet" href="{{ asset('/css/sheet.css') }}">
+  <link rel="stylesheet" href="{{ asset('/css/entry.css') }}">
+  <link rel="stylesheet" href="{{ asset('/css/highlight.css') }}">
+  <link rel="stylesheet" href="{{ asset('/css/code.css') }}">
+{% endblock %}
+
+{# A part in one state: the picture IS the state, js/kit.js swaps it. #}
+{% macro part(name, state, cls, aria, extra) %}
+  <button type="button" class="k-part k-{{ name }}{{ ' ' + cls if cls }}" data-part="{{ name }}" data-state="{{ state }}" aria-label="{{ aria }}"{{ extra | safe if extra }}><img class="k-px" src="{{ imgUrl('/img/kit/' + name + '-' + state + '.png') }}" alt=""></button>
+{% endmacro %}
+
+{# The board: every control, working, on one ground. `g` keeps ids unique. #}
+{% macro board(g) %}
+  <div class="ks-board" data-board="{{ g }}">
+    <div class="ks-row ks-hardware">
+      {% for k in ['tone', 'drive', 'decay'] %}
+        <div class="ks-stack">{{ part('knob', loop.index0 * 3 % 8, 'ks-knob', 'turn ' + k, ' data-knob') }}<span class="k-lbl">{{ k }}</span></div>
+      {% endfor %}
+      <div class="ks-stack">
+        <div class="k-fader" data-fader tabindex="0" role="slider" aria-label="level" aria-valuemin="0" aria-valuemax="8" aria-valuenow="5">
+          {% for i in range(0, 9) %}<span class="k-tick" style="left: {{ i * 12.5 }}%"></span>{% endfor %}
+          <img class="k-px k-cap" src="{{ imgUrl('/img/kit/cap-thin.png') }}" alt="" style="left: 62.5%">
+        </div>
+        <span class="k-lbl">level</span>
+      </div>
+      {% for t in ['loop', 'hold'] %}
+        <div class="ks-stack">{{ part('toggle', 'down' if loop.first else 'up', '', t, ' data-toggle aria-pressed="' + ('true' if loop.first else 'false') + '" data-lamp="ks-' + g + '-lamp-' + t + '"') }}<img class="k-px k-lamp" id="ks-{{ g }}-lamp-{{ t }}" src="{{ imgUrl('/img/kit/lamp-' + ('on' if loop.first else 'off') + '.png') }}" alt="{{ t }} {{ 'on' if loop.first else 'off' }}"><span class="k-lbl">{{ t }}</span></div>
+      {% endfor %}
+    </div>
+
+    <div class="ks-row">
+      <button type="button" class="k-hw" data-play data-lamp="ks-{{ g }}-lamp-run">play</button>
+      <button type="button" class="k-hw" data-stop>stop</button>
+      <img class="k-px k-lamp" id="ks-{{ g }}-lamp-run" src="{{ imgUrl('/img/kit/lamp-off.png') }}" alt="stopped">
+      <button type="button" class="k-hw" data-arm aria-label="reset the board">reset</button>
+      <div class="k-radio" role="radiogroup" aria-label="preset">
+        {% for n in [1, 2, 3, 4, 5] %}<button type="button" class="k-rk" role="radio" aria-checked="{{ 'true' if n == 2 else 'false' }}">{{ n }}</button>{% endfor %}
+      </div>
+    </div>
+
+    <div class="ks-row">
+      <div class="ks-stack ks-left">
+        {% for c in ['loop', 'hold', 'echo'] %}
+          <button type="button" class="k-check" role="checkbox" aria-checked="{{ 'true' if loop.index != 2 else 'false' }}"><span class="k-box"></span>{{ c }}</button>
+        {% endfor %}
+      </div>
+      <div class="ks-stack ks-left ks-field">
+        <label class="k-lbl" for="ks-{{ g }}-search">search</label>
+        <div class="k-field"><input id="ks-{{ g }}-search" type="text" value="bass" autocomplete="off" spellcheck="false" data-field><span class="k-caret"></span></div>
+        <div class="ks-row">
+          {% for c in ['a', 'e', 's', 'v', '_', '<'] %}{% if c == '_' %}{% set aria = 'space' %}{% elif c == '<' %}{% set aria = 'delete' %}{% else %}{% set aria = c %}{% endif %}<button type="button" class="k-key" data-key="{{ c }}" aria-label="{{ aria }}">{{ c }}</button>{% endfor %}
+        </div>
+        <div class="ks-row"><button type="button" class="k-btn">cancel</button><button type="button" class="k-btn k-solid">open</button><button type="button" class="k-btn" disabled>later</button></div>
+      </div>
+      <div class="ks-stack">
+        {{ part('call', 'off', '', 'call up', ' data-call') }}
+        {{ part('call', 'off', '', 'call down', ' data-call') }}
+        <span class="k-lbl">call</span>
+      </div>
+      <div class="ks-stack">
+        <div class="ks-row">{% for i in [1, 2, 3] %}{{ part('pin', 'in' if i == 2 else 'out', '', 'patch ' + i, ' data-pin') }}{% endfor %}</div>
+        <span class="k-lbl">patch</span>
+      </div>
+    </div>
+
+    <div class="ks-row">
+      <div class="ks-stack ks-wide">
+        <div class="ks-scroll"><div class="k-piano" data-piano>
+          {% for w in [0, 1, 2, 3, 4, 5, 6] %}{{ part('white', 'up', 'k-white', 'key ' + w, ' data-note="' + w + '"') }}{% endfor %}
+          {% for b in [0, 1, 3, 4, 5] %}{% set at = (b + 1) * 22 - 6 %}{{ part('black', 'up', 'k-black', 'sharp ' ~ b, ' data-note="' ~ b ~ 's" style="left: calc(' ~ at ~ ' * var(--cv-px))"') }}{% endfor %}
+        </div>
+        </div><span class="k-lbl">piano</span>
+      </div>
+      <div class="ks-stack ks-wide">
+        <div class="ks-scroll"><div class="k-scope" data-scope style="--k-cols: 48" role="img" aria-label="the wave the level sets"></div>
+        </div><span class="k-lbl">scope</span>
+      </div>
+    </div>
+
+    <div class="ks-row">
+      <button type="button" class="k-part k-flaps" data-count aria-label="count a visit">{% for d in ['0', '4', '1'] %}<span class="k-flap">{{ d }}</span>{% endfor %}</button>
+      <nav class="k-dock" aria-label="collection"><a class="k-btn" href="#" data-ring="-1">&#8592; prev</a><a class="k-btn is-on" href="#" data-ring-name>web instruments</a><a class="k-btn" href="#" data-ring="1">next &#8594;</a></nav>
+      <div class="ks-stack ks-wide"><div class="ks-scrollbar" data-scrollbar><span class="k-meta" data-scroll-name>web instruments</span></div><span class="k-lbl">snap scrollbar</span></div>
+      <div class="ks-stack"><div class="ks-scrollbar" data-scrollbar="vert"></div><span class="k-lbl">on end</span></div>
+      <div class="k-panel" aria-label="a tool's panel">
+        <div class="k-sec"><span class="k-meta">osc</span>{{ part('knob', '2', 'ks-knob', 'pitch', ' data-knob') }}</div>
+        <div class="k-sec"><span class="k-meta">filter</span>{{ part('knob', '5', 'ks-knob', 'cutoff', ' data-knob') }}</div>
+        <div class="k-sec"><span class="k-meta">out</span>{{ part('toggle', 'up', '', 'mute', ' data-toggle aria-pressed="false" data-lamp="ks-' + g + '-lamp-out"') }}<img class="k-px k-lamp" id="ks-{{ g }}-lamp-out" src="{{ imgUrl('/img/kit/lamp-off.png') }}" alt="out off"></div>
+      </div>
+    </div>
+
+    {# The chip is a word a panel reads out; the tag is what a thing is about; the bank is keys of one width. #}
+    <div class="ks-row">
+      <div class="ks-stack ks-left">
+        <div class="ks-row"><span class="k-chip">ready</span><span class="k-chip is-on">no signal</span></div>
+        <span class="k-lbl">chip</span>
+      </div>
+      <div class="ks-stack ks-left">
+        <div class="k-tags"><span class="k-tag">ai</span><span class="k-tag">robotics</span></div>
+        <span class="k-lbl">tag</span>
+      </div>
+      <div class="ks-stack ks-bankrow">
+        <div class="k-bank" aria-label="a bank of keys"><button type="button" class="k-btn is-on">load</button><button type="button" class="k-btn">save</button><button type="button" class="k-btn">undo</button><button type="button" class="k-btn">redo</button></div>
+        <span class="k-lbl">bank</span>
+      </div>
+    </div>
+
+    {# The form parts (#336): the native elements a form needs, each drawn
+       the kit's way and still itself underneath. #}
+    <div class="ks-row ks-forms">
+      <div class="ks-stack ks-left ks-field">
+        <label class="k-lbl" for="ks-{{ g }}-select">select</label>
+        <div class="k-select"><select id="ks-{{ g }}-select">{% for o in ['sampled', 'fixed', 'never'] %}<option>{{ o }}</option>{% endfor %}</select></div>
+        <label class="k-lbl" for="ks-{{ g }}-date">date</label>
+        <div class="k-date"><input id="ks-{{ g }}-date" type="datetime-local" value="2026-09-25T09:00"></div>
+        <label class="k-lbl" for="ks-{{ g }}-range">range</label>
+        <input class="k-range" id="ks-{{ g }}-range" type="range" min="0" max="100" value="40" data-range="ks-{{ g }}-progress">
+        <progress class="k-progress" id="ks-{{ g }}-progress" max="100" value="40" aria-label="progress"></progress>
+      </div>
+      <div class="ks-stack ks-left ks-field">
+        <label class="k-lbl" for="ks-{{ g }}-note">textarea</label>
+        <div class="k-textarea"><textarea id="ks-{{ g }}-note" rows="3" placeholder="a note"></textarea></div>
+        <label class="k-check"><input type="checkbox" checked><span class="k-box"></span>native check</label>
+        <div class="ks-row">
+          <input class="k-swatch" type="color" aria-label="swatch">
+          <details class="k-disc">
+            <summary class="k-btn">options</summary>
+            <div class="k-body k-meta">what unfolds under the button.</div>
+          </details>
+        </div>
+      </div>
+      <div class="ks-stack ks-wide">
+        <label class="k-file" data-drop>
+          <input type="file" multiple>
+          <span>drop files here</span>
+          <span class="k-lbl">or press to pick</span>
+        </label>
+        <span class="k-lbl">file drop</span>
+      </div>
+    </div>
+
+    <div class="ks-row ks-off">
+      <span class="k-meta">unpowered</span>
+      <button type="button" class="k-hw" disabled>play</button>
+      <button type="button" class="k-rk" disabled>1</button>
+      {{ part('knob', '3', 'ks-knob', 'dead knob', ' disabled') }}
+      <button type="button" class="k-check" role="checkbox" aria-checked="true" disabled><span class="k-box"></span>echo</button>
+      <button type="button" class="k-key" disabled>a</button>
+    </div>
+  </div>
+{% endmacro %}
+
+{% block desk %}
+  <div class="k-ground ks">
+    <section class="ks-live" aria-label="the reference">
+      <div class="ks-intro">
+        <div class="ks-title">{{ title | safe }}</div>
+        <p class="k-ctl">every piece of the site, on one sheet. Call the bluff: click them.</p>
+        <p class="k-meta">local and yours: nothing on this page is synced. It is read off the code, so it cannot drift: test/sheet.test.js.</p>
+      </div>
+    </section>
+
+    {# THE SHEET: the plates around the kit. Each is src/lib/sheet.js read, not typed. #}
+    <nav class="ks-index" id="plates" aria-label="plates">{% for p in plates %}<a class="k-btn" href="#{{ p.id }}">{{ p.no }} {{ p.title }}</a>{% endfor %}</nav>
+    {{ pl.display(sheet.display) }}
+    {{ pl.type(sheet.type) }}
+    {{ pl.code(sheet.code) }}
+    <div class="ks-plate ks-plate-hardware">{{ pl.head(sheet.hardware) }}</div>
+
+    {# THE GRAMMAR (BIBLE.md section 0): a state is drawn by what a person can
+       do with it. One row per job, the everyday thing it borrows, and the
+       part itself, working. #}
+    <section class="ks-ground ks-grammar" aria-label="the grammar">
+      <h2 class="k-ctl ks-head">the grammar<span class="k-meta">what a person can do with a state decides how it is drawn</span></h2>
+      <dl class="ks-gram">
+        <div><dt class="k-ctl">a binary you set</dt><dd class="k-meta">a light switch, a stompbox</dd><dd class="ks-show"><button type="button" class="k-switch" role="switch" aria-checked="true" data-flip><span class="k-lever"></span>Dark Mode</button><button type="button" class="k-switch" role="switch" aria-checked="false" data-flip><span class="k-lever"></span>Plain Type</button></dd></div>
+        <div><dt class="k-ctl">a binary you read</dt><dd class="k-meta">a panel lamp</dd><dd class="ks-show"><img class="k-px k-lamp" src="{{ imgUrl('/img/kit/lamp-on.png') }}" alt="connected"><span class="k-lbl">connected</span><img class="k-px k-lamp" src="{{ imgUrl('/img/kit/lamp-off.png') }}" alt="idle"><span class="k-lbl">idle</span></dd></div>
+        <div><dt class="k-ctl">a momentary act</dt><dd class="k-meta">a doorbell</dd><dd class="ks-show"><button type="button" class="k-hw">ring</button></dd></div>
+        <div><dt class="k-ctl">an act that runs until stopped</dt><dd class="k-meta">a tape deck's play key</dd><dd class="ks-show"><button type="button" class="k-hw is-down" aria-pressed="true">play</button><img class="k-px k-lamp" src="{{ imgUrl('/img/kit/lamp-on.png') }}" alt="playing"></dd></div>
+        <div><dt class="k-ctl">one of a few, all in view</dt><dd class="k-meta">a car radio's presets</dd><dd class="ks-show"><span class="k-radio" role="radiogroup" aria-label="lasts">{% for w in ['1 day', '7 days', 'never'] %}<label class="k-rk k-wide"><input type="radio" name="ks-lasts" value="{{ w }}"{% if loop.index == 2 %} checked{% endif %}>{{ w }}</label>{% endfor %}</span></dd></div>
+        <div><dt class="k-ctl">one of many, by name</dt><dd class="k-meta">a jukebox's index</dd><dd class="ks-show"><span class="k-menu ks-mini"><span class="k-btn is-on">An example case study</span><span class="k-btn">Web Instruments</span></span></dd></div>
+        <div><dt class="k-ctl">many of many</dt><dd class="k-meta">a checklist</dd><dd class="ks-show"><button type="button" class="k-check" role="checkbox" aria-checked="true"><span class="k-box"></span>loop</button><button type="button" class="k-check" role="checkbox" aria-checked="false"><span class="k-box"></span>echo</button></dd></div>
+        <div><dt class="k-ctl">the pages of a set</dt><dd class="k-meta">an index card's tabs</dd><dd class="ks-show ks-tabs"><span class="k-tab is-on"><span class="k-tab-go">this page</span></span><span class="k-tab"><span class="k-tab-go">the next</span></span></dd></div>
+        <div><dt class="k-ctl">a value along a line</dt><dd class="k-meta">a mixing desk's fader</dd><dd class="ks-show"><input class="k-range" type="range" aria-label="level" value="60"></dd></div>
+        <div><dt class="k-ctl">a value by feel</dt><dd class="k-meta">an amp's knob</dd><dd class="ks-show"><img class="k-px ks-knob" src="{{ imgUrl('/img/kit/knob-3.png') }}" alt="tone"></dd></div>
+        <div><dt class="k-ctl">a count you read</dt><dd class="k-meta">a departure board</dd><dd class="ks-show"><span class="k-flaps" role="img" aria-label="41">{% for d in ['0', '4', '1'] %}<span class="k-flap">{{ d }}</span>{% endfor %}</span></dd></div>
+        <div><dt class="k-ctl">words you give</dt><dd class="k-meta">a terminal's cursor</dd><dd class="ks-show"><span class="k-field"><input type="text" value="where the next letter goes" aria-label="a field" spellcheck="false"><span class="k-caret"></span></span></dd></div>
+        <div><dt class="k-ctl">somebody else's view</dt><dd class="k-meta">Figma's observation frame</dd><dd class="ks-show"><span class="ks-frame"><span class="k-lbl">following</span></span></dd></div>
+      </dl>
+    </section>
+
+    {% for g in grounds %}
+      <section class="ks-ground ks-{{ g.id }}" aria-label="{{ g.name }} ground">
+        <h2 class="k-ctl ks-head">{{ g.name }}<span class="k-meta">{{ g.note }}</span></h2>
+        {{ board(g.id) }}
+      </section>
+    {% endfor %}
+
+    <section class="ks-ground ks-grey ks-states" aria-label="every part, every state">
+      <h2 class="k-ctl ks-head">the parts<span class="k-meta">one picture per state, as baked</span></h2>
+      <div class="ks-row">
+        {% for p in parts %}
+          <div class="ks-stack">
+            <div class="ks-row">{% for s in p.states %}<img class="k-px" src="{{ imgUrl('/img/kit/' + p.name + '-' + s + '.png') }}" alt="{{ p.name }} {{ s }}" width="{{ p.w }}" height="{{ p.h }}">{% endfor %}</div>
+            <span class="k-lbl">{{ p.name }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    {{ pl.surfaces(sheet.surfaces) }}
+    {{ pl.motion(sheet.motion) }}
+    {{ pl.personality(sheet.personality) }}
+    {{ pl.assets(sheet.assets) }}
+    {{ pl.missing(sheet.missing) }}
+    {{ pl.voice(sheet.voice) }}
+  </div>
+{% endblock %}
+{% block deskscripts %}
+  <script src="{{ asset('/canvas/code-refs.js') }}" type="module"></script>
+{% endblock %}
+{%- endif -%}

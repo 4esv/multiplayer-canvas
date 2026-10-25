@@ -1,0 +1,128 @@
+/* =========================================================
+   page-reader.css: the reader's settings on a page that is read
+   (js/page-reader.js). A case study today; the articles and reports after
+   it wear the same shell. Everything here is scoped to that shell,
+   #modal.reading, and nothing here reaches the canvas.
+
+   THE ONE STATED EXEMPTION FROM ONE GROUND (BIBLE.md section 1). The site
+   has one ground and does not ask the OS what colour to be. A page that is
+   READ is the exception, because a reader's eyes are not ours to choose:
+   the page shell may take the inverted ground, ink under bright words,
+   when the reader says so (Dark Mode) or, with nothing said, when their OS
+   does. The canvas, its chrome, the collections and every experiment stay
+   on the one ground. test/one-ground.test.js holds the boundary: this file
+   and page-reader.js are the only places a dark context may be declared,
+   and every selector under one starts at the shell.
+
+   The inverted ground is the tokens rebound inside the shell, the way a
+   quotation rebinds a tile's inks (canvas-home.css .q-*), so every rule
+   that reads a token follows without a second copy of itself. The values
+   are the kit's own inverted face (kit-inverted in BIBLE.md's
+   frontmatter): bright words on ink, mid for what is muted, brick's light
+   step for what is armed, each measured on this ground (page-dark,
+   page-dark-muted and page-dark-armed there, which `design.md lint`
+   checks for WCAG AA). Code blocks keep One Dark's own ground: a syntax
+   theme is its author's. A token composed at :root out of the ink (the
+   line, the strong edge) is composed again here, because a var() is
+   resolved where it is declared (test/elevation.test.js). The rebinding is
+   written twice, once for the reader's word and once for the OS's, since a
+   media query and an attribute cannot share one selector.
+   ========================================================= */
+
+/* ---- the group: under the meta line, before the prose. Kit controls with
+   their words on them, in a row that wraps, taken out of any selection
+   (a drag across the page selects the page's words, never its switches). */
+.reader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 calc(4 * var(--cv-px));
+  margin: var(--cv-sp-4) 0 0;
+  font-family: var(--cv-font);
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+  -webkit-user-select: none;
+  user-select: none;
+}
+.reader-listen {
+  display: inline-flex;
+  gap: calc(2 * var(--cv-px));
+}
+.reader-listen[hidden],
+.reader .k-btn[hidden] {
+  display: none;
+}
+.reader .k-btn svg {
+  display: block;
+  width: calc(11 * var(--cv-px) / 2);
+  height: calc(11 * var(--cv-px) / 2);
+  fill: currentColor;
+}
+
+/* ---- the sentence being read: the site's one invert, over the page's own
+   text by the Custom Highlight API, so nothing on the page is rewritten */
+::highlight(tts) {
+  background-color: var(--cv-ink);
+  color: var(--cv-bright);
+}
+
+/* ---- Plain Type: the prose in the reader's own sans, a step larger, on
+   the prose's own line height, with no smear (a vector face drawn twice a
+   dot apart is a blur, not a weight). The title stays the pixel face: it is
+   the page's mark. Code keeps its own face, which it states for itself. The
+   :has() is the case-study page's own mark (canvas-home.css), here so this
+   rule outranks the one that sets that page's prose on the ladder
+   (entry.css). */
+#modal.reading[data-type='plain'] #sheetInner:has(> h1.ptitle) .prose {
+  /* font-ok: Plain Type is the reader asking for the face their own system reads best in; importing one would be us choosing again */
+  font-family: system-ui, sans-serif;
+  font-size: calc(var(--cv-fs-0) * 1.125);
+  line-height: var(--cv-lh-prose);
+  -webkit-font-smoothing: auto;
+  text-shadow: none;
+}
+
+/* ---- Dark Mode: the reader's word ---- */
+#modal.reading[data-ground='dark'] {
+  color-scheme: dark;
+  --cv-white: var(--cv-ink-fixed);
+  --cv-surface: var(--cv-ink-fixed);
+  --cv-ground: var(--cv-ink-fixed);
+  --cv-ink: var(--cv-ground-fixed);
+  --cv-bright: var(--cv-ink-fixed);
+  --cv-mute: var(--cv-mid);
+  --cv-brick: var(--cv-brick-light);
+  --cv-line: color-mix(in srgb, var(--cv-ground-fixed) 12%, transparent);
+  --cv-bd-ink: var(--cv-px) solid var(--cv-ground-fixed);
+  /* light on dark stays regular */
+  --cv-smear: none;
+  /* the page's words inherit their colour from the body, where the ink was
+     resolved before this rebinding; the shell states it again */
+  color: var(--cv-ink);
+}
+/* sage has no light step of its own; mixed toward the bright at the use
+   site it clears the graphics minimum and keeps its hue */
+#modal.reading[data-ground='dark'] .cellfig .f-s {
+  fill: color-mix(in srgb, var(--cv-sage) 55%, var(--cv-ground-fixed));
+}
+
+/* ---- Dark Mode: the OS's word, when the reader has said nothing ---- */
+@media (prefers-color-scheme: dark) {
+  #modal.reading:not([data-ground='light']) {
+    color-scheme: dark;
+    --cv-white: var(--cv-ink-fixed);
+    --cv-surface: var(--cv-ink-fixed);
+    --cv-ground: var(--cv-ink-fixed);
+    --cv-ink: var(--cv-ground-fixed);
+    --cv-bright: var(--cv-ink-fixed);
+    --cv-mute: var(--cv-mid);
+    --cv-brick: var(--cv-brick-light);
+    --cv-line: color-mix(in srgb, var(--cv-ground-fixed) 12%, transparent);
+    --cv-bd-ink: var(--cv-px) solid var(--cv-ground-fixed);
+    --cv-smear: none;
+    color: var(--cv-ink);
+  }
+  #modal.reading:not([data-ground='light']) .cellfig .f-s {
+    fill: color-mix(in srgb, var(--cv-sage) 55%, var(--cv-ground-fixed));
+  }
+}

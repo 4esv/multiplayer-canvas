@@ -1,0 +1,231 @@
+{# The canvas home (the contract is BIBLE.md). routes/home.js serves this
+   to modern browsers; curl and retro clients keep the plain-text / HTML 3.2
+   variants in pages/home.njk. Scripts and styles are real files (CSP:
+   script-src 'self'): app.js for behavior, canvas-tokens.css for every
+   token, canvas-home.css for the shell, so the guards can scan them. #}
+<!doctype html>
+{# Two states the SERVER is the only honest source for.
+   canvas-pending: the canvas has not painted. True of every page at the
+   moment it is parsed, and app.js clears it once render() has seated the
+   world. Stamped here rather than by the script, because a script that
+   fails is exactly the case the class exists to cover.
+   sheet-open: this route SSRs its entry already open. app.js used to add it
+   on boot, which left the watch's one-layer rules unarmed for a direct load
+   until a script it does not need decided to run.
+   item-open: the open sheet is an entry, the layer above the canvas and its
+   collections; the bar is not drawn over it (#300). Stamped here for the
+   same reason: a direct load must not flash the bar over the page. #}
+<html lang="en" class="canvas-pending{% if sheet %} sheet-open{% endif %}{% if sheet and sheet.full %} fullpage-open{% endif %}{% if sheet and sheet.item %} item-open{% endif %}">
+<head>
+<meta charset="utf-8">
+{% include "partials/importmap.njk" %}
+{# Pinch-zoom stays allowed (WCAG 1.4.4): the scene owns its gestures via
+   touch-action, so zoom never needed banning in the first place. #}
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{# NOTE: no disabled-adaptations tag here, on purpose. It used to opt the
+   watch out of watchOS's adapted layout, because the adapted 320px page
+   broke position:fixed and the modal rendered beside the canvas. The opt-out
+   bought a true device width WIDER than the watch threshold in
+   canvas-home.css, so the watch was served the phone build: bar, menu,
+   booting canvas, fixed layers, everything piled and overflowing. The
+   position:fixed failure it was hired to fix has since been retired by the
+   one-layer block, which leaves nothing on that screen positioned or
+   transformed at all. So the watch gets the adaptation every other site
+   gets, and the page it adapts is an ordinary document. #}
+{% include "partials/meta-head.njk" %}
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="preload" href="/fonts/dotgothic16-regular.woff2" as="font" type="font/woff2" crossorigin>
+{# Before the module on purpose: the failure it reports is a throw at app.js
+   module scope, which is earlier than anything app.js could install. #}
+<script src="{{ asset('/canvas/watchdog.js') }}"></script>
+<script defer src="{{ asset('/js/sw-register.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('/primitives/kit/canvas-tokens.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/ptitle.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/canvas-home.css') }}">
+{# the kit's parts at their hashes (#313, #319): a sheet that wears the kit
+   (an experiment's controls) reads them as --kp-<part>-<state>, opened from the
+   canvas or loaded direct, so kit.css never writes an /img URL #}
+{% include "kit/parts.njk" %}
+{# the kit (#313): the one set of controls; presence's tag and list wear it (#336) #}
+<link rel="stylesheet" href="{{ asset('/primitives/kit/kit.css') }}">
+{# the reader's settings on a page that is read (Dark Mode, Plain Type,
+   Listen), scoped to #modal.reading; in the head rather than the entry's
+   chain so a reader whose OS is dark never sees the page white first #}
+<link rel="stylesheet" href="{{ asset('/css/page-reader.css') }}">
+{# With JS off the canvas cannot paint, but the prelude is the document:
+   the statement, the zones' words, the index and real links. Drop the
+   chrome only JS can drive (the field, the close, the map). Placed AFTER the
+   canvas-home.css link on purpose: the prelude reveal shares a selector with
+   that stylesheet's display:none, so source order is the whole ballgame. #}
+<noscript><style>#close,#searchWrap,#minimap{display:none}#prelude{position:fixed;inset:0;display:block;overflow:auto;padding:var(--cv-air) var(--cv-sp-8)}</style></noscript>
+{# The three doors are the three most-clicked links; their SSR payloads are
+   cheap. This earns the 'inline-speculation-rules' CSP allowance that was
+   sitting unused. #}
+<script type="speculationrules">{{ speculationRules | safe }}</script>
+{# An SSR'd entry sheet ships its stylesheet chain as real links (data-sheet-css
+   lets app.js seed its adopted set) and any runtime payload preloads. #}
+{%- if sheetAssets %}
+{% for href in sheetAssets.css %}<link rel="stylesheet" href="{{ href }}" data-sheet-css>
+{% endfor -%}
+{% for href in sheetAssets.preload %}<link rel="preload" href="{{ href }}" as="fetch">
+{% endfor -%}
+{% endif %}
+</head>
+<body>
+  {# The tiles mount into #scene, which precedes the topbar in the DOM, so a
+     keyboard user tabbed through two dozen tiles before reaching the doors.
+     Target depends on what the page IS: a route that SSRs a sheet has its
+     content in #sheet (already tabindex=-1); the bare canvas has none, so
+     the useful destination is the nav. Hidden until focused, so it adds no
+     chrome to the canvas. #}
+  <a class="skip k-btn k-solid" href="{% if sheet %}#sheet{% else %}#search{% endif %}">skip to {% if sheet %}content{% else %}search{% endif %}</a>
+  <div id="stage">
+  {# Depth is resolution (BIBLE.md section 9): whatever you are not reading is
+     drawn one step coarser, the same pixels bigger, never a blur. Two cell
+     sizes, both WORLD px because the filter runs in #scene's own space: 24
+     behind a fan, 48 (one module a cell) behind a sheet. Each filter samples
+     one pixel per cell (the flood is the sample, the composite sizes the
+     cell, the tile repeats it, the second composite keeps the source under
+     the samples) and dilates it out to the cell's edges. The svg is size
+     zero and carries only definitions. #}
+  {# role=main, not <main>: app.js reads #scene as a positioned layer and sets
+     .inert on it while a sheet is open, so the element's box is load-bearing
+     and swapping the tag risks the layout. The role is what assistive tech
+     needs - the page had nav and dialog landmarks but no main, so there was
+     no way to jump to the canvas itself. #}
+  <div id="scene" role="main" aria-label="canvas">
+    {# The statement, server-rendered: the home document's real h1. No-JS,
+       reader mode, and crawlers get the identity line; app.js paints the
+       same phrase into the hero on boot and removes this, so nothing ever
+       flashes blank. The phrase must match PHRASES[0] in canvas/hero-cycle.js.
+
+       `index` (routes/home.js, `/` only) carries the same collection the
+       canvas paints as tiles. Without it the home document was one h1 and
+       three links, so a crawler that does not run JS - which is every LLM
+       crawler - had nothing to read on the page it fetches first. Routes
+       that SSR a sheet (/work, /feed, /about) already ship their prose and
+       pass no index, so this never doubles anything.
+
+       A route that SSRs a sheet has its title as the document's h1 already,
+       so here the statement is a line and not a second h1. #}
+    <div id="prelude">
+      {% set statementTag = 'p' if sheet else 'h1' %}
+      <{{ statementTag }}>Everyone here sees your cursor.</{{ statementTag }}>
+      {%- if boot and boot.zones %}
+      {# the zones (BIBLE.md section 5) stand on the ground for a JS visitor;
+         here they stand in the document, so a crawler and a no-JS reader get
+         the same words and links #}
+      <div id="preludeZones">
+        {%- for z in boot.zones %}
+        <section class="prelude-zone"><h2>{{ z.label }}</h2>{{ z.html | safe }}</section>
+        {%- endfor %}
+      </div>
+      {%- endif %}
+      {%- if index %}
+      <div id="preludeIndex">
+        <p class="prelude-line">Site of {{ identity.author.name }}. {{ identity.tagline }}</p>
+        <nav class="prelude-doors" aria-label="sections"><a href="/work">work</a><a href="/feed">feed</a><a href="/about">about</a></nav>
+        {%- if index.caseStudies.length %}
+        <h2>Case Studies</h2>
+        <ul>
+          {%- for e in index.caseStudies %}
+          <li><a href="{{ e.href }}">{{ e.title }}</a>{% if e.summary %} <span>{{ e.summary }}</span>{% endif %}</li>
+          {%- endfor %}
+        </ul>
+        {%- endif %}
+        {%- if index.entries.length %}
+        <h2>Writing &amp; Web</h2>
+        <ul>
+          {%- for e in index.entries %}
+          <li><a href="{{ e.href }}"{% if e.external %} rel="noopener"{% endif %}>{{ e.title }}</a>{% if e.summary %} <span>{{ e.summary }}</span>{% endif %}</li>
+          {%- endfor %}
+        </ul>
+        {%- endif %}
+        <h2>Reach Me</h2>
+        <ul>
+          <li><a href="mailto:{{ identity.author.email }}">{{ identity.author.email }}</a></li>
+          {%- for name, href in identity.social %}
+          <li><a href="{{ href }}" rel="noopener">{{ name }}</a></li>
+          {%- endfor %}
+        </ul>
+      </div>
+      {%- endif %}
+    </div>
+  </div>
+  {# The plan (#303): past the mount floor nothing mounts and app.js paints
+     the world here instead, on the map's cell, at camera scale. It takes no
+     pointer; the scene under it keeps every gesture. #}
+  <canvas id="plan" aria-hidden="true" hidden></canvas>
+  {# The screen chrome is one landmark: the finder, the map and the close are
+     the ways around the canvas, and outside every landmark a reader moving
+     by landmarks never met them. A plain box: the bar and the map stay fixed
+     layers and siblings (the phone's shared slot is `#topbar ~ #minimap`),
+     so wrapping them moves nothing. #}
+  <nav>
+  <div id="topbar">
+    {# The bar is the field (BIBLE.md section 8, 2026-09-10). The home
+       button and the menu left it: the doors are the sections, the bulb is
+       on the ground, home is Esc, /home or a tap on the map. #}
+    {# A phone's middle slot is shared (#303): the field comes in from the
+       left, the map from the right, one up at a time. This is the left
+       column's way back to the field; a desktop keeps the field up and has
+       no use for it. #}
+    <button id="findBtn" class="k-btn k-ico" type="button" aria-label="search" aria-controls="searchWrap" hidden><svg viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M2 0h3v1h-3zM1 1h1v1h-1zM5 1h1v1h-1zM0 2h1v3h-1zM6 2h1v3h-1zM1 5h1v1h-1zM5 5h1v1h-1zM2 6h3v1h-3zM6 6h2v1h-2zM7 7h2v1h-2zM8 8h2v1h-2zM9 9h2v2h-2z"/></svg></button>
+    <div id="searchWrap">
+      {# the search is a FINDER (2026-09-11): typing takes the camera to the
+         top result and lights it; the arrows walk the rest, Enter goes in.
+         One line over the field says which of how many. #}
+      <div id="found" aria-live="polite" hidden></div>
+      {# the kit's field (#336), boxed: one-cell lines on all four sides
+         (a rule under the words alone blended into the world under the
+         bar), and the block caret after the words, blinking in a step
+         while the field has focus #}
+      <div class="k-field k-sm k-boxed" id="searchField"><input id="search" type="search" placeholder="search or /" autocomplete="off" spellcheck="false" aria-label="search or command" role="combobox" aria-expanded="false" aria-controls="cmds" aria-autocomplete="list"><span class="k-caret"></span></div>
+      {# the command roster: the one popup the bar still owns. "/" opens it,
+         text past the slash filters it; plain text never opens it (the
+         lens owns plain text). The kit's menu, opening upward off the
+         bar, its best row nearest the field. #}
+      <div id="cmds" class="k-menu k-up" role="listbox" aria-label="commands"></div>
+    </div>
+    {# the right inset's column: the map's toggle at rest, and a close in
+       its place while a sheet or a fan is up (app.js syncClose) #}
+    <button id="mapBtn" class="k-btn k-ico" type="button" aria-label="map" aria-controls="minimap" aria-pressed="false" hidden><svg viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M0 0h11v1h-11zM0 10h11v1h-11zM0 1h1v9h-1zM10 1h1v9h-1zM3 3h5v1h-5zM3 6h5v1h-5zM3 4h1v2h-1zM7 4h1v2h-1z"/></svg></button>
+    <button id="close" class="k-btn k-ico" type="button" aria-label="close" hidden><svg viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h-2zM8 1h2v1h-2zM2 2h2v1h-2zM7 2h2v1h-2zM3 3h2v1h-2zM6 3h2v1h-2zM4 4h3v1h-3zM4 5h3v1h-3zM4 6h3v1h-3zM3 7h2v1h-2zM6 7h2v1h-2zM2 8h2v1h-2zM7 8h2v1h-2zM1 9h2v1h-2zM8 9h2v1h-2z"/></svg></button>
+  </div>
+  {# The explore hint and the visitor tally are no longer screen chrome:
+     they live ON the canvas, etched below the hero doors (app.js builds
+     #etched into #scene), so they pan and zoom with the world. #}
+  {# role=dialog without aria-modal: the topbar (burger x, omni search) stays
+     interactive while a sheet is open, and aria-modal would hide it from
+     assistive tech. The canvas itself is excluded via scene.inert instead.
+     A direct load of /work, /feed or /about SSRs the sheet already open;
+     app.js adopts it instead of repainting, and no-JS readers get the full
+     content and real links. #}
+  {# The minimap (BIBLE.md section 8): the world as a plan in the corner,
+     drawn by app.js in the two inks; a drag on it moves the camera. Chrome,
+     so the watch density hides it with the bar. Ships hidden: styled like a
+     tile, it would paint as an empty one until the module boots (#242). #}
+  <canvas id="minimap" width="192" height="168" role="img" aria-label="map of the canvas; drag to move the view" hidden></canvas>
+  </nav>
+  <div id="modal" role="dialog"{% if sheet %} class="open{% if sheet.full %} fullpage{% endif %}{% if sheet.reading %} reading{% endif %}" aria-label="{{ sheet.title }}"{% endif %}><div id="backdrop"></div><div id="mscroll"><div id="gap"></div><div id="sheet" tabindex="-1">{% if sheet and sheet.bar %}{{ sheet.bar | safe }}{% endif %}<div class="inner" id="sheetInner">{% if sheet %}{% if sheet.pixel %}{{ sheet.title | pixelTitle }}{% else %}<h1>{{ sheet.title }}</h1>{% endif %}<div class="meta">{{ sheet.meta }}{% if sheet.tagRow %}{{ sheet.tagRow | safe }}{% endif %}</div>{{ sheet.body | safe }}{% endif %}</div></div></div></div>
+  </div>
+
+{# Live tile data, inert JSON under CSP script-src 'self'; app.js reads it.
+   safeJson escapes "</" so the payload can never close its own tag. #}
+<script type="application/json" id="boot">{{ boot | safeJson | safe }}</script>
+<script type="module" src="{{ asset('/canvas/app.js') }}"></script>
+{#- An SSR'd entry sheet runs its scripts as real tags: classic scripts keep
+    declaration order during parse (an entry listing several gets them in the
+    order it declared) and run after the sheet markup above exists, exactly the
+    order mountEmbed reproduces client-side. #}
+{%- if sheetAssets %}
+{% for src in sheetAssets.js %}<script src="{{ src }}"></script>
+{% endfor -%}
+{% for src in sheetAssets.modules %}<script type="module" src="{{ src }}"></script>
+{% endfor -%}
+{% endif %}
+</body>
+</html>

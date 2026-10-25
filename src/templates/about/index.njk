@@ -1,0 +1,6 @@
+{# /about . bio + site walkthrough. Two topic sections in plain prose
+   on top, four pressable /url cards below. Self-contained: no
+   markdown file is read for the body. #}
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+{% include "text/about.njk" %}{% endblock %}

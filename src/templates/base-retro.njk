@@ -1,0 +1,29 @@
+{#- Minimal document for ancient graphical browsers (Netscape/IE-era, Mosaic).
+    Reuses each page's plain-text {% block text %} verbatim and wraps it in an
+    HTML 3.2 shell with presentational <body> attributes, so it needs no
+    stylesheet at all. The retroText filter hard-wraps, escapes, and linkifies
+    the text so it reads and navigates on a relic. White ground, ink text: the
+    two inks, matched to the modern palette. -#}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{{ meta.title or identity.name }}</title>
+</head>
+{# Two inks even in 1996: HTML 3.2 has no CSS variables, so these literals
+   mirror canvas-tokens.css by hand: the ground, the ink, and the mute for a
+   visited link (links same-ink, underlined by the UA). test/palette.test.js
+   allowlists this file for exactly that reason, and proves each literal is
+   its token rather than looking away: #ffffff and #111111 sat here for
+   months after the ink became #18181b on #e4e4e7. #}
+<body bgcolor="#e4e4e7" text="#18181b" link="#18181b" vlink="#505053" alink="#505053">
+<h1><a href="/">{{ identity.name }}</a></h1>
+<hr>
+<pre>
+{%- filter retroText -%}
+{% block text %}{% endblock %}
+{%- endfilter -%}
+</pre>
+<hr>
+</body>
+</html>

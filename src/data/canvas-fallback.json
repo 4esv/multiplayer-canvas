@@ -1,0 +1,12 @@
+{
+  "weather": {
+    "tempF": 68,
+    "cond": "overcast",
+    "place": "london",
+    "day": true,
+    "hi": 72,
+    "lo": 55,
+    "rise": 1790160870,
+    "set": 1790204486
+  }
+}

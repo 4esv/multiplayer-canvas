@@ -1,0 +1,319 @@
+/* The desk: the shell every owner page wears (templates/desk-base.njk).
+   Tokens from canvas-tokens.css, every control from kit.css; this file
+   lays out the shell and nothing else. Prefix dk-. Never ad-: content
+   blockers hide that family by cosmetic filter.
+
+   Phone first, and phone means an app: the navigation is a tab bar fixed
+   to the bottom edge where the thumb rests, clearing the iOS home
+   indicator by the safe-area inset, and the page scrolls under it. From
+   the desktop density (1008px, the width the canvas calls desktop in
+   layout.js) the same nav is a rail down the left and the page takes the
+   rest of the width.
+
+   Lo-Hi tech (BIBLE.md section 0): the nav is one of many, so the tools
+   are the kit's labelled radio push-buttons and the page you are on is the
+   one that is down; the bar and the rail are divided from the page by one
+   cell of ink; a page's sections are divided by one-cell rules and never
+   boxed (.k-secs). */
+
+.dk {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.dk-page {
+  display: grid;
+  align-content: start;
+  gap: var(--cv-sp-7);
+  padding: var(--cv-sp-6);
+  /* the bar's band plus the inset plus one gap, so the last section clears it */
+  padding-bottom: calc(var(--cv-hero-btn-h) + env(safe-area-inset-bottom, 0px) + var(--cv-sp-7));
+}
+
+.dk-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cv-sp-4);
+  flex-wrap: wrap;
+}
+
+/* the way home on a phone: the site's glyph at the tap floor, first in the
+   head, the title after it (the actions keep the far end) */
+.dk-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--cv-ctrl-h);
+  height: var(--cv-ctrl-h);
+  margin-right: calc(-1 * var(--cv-sp-2));
+  color: var(--cv-ink);
+}
+.dk-home svg {
+  display: block;
+  /* px-ok: the 11 grid at a 2px pitch, the logo glyph as the favicon draws it */
+  width: 22px;
+  height: 22px;
+}
+.dk-home + .cv-h1 {
+  margin-right: auto;
+}
+
+/* The page is a container: a tool's rows reflow on the page's own width, on
+   the density law's module steps (BIBLE.md section 8), whether the rail
+   stands beside it or not. */
+.dk-main {
+  container-type: inline-size;
+  display: grid;
+  gap: var(--cv-sp-7);
+  min-width: 0;
+}
+
+/* ---------- the nav: a bar ---------- */
+
+.dk-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* over the page that scrolls under it, and under the sheet and its scrim:
+     a sheet opens over the bar */
+  z-index: var(--cv-z-raised);
+  display: flex;
+  align-items: center;
+  gap: var(--cv-sp-1);
+  /* four tabs are a picture each and do not shrink: where they outrun the
+     screen (320) the bar scrolls sideways from its first tab rather than
+     centring the overflow off both edges, where the first is unreachable */
+  justify-content: safe center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0;
+  height: calc(var(--cv-hero-btn-h) + env(safe-area-inset-bottom, 0px));
+  background: var(--cv-ground);
+  border-top: var(--cv-px) solid var(--cv-ink);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* a tab is the kit's wide radio push-button, laid out as a link */
+.dk-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  text-decoration: none;
+}
+
+/* the rail's furniture stays off the bar: a phone has the launcher on /admin */
+.is-rail {
+  display: none;
+}
+
+/* ---------- the rail (desktop) ---------- */
+
+@media (min-width: 1008px) {
+  .dk {
+    grid-template-columns: calc(var(--cv-module) * 4) minmax(0, 1fr);
+  }
+
+  .dk-nav {
+    position: sticky;
+    top: 0;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    height: 100svh;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--cv-sp-2);
+    border-top: 0;
+    border-right: var(--cv-px) solid var(--cv-ink);
+    padding: var(--cv-sp-6) var(--cv-sp-6) var(--cv-sp-6);
+    overflow-y: auto;
+  }
+
+  .is-rail {
+    display: inline-flex;
+  }
+
+  /* the rail carries the mark, so the head does not */
+  .dk-home {
+    display: none;
+  }
+
+  .dk-mark {
+    display: flex;
+    align-items: center;
+    gap: var(--cv-sp-3);
+    height: var(--cv-ctrl-h);
+    margin-bottom: var(--cv-sp-4);
+    color: var(--cv-ink);
+    font-size: var(--cv-fs-3);
+    line-height: calc(12 * var(--cv-px));
+    text-decoration: none;
+  }
+
+  .dk-mark svg {
+    display: block;
+    /* px-ok: the 11 grid at a 2px pitch, the logo glyph as the favicon draws it */
+    width: 22px;
+    height: 22px;
+    flex: none;
+  }
+
+  /* the group's screen-printed label */
+  .dk-group {
+    display: block;
+    margin: 0;
+    padding-top: var(--cv-sp-4);
+  }
+
+  .dk-out {
+    margin-top: auto;
+  }
+
+  .dk-page {
+    padding: var(--cv-sp-8);
+    padding-bottom: var(--cv-sp-8);
+  }
+}
+
+/* ---------- rows, actions and a QR ----------
+   The sessions desk (/admin/sessions) is the first page to need these
+   without a stylesheet of its own: a form, a list of rows divided by one
+   cell of ink, a row of thumb-wide buttons, and a QR on the fixed ground so
+   a phone camera reads it the same whatever the page ground does. */
+
+.dk-form {
+  display: grid;
+  gap: var(--cv-sp-4);
+  justify-items: start;
+}
+
+.dk-rows {
+  display: grid;
+  gap: var(--cv-sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dk-row {
+  display: grid;
+  gap: var(--cv-sp-3);
+  padding-block: var(--cv-sp-4);
+  border-top: var(--cv-px) solid var(--cv-ink);
+  min-width: 0;
+}
+
+.dk-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cv-sp-3);
+  flex-wrap: wrap;
+}
+
+.dk-row-head > *,
+.dk-share-text > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dk-share {
+  display: flex;
+  align-items: center;
+  gap: var(--cv-sp-5);
+  flex-wrap: wrap;
+}
+
+.dk-share-text {
+  display: grid;
+  gap: var(--cv-sp-2);
+  min-width: 0;
+}
+
+.dk-pin {
+  margin: 0;
+  font-size: var(--cv-fs-3);
+}
+
+.dk-qr {
+  width: calc(var(--cv-module) * 4);
+  border: var(--cv-px) solid var(--cv-ink);
+  background: var(--cv-ground-fixed);
+  color: var(--cv-ink-fixed);
+}
+
+.dk-qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* a whole thumb per button in a narrow page, inline from thirteen modules,
+   where a row holds them */
+.dk-acts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--cv-module) * 3), 1fr));
+  gap: var(--cv-sp-3);
+  align-items: center;
+  width: 100%;
+}
+
+@container (min-width: 624px) {
+  .dk-acts {
+    display: flex;
+    flex-wrap: wrap;
+    width: auto;
+  }
+}
+
+/* ---------- moving between tools ----------
+   Cross-document view transitions where the browser has them: the nav
+   holds still while the next page is drawn over the last one top to bottom
+   in eight frames, a wipe on the frame token and never the browser's
+   crossfade (BIBLE.md section 9: nothing fades), so a tap on the bar reads
+   as switching a screen, not loading a site. The last page holds still
+   under the wipe. Browsers without them navigate plainly; nothing depends
+   on it. */
+
+@view-transition {
+  navigation: auto;
+}
+
+.dk-nav {
+  view-transition-name: dk-nav;
+}
+
+::view-transition-group(dk-nav) {
+  animation: none;
+}
+
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: dk-wipe var(--cv-dur-quick) var(--cv-ease-frames) both;
+}
+
+@keyframes dk-wipe {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}

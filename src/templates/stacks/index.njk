@@ -1,0 +1,14 @@
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+{{ stack.title }}
+{% for i in range(0, stack.title.length) %}={% endfor %}
+
+{{ stack.items.length }} items, one stack on the canvas at {{ identity.url }}/{{ stack.id }}
+
+{% for it in stack.items -%}
+- {{ it.title | safe }}
+  {{ it.url | safe }}
+  {% if it.note %}{{ it.note | safe }}
+  {% endif %}
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,261 @@
+/* =========================================================
+   CASE-STUDY: shared graphic primitives for /work entries
+   with `type: case-study`. Layered on top of entry.css inside
+   the canvas sheet; speaks the cv tokens. Anything
+   article-specific (a custom palette, an interactive widget)
+   belongs in extra_css; the reusable kit lives here. Every
+   rule about a figure is here, the case-study page's included.
+   ========================================================= */
+
+/* --- figures ------------------------------------------------ */
+/* Hand-built figures that live in the reading flow: an inline SVG, a
+   photograph, a video. In a sheet a figure is framed in two-ink dress, one
+   cell of the cut tone and no shadow (the case-study page takes the frame
+   off, below). Never their own scrollbars. */
+.figure {
+  position: relative;
+  margin: 0;
+  padding: var(--cv-sp-4);
+  border: var(--cv-bd);
+  border-radius: var(--cv-r);
+  background: var(--cv-ground);
+}
+.figure-title {
+  font-family: var(--cv-font);
+  font-size: var(--cv-fs-0);
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--cv-sp-3);
+  color: var(--cv-ink);
+  line-height: var(--cv-lh-display);
+}
+.figure-note {
+  margin: var(--cv-sp-3) 0 0;
+  color: var(--cv-mute);
+  font-size: var(--cv-fs-meta);
+  line-height: var(--cv-lh-prose);
+}
+.figure-note code {
+  font-family: var(--cv-font-code);
+  font-size: var(--cv-fs-meta);
+  background: var(--cv-ink);
+  color: var(--cv-ground);
+  padding: 0 var(--cv-sp-1);
+}
+
+/* --- figure widths ------------------------------------------ */
+/* The three sizes the markdown names (figures.mjs draws to them). The box
+   is the column's width and centred on its axis at every width, and the
+   drawing is centred in the box (below), never scaled up: the sheet is
+   already narrow, and the V1 caps (44, 62 and 80 percent) shrank simple
+   diagrams to postage stamps. On a case-study page a narrow figure is its
+   own width (below). */
+.fig-narrow,
+.fig-mid,
+.fig-wide {
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+/* --- sweep -------------------------------------------------- */
+/* Wide rectangular plot. Used for time-collapse curves, fleet
+   growth, distribution bars, before/after deltas. Framed as a figure. */
+.sweep {
+  margin: 0;
+  padding: var(--cv-sp-4);
+  border: var(--cv-bd);
+  border-radius: var(--cv-r);
+  background: var(--cv-ground);
+}
+
+/* --- math sidenote ----------------------------------------- */
+/* Plain English in the body, formula here. Opens with
+   "Formally put, …": no all-caps "for the curious" labels. */
+.math-aside {
+  font-size: var(--cv-fs-meta);
+  color: var(--cv-mute);
+  border-left: var(--cv-px) solid var(--cv-mute);
+  padding: var(--cv-sp-1) 0 var(--cv-sp-1) var(--cv-sp-3);
+  margin: var(--cv-sp-2) 0 var(--cv-sp-4);
+  font-style: normal;
+}
+
+/* --- unit dots --------------------------------------------- */
+/* Generic dictogram-of-N grid: one cell a countable item (a device, a
+   form, a request). The drawn button dot that filled it (unit-pict), the
+   inline token, the pipeline step, the aphorism, the sweep legend and the
+   footnote claim had no content using them and went with #336; the
+   pictogram cards and the wider column counts went with the snap. */
+.unit-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: var(--cv-px);
+  margin: var(--cv-px) 0;
+}
+
+/* --- pipeline cards ---------------------------------------- */
+/* For the "system A → system B" schematics that case studies
+   like to draw. Pure CSS, no SVG required, scales down to
+   mobile by stacking. */
+.pipeline {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+/* --- breathing room ---------------------------------------- */
+/* Default .prose rhythm is too tight against the heavy ink
+   borders of these cards. The footnotes keep their own air (entry.css),
+   after a figure too. */
+.prose > .figure + :where(:not(.footnotes)),
+.prose > .sweep + :where(:not(.footnotes)),
+.prose > .pipeline + :where(:not(.footnotes)) {
+  margin-top: var(--cv-sp-8);
+}
+.prose > * + .figure,
+.prose > * + .sweep,
+.prose > * + .pipeline {
+  margin-top: var(--cv-sp-8);
+}
+.prose > * + .math-aside,
+.prose > .math-aside + * {
+  margin-top: var(--cv-sp-7);
+}
+
+/* Photos and video inside figure cards sit in flow like any other
+   figure; the card classes (fig-narrow/mid/wide) set the width. */
+.figure img,
+.figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* EVERY FIGURE CENTRED IN ITS COLUMN (author, 2026-09-24), at every
+   width: a drawing narrower than its box (the board's 688 in a desk's
+   1106, a 304 draw in a phone's 312) sits in the middle of it, not
+   against its left edge. scripts/verify/figure-fit.mjs measures it. */
+.figure > .cellfig,
+.figure > img,
+.figure > video {
+  margin-inline: auto;
+}
+
+/* --- figures on the cell (#300) ----------------------------- */
+/* scripts/img/figures.mjs draws every case-study figure from the
+   toolkit: rectangles on the half-cell lattice, a letter a colour (the
+   sprite alphabet), and words in the page's body face. The letters are
+   painted here from the tokens, for the white page a case study stands
+   on (author, 2026-09-24): the figure's own ground is the sheet, and its
+   recess is ink let into the sheet, the step a recess is below the
+   ground on the canvas. There is no lavender letter.
+   WORDS ARE THE TYPE FACE (author, 2026-09-24; 2026-09-25): the pixel
+   face is for hero titles and the logo glyph. Every word is DotGothic16
+   at 16px when the drawing draws one to one, the ladder's first rung (a
+   box's name, .n, too: one size, one ladder). The sizes are in the
+   drawing's half cells. No tracking: figures.mjs placed every word by the
+   face's own advance widths.
+   NOTHING SCROLLS SIDEWAYS (author, 2026-09-24). A narrow figure draws
+   one to one on a phone. A redrawn screen is drawn twice, the screen
+   (.cf-wide) and the screen stood up in a narrow figure's width
+   (.cf-narrow), and its box shows the screen from thirteen modules wide
+   (the density law's container step, BIBLE.md section 8; the widest
+   screen, the board, draws 688 and scales down to a box between 624 and
+   that); any drawing scales DOWN to its box, never up, never past it.
+   scripts/verify/figure-fit.mjs measures the fit at 390. */
+.cellfig {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  flex: none;
+}
+.cellfig text {
+  font-family: var(--cv-font);
+  /* the drawing is in half cells, so half the ladder's first rung is 16px
+     at one to one */
+  font-size: calc(var(--cv-fs-meta) / 2);
+  letter-spacing: 0;
+}
+.figure:has(> .cf-wide) {
+  container-type: inline-size;
+}
+.cellfig.cf-wide {
+  display: none;
+}
+@container (min-width: 624px) {
+  .cellfig.cf-wide {
+    display: block;
+  }
+  .cellfig.cf-narrow {
+    display: none;
+  }
+}
+.cellfig .f-k {
+  fill: var(--cv-ink);
+}
+.cellfig .f-p {
+  fill: var(--cv-white);
+}
+.cellfig .f-m {
+  fill: var(--cv-mute);
+}
+.cellfig .f-r {
+  fill: color-mix(in srgb, var(--cv-ink) 8%, var(--cv-white));
+}
+.cellfig .f-b {
+  fill: var(--cv-brick);
+}
+.cellfig .f-s {
+  fill: var(--cv-sage);
+}
+
+/* --- the case-study page's figures ---------------------------
+   `:has(> h1.ptitle)` is every case-study page and no other. canvas-home.css
+   (THE CASE-STUDY PAGE) holds the page's white ground and its one column, and
+   says why each rule below is so: WHERE THERE IS WIDTH, A FIGURE HANGS IN
+   THE TEXT (canvas/case-study.js marks it `hung`, at --cs-figure), and NO
+   FRAME ON ANY FIGURE (its title a caption under it). */
+#modal.fullpage #sheetInner:has(> h1.ptitle) .figure {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: none;
+  /* the figure is a column: the picture, then the caption, then the note */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#modal.fullpage #sheetInner:has(> h1.ptitle) .figure-title {
+  order: 1;
+  margin: var(--cv-sp-2) 0 0;
+  font-size: var(--cv-fs-meta);
+  color: var(--cv-mute);
+  text-align: center;
+}
+#modal.fullpage #sheetInner:has(> h1.ptitle) .figure-note {
+  order: 2;
+  margin: var(--cv-sp-1) 0 0;
+  text-align: center;
+}
+/* a narrow figure on its own line is its own width, centred in the column */
+#modal.fullpage #sheetInner:has(> h1.ptitle) .prose > .fig-narrow {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+/* hung: right of the column at the width the text was measured against */
+#modal.fullpage #sheetInner:has(> h1.ptitle) .prose > .fig-narrow.hung {
+  float: right;
+  clear: right;
+  width: var(--cs-figure);
+  margin: var(--cv-sp-1) 0 var(--cv-sp-5) var(--cv-sp-7);
+}
+/* a hung figure is out of the flow, so the air kept round an inline one
+   (above) would be a hole between two paragraphs */
+#modal.fullpage #sheetInner:has(> h1.ptitle) .prose > .hung + * {
+  margin-top: var(--cv-sp-4);
+}
+/* only a paragraph sits beside a hung figure: a head, a list, a code block
+   or the next figure comes after it, even if a measurement drifted */
+#modal.fullpage #sheetInner:has(> h1.ptitle) .prose > :not(p) {
+  clear: both;
+}

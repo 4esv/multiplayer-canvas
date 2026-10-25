@@ -1,0 +1,369 @@
+/* ============================================================
+   /web-instruments: where the kit's parts stand (#301, #313).
+
+   Layout only. Every look on this page is kit.css: the index card and its
+   tabs, the panel's rules, the knobs, faders, pins, lamps, radio buttons,
+   keys and pads, and the screens. This file says where they go and how
+   big a screen is, in cells, and nothing else (test/web-instruments.test.js
+   fails a border, a background, a shadow, an outline or a transition here).
+
+   The order is the Synth board's (design/lohi on lohi-specimen): the
+   photograph on the ground, the tabs rising out of the card, one panel
+   along what the instrument does, the playing surface on its lower edge.
+   On a watch or a phone the surface comes first inside the card, so what
+   you play is on screen under the tab you picked, and the panel keeps its
+   one row and pans sideways under the kit's snap scrollbar. Nothing
+   shrinks at any density: every control holds the tap floor (BIBLE.md
+   section 8).
+   ============================================================ */
+
+.rig {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* no gap: the tabs stand on the card (kit.css .k-cardtabs), and the
+     stage keeps its own margin under the photograph */
+  gap: 0;
+  min-width: 0;
+  /* the card is the Synth board's, 316 cells wide where the screen has it:
+     it stands out of the reading column, centred on it, and never wider
+     than the screen less a gutter each side. The sheet around it is the
+     page shell's (#328). */
+  --rig-w: min(calc(316 * var(--cv-px)), calc(100vw - 2 * var(--cv-sp-6)));
+  width: var(--rig-w);
+  margin: calc(3 * var(--cv-px)) 0 calc(3 * var(--cv-px)) calc(50% - var(--rig-w) / 2);
+}
+
+/* ---- the photograph, on the ground, no frame ----
+   Shown at its bake, a CSS px an image px, at half where the room is
+   short, or at a quarter where half is wider than the column
+   (instrument-surfaces.js shotScale): never enlarged, and a cell stays
+   whole css px on both axes. The stage is as tall as the tallest picture,
+   so the card never moves when the instrument changes (instruments.js
+   fitShots). */
+.stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-width: 0;
+  margin-bottom: calc(3 * var(--cv-px));
+  /* No touch-action here: the stage carries `.owns-touch` in the entry
+     (canvas-home.css). A sideways swipe on the picture walks the tabs and
+     never the sheet's page swipe. */
+}
+.stage .shot {
+  max-width: none;
+}
+/* the quaver a plucked ukulele lets go, over its photograph: ink cells that
+   rise a step at a time (instruments.js letGo) */
+.stage .float,
+.stage .float > * {
+  position: absolute;
+  --k-cell: var(--cv-px);
+}
+.stage .float {
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+.stage .shot[hidden] {
+  display: none;
+}
+
+/* ---- the card ---- */
+.k-card {
+  min-width: 0;
+}
+.carousel-slide {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.carousel-slide[hidden] {
+  display: none;
+}
+
+/* ---- one panel: sections side by side, what each holds in a column ----
+   A section is as wide as what it holds and never narrower: in a row that
+   pans, a shrunk section would lay its controls over each other. */
+.panel .k-sec {
+  flex-shrink: 0;
+}
+.panel .midi {
+  flex-grow: 1;
+}
+.panel .midi[hidden] {
+  display: none;
+}
+/* the oscillator section holds the scope, the wave row and, under it in the
+   same grammar, the octave row (the octave is the oscillator's range) */
+.panel .osc {
+  width: calc(73 * var(--cv-px));
+}
+.controls {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(6 * var(--cv-px));
+}
+.controls.col {
+  flex-direction: column;
+  align-items: center;
+  gap: calc(3 * var(--cv-px));
+}
+/* scoped to the panel: this sheet stays loaded after the page closes, and a
+   bare .stack centred the canvas's Just Heard rows over their covers */
+.panel .stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cv-px);
+}
+/* a radio's label stands in a column as wide as its key */
+.k-radio .stack {
+  width: calc(14 * var(--cv-px));
+}
+/* The envelope's faders stand on end, eight cells wide: a pad under each
+   grows its hit across to the tap floor, centred on the track, the way a
+   part's pad does (kit.css .k-part::after). A drag on the pad is the
+   fader's, so the cap still follows the finger's height. */
+.panel .k-fader.k-vert::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - var(--cv-ctrl-h) / 2);
+  width: var(--cv-ctrl-h);
+}
+/* a tab keeps its word and the floor (the reading column lets its children
+   shrink to nothing, entry.css .prose *) */
+.k-cardtabs .k-cardtab {
+  flex: none;
+  min-width: var(--cv-ctrl-h);
+}
+.lamp {
+  align-self: flex-start;
+}
+
+/* the patch matrix: sources down the side, destinations across the top */
+.patch {
+  display: grid;
+  grid-template-columns: calc(14 * var(--cv-px)) repeat(3, calc(16 * var(--cv-px)));
+  grid-auto-rows: auto;
+  align-items: center;
+  justify-items: center;
+  row-gap: var(--cv-px);
+}
+.patch .row {
+  justify-self: end;
+  padding-right: calc(2 * var(--cv-px));
+}
+
+/* the screens, in cells: the scope, the envelope view and the sheet. A
+   screen is as wide as its columns (--k-cols on the element) plus its rim;
+   a width set here in cells was the rim short, and the trace ran two cells
+   out past the right border (border-box: the columns kept their size and
+   the rim was taken out of them). The height holds before the script
+   fills the cells. */
+.scope,
+.env,
+.sheet {
+  width: fit-content;
+}
+.scope {
+  min-height: calc(20 * var(--cv-px) + 2 * var(--cv-px));
+}
+.env {
+  min-height: calc(12 * var(--cv-px) + 2 * var(--cv-px));
+}
+.sheet {
+  min-height: calc(36 * var(--cv-px) + 2 * var(--cv-px));
+}
+
+/* ---- the playing surface, on the card's lower edge ----
+   The range never shrinks with the screen: a board wider than the card
+   pans sideways in its own scroller. */
+.surface {
+  padding: var(--cv-px);
+  min-width: 0;
+}
+.surface .scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* touch-ok: a finger dragged sideways on a board that is wider than the
+     card shows more of its range; the tap still plays, and a drag across
+     the strings still strums */
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+.surface .deck {
+  position: relative;
+  margin: 0 auto;
+  /* one cell of floor under the keys, so a pressed key never reaches past
+     the scroller and grows a bar */
+  padding-bottom: var(--cv-px);
+}
+.surface .deck > * {
+  position: absolute;
+}
+/* the deck is a block here (the kit's piano is inline), so it can centre
+   in its scroller, and the whites are laid by its row, not by the zone */
+.surface .k-piano {
+  display: flex;
+}
+.surface .k-piano > .k-white {
+  position: static;
+}
+.fret {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fret .string {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-top: calc(-0.5 * var(--cv-px));
+}
+/* the open string's name stands where the string starts, left of it */
+.fret:not(.k-rl) .string {
+  left: calc(6 * var(--cv-px));
+}
+.fret .open {
+  position: absolute;
+  left: var(--cv-px);
+}
+/* a pad's sparks: three cells across its top, there while it is down */
+.surface .spark {
+  position: absolute;
+  --k-cell: var(--cv-px);
+  display: none;
+}
+.surface .is-down > .spark {
+  display: block;
+}
+/* a peer's note in a session: the same three cells, laid in the deck at the
+   part (instruments.js mark) in the peer's own hue, which the script sets
+   because it is a colour only the room knows. They never take the finger,
+   so a glissando passes over them. */
+.surface .peer {
+  --k-cell: var(--cv-px);
+  pointer-events: none;
+}
+.fret .k-lamp {
+  position: relative;
+}
+.fret .k-lamp[hidden] {
+  display: none;
+}
+.fret-no {
+  width: var(--cv-ctrl-h);
+  text-align: center;
+}
+/* each C says where the board is: its name in small print on the key,
+   above the key's front lip, so the keys read their octave without a line
+   of text under them. A white key is static in its row, so the name is
+   placed in the deck at the key's own column (instruments.js sets its
+   left and width from the zone). */
+.surface .cname {
+  position: absolute;
+  bottom: calc(8 * var(--cv-px));
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ---- a watch or a phone: what you play first, the panel pans ----
+   The densities are layout.js's (chromeDensity), the rig's only edge:
+   instrument-surfaces.js onDesk reads the same one for the picture. */
+@media (max-width: 1007.98px), (max-height: 271.98px) {
+  .carousel-slide .surface {
+    order: -1;
+    margin-top: calc(-1 * var(--cv-px));
+  }
+  .carousel-slide .k-strip {
+    padding-top: var(--cv-px);
+  }
+  /* the desk's one row, a window on it: a finger pans it, and so does the
+     snap scrollbar under it, stop by stop (instruments.js wirePan). The
+     bar is the scrollbar, so the browser's is not drawn. */
+  .panel {
+    flex-wrap: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .panel::-webkit-scrollbar {
+    display: none;
+  }
+  /* the tabs a cell apart, so five fit a phone; where they do not (a
+     watch) the strip pans the same way, its lit tab brought into view
+     (instruments.js goTo). The strip reaches a cell into the card, so the
+     lit tab still runs down over the card's rule inside the strip's clip. */
+  .k-cardtabs {
+    gap: var(--cv-px);
+    padding: 0 0 var(--cv-px) calc(2 * var(--cv-px));
+    margin-bottom: calc(-1 * var(--cv-px));
+    overflow-y: hidden;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .k-cardtabs::-webkit-scrollbar {
+    display: none;
+  }
+  .k-cardtabs .k-cardtab {
+    padding: 0 calc(2 * var(--cv-px));
+  }
+  /* a phone's screen is short: the picture, the tabs and the keys share it */
+  .rig {
+    margin-top: calc(2 * var(--cv-px));
+  }
+  .stage {
+    margin-bottom: calc(2 * var(--cv-px));
+  }
+}
+/* the panel's snap scrollbar, at the card's foot: its outline lies on the
+   card's own, so every line there is still one cell. Where the row fits
+   there is one stop and no bar (hidden). */
+.panel-bar {
+  margin: 0 calc(-1 * var(--cv-px)) calc(-1 * var(--cv-px));
+}
+/* The bar is an instrument control too, so it holds the floor: the kit
+   draws its outline inside --k-step, which leaves the track two cells under
+   the side it is given, so the side here is the floor and the outline. The
+   steppers stay the floor across, which leaves the track the most of a
+   watch's card. */
+.panel-bar > .k-scroll {
+  --k-step: calc(var(--cv-ctrl-h) + 2 * var(--cv-px));
+  display: flex;
+}
+.panel-bar > .k-scroll > .k-step {
+  width: var(--cv-ctrl-h);
+}
+
+/* ---- the sheet: a staff of rules, the clef and the notes in cells on it.
+   The staff and the clef are redrawn where the octave control puts the
+   window (instrument-surfaces.js WINDOWS). ---- */
+.sheet {
+  position: relative;
+}
+.sheet .staff,
+.sheet .glyph,
+.sheet .glyph > *,
+.sheet .clef,
+.sheet .clef > * {
+  position: absolute;
+}
+.sheet .staff {
+  left: 0;
+  right: 0;
+}
+.sheet .glyph,
+.sheet .clef {
+  inset: 0;
+}
+.sheet .ledger {
+  width: calc(6 * var(--cv-px));
+}

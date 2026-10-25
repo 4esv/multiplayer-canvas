@@ -1,0 +1,222 @@
+{# THE SHEET's plates. src/lib/sheet.js is where every one of them comes from:
+   the values are read off the tokens, the moves off the stylesheets, the code
+   off the markdown pipeline the case studies use, the commands off the bar's
+   own table. A plate is a head and a table in the grammar's own shape (what
+   it is, what it borrows or does, and the thing itself), so the whole page
+   reads one way. Nothing here is typed twice. #}
+
+{% macro head(p) %}
+  <header class="ks-ph" id="{{ p.id }}">
+    <span class="k-chip is-on">{{ p.no }}</span>
+    <h2 class="k-ctl" id="{{ p.id }}-h">{{ p.title }}</h2>
+    <span class="k-meta">{{ p.note }}</span>
+    <a class="k-btn ks-top" href="#plates">index</a>
+  </header>
+{% endmacro %}
+
+{# one row: its name, what it borrows or does, and the thing itself #}
+{% macro row(label, meta, code) %}
+  <div><dt class="k-lbl">{% if code %}<code class="ks-mono">{{ label }}</code>{% else %}{{ label }}{% endif %}</dt><dd class="k-meta">{{ meta }}</dd><dd class="ks-show">{{ caller() }}</dd></div>
+{% endmacro %}
+
+{# a colour: the chip is the live token, the words are what it resolves to #}
+{% macro sw(s) %}<span class="ks-sw" style="--sw: var({{ s.css }})"><i class="ks-chip"></i><span class="k-lbl">{{ s.name }}</span><span class="k-meta">{{ s.value }}</span>{% if s.classes %}<span class="k-meta">{{ s.classes | join(' ') }}</span>{% endif %}</span>{% endmacro %}
+
+{% macro display(p) %}
+<section class="ks-plate" aria-labelledby="display-h">
+  {{ head(p) }}
+  <dl class="ks-gram">
+    {% call row('the cell', 'what everything else is a multiple of') %}
+      <span class="ks-lattice" aria-hidden="true">{% for r in range(0, 12) %}{% for c in range(0, 12) %}<i{{ ' class="on"' | safe if (r + c) % 2 == 0 }}></i>{% endfor %}{% endfor %}</span>
+      <ul class="ks-facts">{% for f in p.scale %}<li><b class="k-lbl">{{ f[0] }}</b><span class="k-ctl">{{ f[1] }}</span><span class="k-meta">{{ f[2] }}</span></li>{% endfor %}</ul>
+    {% endcall %}
+    {% call row('the ground', 'dark on a reflective grey: one ground, and white for case studies') %}
+      {% for s in p.ground %}{{ sw(s) }}{% endfor %}
+    {% endcall %}
+    {% call row('the ramp', 'six greys, darkest first, that every part is dithered onto') %}
+      {% for s in p.ramp %}{{ sw(s) }}{% endfor %}
+    {% endcall %}
+    {% call row('brick', 'armed or live: the one accent chrome may wear') %}
+      {% for s in p.brick %}{{ sw(s) }}{% endfor %}
+    {% endcall %}
+    {% call row('content', 'figures and sprites only, never chrome') %}
+      {% for s in p.content %}{{ sw(s) }}{% endfor %}
+    {% endcall %}
+    {% for g in p.guests %}
+      {% call row('quoted: ' ~ g.name, "a host's own livery, verbatim, and nowhere else") %}
+        {% for s in g.items %}{{ sw(s) }}{% endfor %}
+      {% endcall %}
+    {% endfor %}
+    {% call row('the dither', 'a 4 by 4 Bayer glyph per cell, ' ~ p.preset.levels ~ ' levels, the cell is ' ~ p.preset.cell) %}
+      {% for g in p.bayer %}<span class="ks-bz" role="img" aria-label="level {{ g.level }}">{% for c in g.cells %}<i{{ ' class="on"' | safe if c }}></i>{% endfor %}</span>{% endfor %}
+    {% endcall %}
+    {% call row('three screens', 'discrete, never a fluid scale') %}
+      {% for d in p.densities %}<span class="ks-dens"><b class="k-lbl">{{ d.name }}</b><span class="k-meta">{{ d.rule }}</span><span class="k-meta">{{ d.note }}</span></span>{% endfor %}
+    {% endcall %}
+    {% call row('one light', 'high and to the left') %}
+      <span class="k-meta">a raised part is lit on its north and west; a cut is lit the same way, so its walls are dark there</span>
+    {% endcall %}
+    {% call row('one rung, several roles', 'one value under names that say what each is for') %}
+      <ul class="ks-list">{% for a in p.aliases.roles %}<li><code class="ks-mono">{{ a.names | join(', ') }}</code> <span class="k-meta">{{ a.value }}</span></li>{% endfor %}</ul>
+    {% endcall %}
+    {% call row('one value by decision', 'the print anchors, and white') %}
+      <ul class="ks-list">{% for a in p.aliases.decided %}<li><code class="ks-mono">{{ a.names | join(', ') }}</code> <span class="k-meta">{{ a.value }}</span></li>{% endfor %}</ul>
+    {% endcall %}
+  </dl>
+</section>
+{% endmacro %}
+
+{% macro type(p) %}
+<section class="ks-plate" aria-labelledby="type-h">
+  {{ head(p) }}
+  <dl class="ks-gram">
+    {% for r in p.ladder %}
+      {% call row(r.px ~ ' px', r.roles ~ (', ' ~ r.token if r.token else '')) %}
+        {% if r.sample %}<span class="ks-t{{ r.px }}">{{ r.sample }}</span>{% else %}<span class="k-meta">no token: nothing else sets a size this large</span>{% endif %}
+      {% endcall %}
+    {% endfor %}
+    {% call row('smear', 'dark on light draws the glyph again one dot to the right; light on dark stays regular') %}
+      <span class="ks-t32">Smear bold</span><span class="ks-inv ks-t32">Regular</span>
+    {% endcall %}
+    {% call row('the display face', 'hero titles and the logo glyph, and nothing else') %}
+      <span class="ks-face" data-specimen>{% for line in p.specimen %}{{ line | safe }}{% endfor %}</span>
+    {% endcall %}
+    {% call row('the code face', 'Hasklig, for real code and for nothing that only looks like code') %}
+      <span class="ks-mono">const PX = 4 // the cell</span>
+    {% endcall %}
+    {% call row('the measure', 'prose reads at ' ~ p.reading ~ ', tuned to a dot-matrix zero') %}
+      <span class="ks-measure">Prose is set at sixteen on twenty-four, and a line carries about sixty characters, which is as far as an eye can go without losing its place.</span>
+    {% endcall %}
+  </dl>
+</section>
+{% endmacro %}
+
+{% macro code(p) %}
+<section class="ks-plate" aria-labelledby="code-h">
+  {{ head(p) }}
+  {# the case study's own shell, so the block is the block a reader meets and the copy key and the line lights are the real script's #}
+  <div class="ks-codewrap" id="sheetInner"><div class="prose">{{ p.html | safe }}</div></div>
+  <dl class="ks-gram">
+    {% call row('the ground', 'One Dark, quoted verbatim from its author') %}
+      {% for s in p.ground %}{{ sw(s) }}{% endfor %}
+    {% endcall %}
+    {% call row('the theme', 'a colour, and the highlight.js classes that wear it') %}
+      {% for s in p.syntax %}{{ sw(s) }}{% endfor %}
+    {% endcall %}
+  </dl>
+</section>
+{% endmacro %}
+
+{% macro surfaces(p) %}
+<section class="ks-plate" aria-labelledby="surfaces-h">
+  {{ head(p) }}
+  <dl class="ks-gram">
+    {% call row('six shapes', 'in modules; a tile takes the nearest, and its content refits to it') %}
+      {% for s in p.shapes %}<span class="ks-shape"><i style="--w: {{ s.w }}; --h: {{ s.h }}"></i><b class="k-lbl">{{ s.key }}</b><span class="k-meta">{{ s.ids | length }} {{ 'tile' if s.ids | length == 1 else 'tiles' }}{{ '' if s.vocabulary else ', spanned' }}</span></span>{% endfor %}
+    {% endcall %}
+    {% call row('five piles', 'a collection is one tile: a name, a count and a pager') %}
+      <span class="k-tags">{% for s in p.stacks %}<code class="k-tag">{{ s }}</code>{% endfor %}</span>
+    {% endcall %}
+    {% call row('what stands on the ground', 'tiles by kind') %}
+      <span class="k-tags">{% for t in p.tileTypes %}<code class="k-tag">{{ t.type }} {{ t.n }}</code>{% endfor %}</span>
+    {% endcall %}
+    {% for c in p.composition %}
+      {% call row(c.surface, 'made of') %}
+        <span class="k-tags">{% for k in c.parts %}<code class="k-tag">{{ k }}</code>{% endfor %}</span>
+      {% endcall %}
+    {% endfor %}
+  </dl>
+</section>
+{% endmacro %}
+
+{% macro motion(p) %}
+<section class="ks-plate" aria-labelledby="motion-h">
+  {{ head(p) }}
+  <dl class="ks-gram">
+    {% for w in p.waves %}
+      {% call row(w.token, w.steps ~ (' frame' if w.steps == 1 else ' frames'), true) %}
+        <span class="ks-wave" role="img" aria-label="{{ w.steps }} {{ 'step' if w.steps == 1 else 'steps' }}">{% for h in w.stairs %}<i style="--n: {{ h }}"></i>{% endfor %}</span>
+        <span class="k-meta">{{ w.for }}</span>
+      {% endcall %}
+    {% endfor %}
+    {% for d in p.durations %}
+      {% call row('dur-' ~ d.name, d.value, true) %}
+        {% if d.cells %}<span class="ks-dur" style="--c: {{ d.cells }}"></span>{% endif %}
+      {% endcall %}
+    {% endfor %}
+    {% call row('flight', 'the one thing that eases') %}
+      <span class="k-meta">the camera rides the optimal pan-zoom path; it is arithmetic in layout.js, so no stylesheet holds a curve</span>
+    {% endcall %}
+    {% call row('reduced motion', 'everything collapses to a cut') %}
+      <span class="k-meta">a peer's phrase still changes when the room's does: the preference asks for no animation, not a different sentence</span>
+    {% endcall %}
+    {% for m in p.moves %}
+      {% call row(m.name, (m.dur ~ ' / ' ~ m.ease) if m.used else 'no rule uses it', true) %}
+        <span>{{ m.what }}</span>
+        <span class="k-meta">{{ m.file }}</span>
+        {% if m.demo == 'load' %}<span class="k-load" role="progressbar" aria-label="loading, shown moving"></span>{% endif %}
+      {% endcall %}
+    {% endfor %}
+  </dl>
+</section>
+{% endmacro %}
+
+{% macro personality(p) %}
+<section class="ks-plate" aria-labelledby="personality-h">
+  {{ head(p) }}
+  <dl class="ks-gram">
+    {% for k in p.kinds %}
+      {% call row(k.name, k.note) %}
+        <ul class="ks-list">{% for g in k.gags %}<li><b class="k-lbl">{{ g.name }}</b> <span class="k-meta">{{ g.trigger }}: {{ g.what }} ({{ g.where }})</span></li>{% endfor %}</ul>
+      {% endcall %}
+    {% endfor %}
+    {% call row('the rules', 'a register, not a quota') %}
+      <ul class="ks-list">{% for r in p.rules %}<li>{{ r }}</li>{% endfor %}</ul>
+    {% endcall %}
+    {% call row('the roster', 'every command anyone can type, which is its own copy') %}
+      <ul class="ks-list">{% for c in p.commands %}<li><code class="ks-mono">{{ c.usage }}</code> <span class="k-meta">{{ c.about }}</span></li>{% endfor %}</ul>
+    {% endcall %}
+  </dl>
+</section>
+{% endmacro %}
+
+{% macro assets(p) %}
+<section class="ks-plate" aria-labelledby="assets-h">
+  {{ head(p) }}
+  <dl class="ks-gram">
+    {% for g in p.gate %}
+      {% call row(g[0], 'step ' ~ loop.index ~ ' of ' ~ loop.length) %}<span>{{ g[1] }}</span>{% endcall %}
+    {% endfor %}
+    {% call row('shown as shipped', 'never smoothed; the card at half') %}
+      <span class="ks-figs">{% for i in p.images %}<figure class="ks-fig"><img class="k-px ks-img" src="{{ imgUrl(i[1]) }}" alt="{{ i[0] }}"><figcaption class="k-meta">{{ i[0] }}: {{ i[2] }}</figcaption></figure>{% endfor %}</span>
+    {% endcall %}
+  </dl>
+</section>
+{% endmacro %}
+
+{% macro missing(p) %}
+<section class="ks-plate" aria-labelledby="missing-h">
+  {{ head(p) }}
+  <dl class="ks-gram">
+    {% for m in p.missing %}
+      {% call row(m.name, m.status) %}<span>{{ m.why }}</span>{% endcall %}
+    {% endfor %}
+    {% for s in p.surplus %}
+      {% call row(s.name, 'surplus') %}<span>{{ s.why }}</span>{% endcall %}
+    {% else %}
+      {% call row('surplus', 'none') %}<span>every keyframe has a rule or a script that uses it</span>{% endcall %}
+    {% endfor %}
+  </dl>
+</section>
+{% endmacro %}
+
+{% macro voice(p) %}
+<section class="ks-plate" aria-labelledby="voice-h">
+  {{ head(p) }}
+  <dl class="ks-gram">
+    {% for v in p.rules %}
+      {% call row(v.rule, 'say') %}<span>{{ v.good }}</span><span class="k-meta">not: {{ v.bad }}</span>{% endcall %}
+    {% endfor %}
+  </dl>
+</section>
+{% endmacro %}

@@ -1,0 +1,29 @@
+about
+=====
+
+Me
+--
+This is example copy. Replace it with a few lines about yourself: who
+you are, where you are, and what you care about. Keep it short. The
+canvas sets it in a narrow column under the hero.
+
+This Site
+---------
+This is a Nunjucks and Fastify site built to work on any screen from
+almost anywhere: a modern browser, an old one, the terminal, an AI agent.
+
+On a modern browser it is a multiplayer toroidal canvas, and a PWA.
+Anyone with it open sees everyone else's cursor. From an old browser it
+is a simple site, and from curl it is plain text.
+
+Pages
+-----
+
+work        /work       the case studies
+feed        /feed       writing
+credits     /credits    the code, type and data this site uses
+
+email       {{ identity.author.email }}
+{% for name, href in identity.social -%}
+{{ name.padEnd(12) }}{{ href }}
+{% endfor %}

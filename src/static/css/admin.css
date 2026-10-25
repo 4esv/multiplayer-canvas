@@ -1,0 +1,147 @@
+/* /admin: the owner dashboard. Readout lists only: every control is the
+   kit's (kit.css) and the sections are the desk's (.k-secs); this file
+   lays out the rows inside the sections. A state is a lamp (lit is good,
+   dark is bad) and a bad state inverts its word; the arm is the kit's
+   brick face. The prefix is od- (owner dashboard) and must never be ad-:
+   content blockers hide the ad- class family by cosmetic filter, which
+   blanked this page for its one intended reader.
+
+   Phone first: sections stack, and a row is a small grid where the lamp,
+   the name and the state share the first line, the detail sits under them
+   in meta, and an action is a full-width button so the thumb has the
+   whole row. From the desktop density the sections tile the width, seven
+   modules wide at the least, and the wide section (sessions) takes the
+   whole row with its rows on one line. */
+
+/* ---------- the launcher ---------- */
+
+.od-launch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--cv-sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* a tool the phone's bar already carries is not listed twice */
+.od-launch .is-bar {
+  display: none;
+}
+
+.od-launcher {
+  width: 100%;
+  justify-content: flex-start;
+  height: var(--cv-hero-btn-h);
+}
+
+.od-launcher span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.od-launcher svg {
+  display: block;
+  /* px-ok: the 11 grid at a 2px pitch, the bar's own glyph size */
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+
+/* ---------- rows ---------- */
+
+.od-rows {
+  display: grid;
+  gap: var(--cv-sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.od-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'lamp name state'
+    'lamp detail detail'
+    'lamp action action';
+  column-gap: var(--cv-sp-3);
+  row-gap: var(--cv-sp-1);
+  align-items: center;
+  font-size: var(--cv-fs-0);
+}
+
+.od-lamp {
+  grid-area: lamp;
+  align-self: start;
+}
+
+.od-name {
+  grid-area: name;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.od-state {
+  grid-area: state;
+  justify-self: end;
+}
+
+.od-detail {
+  grid-area: detail;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.od-action {
+  grid-area: action;
+  margin-top: var(--cv-sp-1);
+}
+
+/* Section-wide actions (log out here, sign out everywhere else): full
+   width on a phone, natural width from the desktop density. */
+.od-section-actions {
+  display: grid;
+  gap: var(--cv-sp-3);
+}
+
+@media (min-width: 1008px) {
+  .od {
+    grid-template-columns: repeat(auto-fill, minmax(calc(var(--cv-module) * 7), 1fr));
+    align-items: start;
+  }
+
+  .od-section.is-wide,
+  .od-tools {
+    grid-column: 1 / -1;
+  }
+
+  .od-launch {
+    grid-template-columns: repeat(auto-fill, minmax(calc(var(--cv-module) * 4), 1fr));
+  }
+
+  .od-launch .is-bar {
+    display: block;
+  }
+
+  .od-section-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .od-section.is-wide .od-row {
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, auto) auto auto;
+    grid-template-areas: 'lamp name detail state action';
+    align-items: center;
+  }
+
+  .od-section.is-wide .od-detail {
+    text-align: right;
+  }
+
+  .od-section.is-wide .od-action {
+    margin-top: 0;
+  }
+}

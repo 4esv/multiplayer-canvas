@@ -1,0 +1,81 @@
+{%- if grid.isTerminal or grid.isRetro -%}
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+sessions
+========
+
+a session is a room of its own on the live socket. open one in a browser;
+this view can tell you what is running.
+
+new sessions get a pin: {{ 'yes' if settings.pin else 'no' }}
+
+live
+{% for r in rooms -%}
+  {{ r.code }}  {{ r.kind }}  pin {{ r.pin or 'none' }}  {{ r.people }} in  started {{ r.startedLabel }}  {{ r.url }}
+{% else -%}
+  none
+{% endfor -%}
+{% endblock %}
+{%- else -%}
+{% extends "desk-base.njk" %}
+{% block desk %}
+  {# Every list is server-rendered, the QR included (lib/qr.js is the
+     server's); js/rooms.js drives the buttons through the API and reloads,
+     so the page and the registry never disagree. #}
+  <div class="k-secs" id="rooms" data-pin="{{ 'true' if settings.pin else 'false' }}">
+
+    <section class="k-sec" aria-labelledby="h-start">
+      <h2 class="k-ctl" id="h-start">start</h2>
+      <form class="dk-form" id="start" autocomplete="off">
+        <div class="k-radio" role="radiogroup" aria-label="kind">
+          {% for k in kinds %}
+          <button class="k-rk k-wide" type="button" role="radio" data-kind="{{ k }}" aria-checked="{{ 'true' if loop.first else 'false' }}">{{ k }}</button>
+          {% endfor %}
+        </div>
+        <label class="k-switch" for="pin"><input id="pin" name="pin" type="checkbox"{% if settings.pin %} checked{% endif %}><span class="k-lever"></span>with a pin</label>
+        <div class="dk-acts">
+          <button class="k-btn k-solid" type="submit">start</button>
+        </div>
+      </form>
+      <p class="cv-status" id="start-status" aria-live="polite" hidden></p>
+    </section>
+
+    <section class="k-sec" aria-labelledby="h-live">
+      <h2 class="k-ctl" id="h-live">live</h2>
+      <ul class="dk-rows" id="live">
+        {% for r in rooms %}
+        <li class="dk-row" data-code="{{ r.code }}">
+          <div class="dk-row-head">
+            <code class="cv-path">{{ r.code }}</code>
+            <span class="k-meta">{{ r.kind }} · {{ r.people }} in{% if r.hosts %} · host here{% endif %} · started {{ r.startedLabel }}</span>
+          </div>
+          <div class="dk-share">
+            <div class="dk-qr">{{ r.qr | safe }}</div>
+            <div class="dk-share-text">
+              <a class="cv-path" href="{{ r.link }}">{{ r.url }}</a>
+              {% if r.pin %}<p class="dk-pin">pin <strong>{{ r.pin }}</strong></p>{% else %}<p class="k-meta">no pin</p>{% endif %}
+            </div>
+          </div>
+          <div class="dk-acts">
+            <a class="k-btn k-solid" href="{{ r.link }}">join as host</a>
+            <button class="k-btn" type="button" data-act="copy" data-url="{{ r.url }}">copy link</button>
+            <button class="k-hw" type="button" data-act="end">end</button>
+          </div>
+        </li>
+        {% else %}
+        <li class="k-meta">nothing running. start one above.</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="k-sec" aria-labelledby="h-default">
+      <h2 class="k-ctl" id="h-default">default</h2>
+      <label class="k-switch" for="pin-default"><input id="pin-default" type="checkbox"{% if settings.pin %} checked{% endif %}><span class="k-lever"></span>new sessions get a pin</label>
+      <p class="cv-status" id="default-status" aria-live="polite" hidden></p>
+    </section>
+  </div>
+{% endblock %}
+{% block deskscripts %}
+  <script src="{{ asset('/js/rooms.js') }}" type="module"></script>
+{% endblock %}
+{%- endif -%}

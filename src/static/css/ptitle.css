@@ -1,0 +1,43 @@
+/* =========================================================
+   The pixel title: one part, wherever a title is set in the display face
+   (the canvas's cards, the case-study page, the door pages' headers).
+
+   pixelTitle (canvas/pixel-type.js) sets a title one svg a word, so the
+   browser wraps it like words and every word stays a drawing. --tpx is the
+   world px one glyph pixel measures, and it is only ever a whole multiple of
+   half a cell: the card and the page set it at half a cell (the label
+   lattice), at every width, which puts the page's title on its prose's
+   ladder (the case-study page, canvas-home.css), and a door sets it at two
+   cells (canvas.css). The gap between words is the face's own space glyph at
+   the same pitch.
+
+   The hidden span beside the words (.px-vh) is the title for a reader and
+   for the lens; canvas/dust.js reads the same words to know each svg's
+   cells, so the title is something a cursor can disturb wherever it stands.
+   ========================================================= */
+
+.px-vh {
+  position: absolute;
+  /* px-ok: a visually hidden word is one pixel, the least a screen reader still reads */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ptitle {
+  --tpx: var(--cv-px);
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: calc(var(--sp) * var(--tpx));
+  row-gap: 0;
+  margin: 0;
+  color: var(--cv-ink);
+}
+.ptitle .pw {
+  display: block;
+  flex: none;
+  width: calc(var(--c) * var(--tpx));
+  height: calc(var(--r) * var(--tpx));
+}

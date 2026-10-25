@@ -1,0 +1,28 @@
+work
+====
+
+what i do
+---------
+This is example copy for the work panel. Say what you do in a sentence or two. The case studies beside it are the evidence.
+
+Not clear enough? A paragraph that starts with those three words folds into a disclosure on the work page, so the longer pitch is there for whoever asks and out of the way for everyone else.
+
+keywords
+--------
+JavaScript · Node.js · Fastify · WebSockets
+
+get in touch
+------------
+{{ identity.author.email }}
+{% for name, href in identity.social -%}
+{{ href }}
+{% endfor %}
+{% if caseStudies and caseStudies.length %}
+case studies
+------------
+{% for cs in caseStudies -%}
+- {{ cs.title | safe }}
+  {{ identity.url }}/work/{{ cs.slug }}
+  {% if cs.summary %}{{ cs.summary | safe }}
+  {% endif %}
+{% endfor %}{% endif %}

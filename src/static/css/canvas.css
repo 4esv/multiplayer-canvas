@@ -1,0 +1,294 @@
+/* =========================================================
+   Canvas door pages: /login, the desk pages, and the 404/500 doors
+
+   The contract is BIBLE.md section 0 (Lo-Hi tech): one ground, the type
+   face on the 16/32/64 ladder, one-cell lines (--cv-px), no shadows, no
+   radii. Every control is the kit's (kit.css: .k-btn, .k-field, .k-select
+   and the rest); this file declares no control of its own, no color and no
+   token, only the page chrome: the shell, the sheet, the door, a status
+   line and a code chip. The hands are js/kit.js's. Tokens and fonts live in
+   canvas-tokens.css (linked before this file). icon.css layers on top the
+   same way.
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body.cv {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--cv-ground);
+  color: var(--cv-ink);
+  font-family: var(--cv-font);
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+  -webkit-font-smoothing: none;
+}
+
+.cv ::selection {
+  background: var(--cv-ink);
+  color: var(--cv-ground);
+}
+
+/* the kit's ring on anything else that takes focus (a link, the sheet) */
+.cv :focus-visible {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-px);
+}
+
+/* the page title at 64, a section head at 32: the ladder's two steps
+   above the body, in the type face (the pixel face is for hero titles) */
+.cv-h1 {
+  font-size: var(--cv-fs-6);
+  line-height: calc(20 * var(--cv-px));
+  font-weight: 400;
+  margin: 0;
+}
+
+.cv-h2 {
+  font-size: var(--cv-fs-3);
+  line-height: calc(12 * var(--cv-px));
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Body lock while a sheet is open: the page behind must not scroll. */
+body.cv-locked {
+  overflow: hidden;
+}
+
+/* ---------- the sheet (modal-is-the-page, BIBLE.md) ----------
+   A bottom sheet that leaves a strip of the page visible under a scrim.
+   Chrome is one one-cell top rule: no shadows, no radii. */
+
+.cv-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--cv-z-sheet);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--cv-scrim);
+  appearance: none;
+  cursor: inherit;
+}
+
+.cv-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 10%;
+  z-index: var(--cv-z-sheet);
+  background: var(--cv-ground);
+  border-top: var(--cv-px) solid var(--cv-ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--cv-sp-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cv-sp-8);
+}
+
+.cv-sheet-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cv-sp-6);
+}
+
+/* The display declarations above beat the UA's [hidden] rule; restore it. */
+.cv-sheet[hidden],
+.cv-scrim[hidden] {
+  display: none;
+}
+
+@media (max-width: 1007.98px) {
+  .cv-sheet {
+    padding: var(--cv-sp-6);
+    gap: var(--cv-sp-7);
+  }
+}
+
+.cv-nav {
+  display: flex;
+  gap: var(--cv-sp-4);
+  flex-wrap: wrap;
+}
+
+/* ---------- the small furniture ----------
+   A label over a kit field, a status line, a code chip. Controls are
+   the kit's, and the kit hides a button by attribute like anything else. */
+
+.cv-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cv-sp-2);
+  font-size: var(--cv-fs-0);
+}
+
+.cv-mute {
+  color: var(--cv-mute);
+}
+
+.cv-status {
+  margin: 0;
+  font-size: var(--cv-fs-0);
+  color: var(--cv-mute);
+  text-shadow: none;
+}
+
+/* An error stops being secondary text: full ink inside a one-cell rule,
+   flagged with a leading glyph so the state reads without color. */
+.cv-status.is-error {
+  color: var(--cv-ink);
+  text-shadow: inherit;
+  border: var(--cv-px) solid var(--cv-ink);
+  padding: var(--cv-sp-1) var(--cv-sp-3);
+}
+
+.cv-status.is-error::before {
+  content: '! ';
+}
+
+/* A path, a request id, a hook name: code, in the code face, inside a
+   one-cell rule. One block, so a long one breaks inside its rule rather
+   than the rule breaking around the lines. */
+.cv-path {
+  display: inline-block;
+  max-width: 100%;
+  font-family: var(--cv-font-code);
+  font-size: var(--cv-fs-0);
+  text-shadow: none;
+  border: var(--cv-px) solid var(--cv-ink);
+  padding: var(--cv-sp-hair) var(--cv-sp-2);
+  overflow-wrap: anywhere;
+}
+
+.cv-visually-hidden {
+  position: absolute;
+  /* px-ok: a visually hidden box is one pixel, the least a screen reader still reads */
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- the door (/login) ---------- */
+
+.cv-door {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cv-sp-8);
+  padding: var(--cv-sp-8);
+  text-align: center;
+}
+
+/* the wordmark is the name at 32, standing on the ground: no box */
+.cv-wordmark {
+  margin: 0;
+  font-size: var(--cv-fs-3);
+  line-height: calc(12 * var(--cv-px));
+}
+/* and it goes home: the name in its own ink, the link its whole line */
+.cv-wordmark > a {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cv-claim {
+  display: flex;
+  gap: var(--cv-sp-4);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* stays: the field holds a short code, so it is sized to one rather than
+   running the door's width, and set in capitals as the code is */
+.cv-claim .k-field {
+  width: 16ch;
+  text-transform: uppercase;
+}
+
+/* the dock of ways out wraps as a whole on a narrow door; a way out never
+   breaks across two lines */
+.cv-door .k-dock {
+  flex-wrap: wrap;
+}
+
+.cv-door .k-dock .k-btn {
+  white-space: nowrap;
+}
+
+/* A door's title (the 404, the 500, the key) is the pixel face, a title
+   as ptitle.css sets it, at two cells a glyph pixel: a cap the height of
+   the ladder's 64 and a bit more (72), on the cell. It is dust, as every
+   title is (js/door.js): a finger dragging across it disturbs it, so the
+   title takes the touch rather than scrolling the page. The route stays in
+   the code face, a status line under it, and the ways out are a dock or a
+   bank of keys. */
+.cv-door .ptitle {
+  --tpx: calc(2 * var(--cv-px));
+  justify-content: center;
+  /* touch-ok: the title is the thing to play with, a hand's width of a page
+     that is one screen; the rest of the door still scrolls under a thumb */
+  touch-action: none;
+}
+
+/* The not-found door is thin ground (canvas/abyss.js, started by js/door.js):
+   a canvas fills the page behind the words, and a pointer carves the page away
+   from it, a cell at a time, to the black under. The words stand on a plate
+   the carve is told to keep, to the cell, so it stops at a lattice line and
+   never meets a letter or a key. The door's own padding is less the plate's,
+   so the words sit where they sat, and the plate is the column the door was.
+   Under a forced palette the canvas, which is two inks of its own, is left
+   out and the page is whole. */
+.cv-lost {
+  position: relative;
+  padding: calc(var(--cv-sp-8) - var(--cv-sp-4));
+}
+
+.cv-abyss {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* touch-ok: the page is the thing to carve, and a finger drags across it as
+     a hand does; the plate over it, with the words and the ways out, is not
+     under this rule and still scrolls */
+  touch-action: none;
+}
+
+.cv-plate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cv-sp-8);
+  padding: var(--cv-sp-4);
+}
+
+@media (forced-colors: active) {
+  .cv-abyss {
+    display: none;
+  }
+}
+
+/* A phone: the page title steps down to 32. */
+@media (max-width: 1007.98px) {
+  .cv-h1 {
+    font-size: var(--cv-fs-3);
+    line-height: calc(12 * var(--cv-px));
+  }
+}

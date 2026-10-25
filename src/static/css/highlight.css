@@ -1,0 +1,67 @@
+/* One Dark, the syntax theme, on the tokens: its colours are the --cv-code-*
+   block of canvas-tokens.css, quoted verbatim from its author, and this file
+   only says which highlight.js class wears which. markdown.js puts .hljs on
+   the <pre>, so the block's ground and ink are read there. */
+.hljs {
+  color: var(--cv-code-ink);
+  background: var(--cv-code-bg);
+}
+.hljs-comment,
+.hljs-quote {
+  color: var(--cv-code-comment);
+  font-style: italic;
+}
+.hljs-doctag,
+.hljs-formula,
+.hljs-keyword {
+  color: var(--cv-code-keyword);
+}
+.hljs-deletion,
+.hljs-name,
+.hljs-section,
+.hljs-selector-tag,
+.hljs-subst {
+  color: var(--cv-code-name);
+}
+.hljs-literal {
+  color: var(--cv-code-literal);
+}
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string,
+.hljs-regexp,
+.hljs-string {
+  color: var(--cv-code-string);
+}
+.hljs-attr,
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-pseudo,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable {
+  color: var(--cv-code-number);
+}
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-symbol,
+.hljs-title {
+  color: var(--cv-code-title);
+}
+.hljs-built_in,
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+  color: var(--cv-code-class);
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
+.hljs-link {
+  text-decoration: underline;
+}

@@ -1,0 +1,72 @@
+/* =========================================================
+   THE CODE BLOCK: a numbered block of code, one part wherever the
+   site shows it. lib/code-lines.js draws every block (a case study's
+   fence through lib/markdown.js, the kit's plate) and this is the one
+   stylesheet that dresses it, so the two cannot drift: Hasklig at the meta size on One Dark's own
+   ground (highlight.css paints the tokens), a line that never wraps
+   and a gutter of numbers that stays put when the block scrolls.
+
+   What differs is where a block stands, and that stays with the page:
+   the sheet's column and its copy key (entry.css), the file page's
+   full-bleed pane (etc.css). --ln-d is the digit count of the widest
+   number, set by the renderer on the block or on its wrapper.
+   ========================================================= */
+
+pre.hljs {
+  font-family: var(--cv-font-code);
+  font-size: var(--cv-fs-meta);
+  line-height: var(--cv-lh-prose);
+  tab-size: 4;
+  white-space: pre;
+  scrollbar-width: thin;
+}
+pre.hljs code {
+  font-family: inherit;
+  background: none;
+  display: block;
+  min-width: max-content;
+}
+
+/* one line: the number in a gutter that sticks to the left edge while the
+   code scrolls under it, the code after it. The number is drawn from data-n
+   (the ::before), so a copy of the code never picks it up, and on a named
+   block it is a link to its own line (the #<id>-L<n> grammar). The rules are
+   the block's (.hljs ...), which keeps a number a number against any page's
+   rule for its links: the kit's code plate sets its links to inherit. */
+.hljs .ln {
+  display: block;
+  padding-right: var(--cv-sp-5);
+}
+.hljs .ln-n {
+  position: sticky;
+  left: 0;
+  display: inline-block;
+  box-sizing: content-box;
+  width: calc(var(--ln-d, 2) * 1ch);
+  padding: 0 var(--cv-sp-3);
+  margin-right: var(--cv-sp-2);
+  text-align: right;
+  color: var(--cv-code-comment);
+  background: var(--cv-code-bg);
+  text-decoration: none;
+  user-select: none;
+}
+.hljs .ln-n::before {
+  content: attr(data-n);
+}
+.hljs a.ln-n:hover {
+  color: var(--cv-code-ink);
+}
+
+/* the pointed-at line, by the URL (:target) or by a click and a shift-click
+   (.is-lit: canvas/code-refs.js, js/etc.js): a tint of the theme's title
+   blue, no third colour, and the number goes bright */
+.hljs .ln:target,
+.hljs .ln.is-lit {
+  background: color-mix(in srgb, var(--cv-code-title) 18%, transparent);
+}
+.hljs .ln:target > .ln-n,
+.hljs .ln.is-lit > .ln-n {
+  color: var(--cv-code-title);
+  background: color-mix(in srgb, var(--cv-code-title) 18%, var(--cv-code-bg));
+}

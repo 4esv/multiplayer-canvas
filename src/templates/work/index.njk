@@ -1,0 +1,3 @@
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+{% include "text/work.njk" %}{% endblock %}

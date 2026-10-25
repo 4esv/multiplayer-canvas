@@ -1,0 +1,20 @@
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+{{ entry.title | safe }}
+{{ '=' | repeat(entry.title | length) }}
+
+{% if entry.date %}{{ entry.date }}{% if entry.tags and entry.tags.length %} · {{ entry.tags | join(', ') | safe }}{% endif %}
+{% endif %}{% if entry.summary %}
+{{ entry.summary | safe }}
+{% endif %}
+{% if entry.photos %}{% for p in entry.photos %}{{ p.alt | safe }}
+{{ identity.url }}{{ p.src }}
+{% endfor %}{% elif entry.webOnly %}This one is web only, sorry. Open it in a browser:
+{{ identity.url }}{{ basePath }}/{{ entry.slug }}{% else %}{{ entry.html | htmlToText | safe }}{% endif %}
+
+---
+{% if prev %}prior       {{ prev.title | safe }}  {{ identity.url }}{{ basePath }}/{{ prev.slug }}
+{% endif %}{% if next %}next        {{ next.title | safe }}  {{ identity.url }}{{ basePath }}/{{ next.slug }}
+{% endif %}up          {{ identity.url }}{{ basePath }}{% if entry.repo %}
+code        {{ entry.repo }}{% endif %}
+{% endblock %}

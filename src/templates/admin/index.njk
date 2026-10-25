@@ -1,0 +1,65 @@
+{%- if grid.isTerminal or grid.isRetro -%}
+{% extends "base-retro.njk" if grid.isRetro else "base-text.njk" %}
+{% block text %}
+admin
+=====
+
+{% for s in sections -%}
+{{ s.title }}
+{% for r in s.rows -%}
+  {{ r.name }}  {{ r.state }}{% if r.detail %}  ({{ r.detail }}){% endif %}
+{% endfor %}
+{% endfor -%}
+{% endblock %}
+{%- else -%}
+{% extends "desk-base.njk" %}
+{% block deskhead %}
+  <link rel="stylesheet" href="{{ asset('/css/admin.css') }}">
+{% endblock %}
+{% block desk %}
+  <div class="od k-secs">
+    {# The launcher: every desk tool as a button. On a phone only the tools
+       the bar does not carry show (is-bar hides under the desktop density),
+       so nothing is listed twice; a desktop shows them all, since a desk
+       has a top even when it has a rail. #}
+    <section class="k-sec od-tools" aria-label="tools">
+      <h2 class="k-ctl">tools</h2>
+      <ul class="od-launch">
+        {% for t in desk.tools %}
+        {% if not t.current %}
+        <li{% if t.bar %} class="is-bar"{% endif %}><a class="k-btn od-launcher" href="{{ t.href }}"{% if t.external %} rel="noopener"{% endif %}>{{ t.svg | safe }}<span>{{ t.title }}</span></a></li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+
+    {% for s in sections %}
+    <section class="k-sec od-section{% if s.wide %} is-wide{% endif %}" aria-label="{{ s.title }}">
+      <h2 class="k-ctl">{{ s.title }}</h2>
+      <ul class="od-rows">
+        {% for r in s.rows %}
+        <li class="od-row{% if r.action %} has-action{% endif %}">
+          {# a state is a lamp: lit while it is good, dark when it is bad #}
+          <img class="k-px k-lamp od-lamp" src="{{ imgUrl('/img/kit/lamp-' + ('off' if r.bad else 'on') + '.png') }}" alt="{{ 'bad' if r.bad else 'good' }}">
+          <span class="od-name"{% if r.title %} title="{{ r.title }}"{% endif %}>{{ r.name }}</span>
+          <span class="k-chip od-state{% if r.bad %} is-on{% endif %}">{{ r.state }}</span>
+          {% if r.detail %}<span class="od-detail k-meta">{{ r.detail }}</span>{% endif %}
+          {% if r.action and r.action.href %}<a class="k-btn od-action" href="{{ r.action.href }}">{{ r.action.label }}</a>{% endif %}
+          {% if r.action and r.action.revoke %}<button class="k-hw od-action od-arm" type="button" data-revoke="{{ r.action.revoke }}">{{ r.action.label }}</button>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% if s.logout or (s.action and s.action.revokeOthers) %}
+      <div class="od-section-actions">
+        {% if s.logout %}<button class="k-btn" type="button" data-logout>log out this device</button>{% endif %}
+        {% if s.action and s.action.revokeOthers %}<button class="k-hw od-section-action od-arm" type="button" data-revoke-others>{{ s.action.label }}</button>{% endif %}
+      </div>
+      {% endif %}
+    </section>
+    {% endfor %}
+  </div>
+{% endblock %}
+{% block deskscripts %}
+  <script src="{{ asset('/js/admin.js') }}" type="module"></script>
+{% endblock %}
+{%- endif -%}

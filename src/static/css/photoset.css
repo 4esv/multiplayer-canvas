@@ -1,0 +1,116 @@
+/* =========================================================
+   PHOTOSET: an entry whose page is its pictures. A horizontal
+   scroll-snap strip inside the reading column, walked by the
+   kit's snap scrollbar under it (kit.css .k-scroll, the one
+   walker; this file only lays it out). Loaded only by entries
+   that declare type: photos.
+
+   Scroll-snap, not a transform track: the browser already
+   knows how to fling a strip, how to stop it on a picture,
+   how to make a trackpad and a thumb feel the same, and how
+   to keep all of that at sixty frames while the main thread
+   is busy. The walker drives the same scroller a finger does.
+   ========================================================= */
+
+.photoset {
+  margin: var(--cv-sp-7) 0;
+}
+
+.photoset-track {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* the strip owns horizontal scrolling; the page keeps vertical */
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  gap: var(--cv-sp-3);
+  border: var(--cv-px) solid var(--cv-ink);
+  background: var(--cv-ground);
+}
+/* The bar is chrome the walker already says better, and it moves under
+   the pictures when the set is short. */
+.photoset-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* A scrolling region is a keyboard destination whether or not anything
+   inside it can take focus, so it says where it is: the kit's ring. */
+.photoset-track:focus-visible {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-px);
+}
+
+.photoset-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.photoset-slide img {
+  display: block;
+  max-width: 100%;
+  /* Tall pictures are the common case from a phone, so the cap is on
+     height, and the width follows the ratio the markup measured off the
+     file itself. */
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  aspect-ratio: var(--photoset-ratio, auto);
+  object-fit: contain;
+}
+
+/* The bar is script-driven: without it the strip still scrolls and
+   swipes, so a dead walker and a counter frozen at 1 would be the only
+   broken thing on the page. It arrives when the script does. The walker
+   takes the room the counter leaves, up to the reading measure; its
+   steppers, slider, ring and inverting hover are the kit's own. */
+.photoset-bar {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cv-sp-4);
+  margin-top: var(--cv-sp-3);
+}
+.photoset[data-photoset-ready] .photoset-bar {
+  display: flex;
+}
+.photoset-bar > .k-scroll {
+  flex: 1 1 auto;
+  max-width: var(--cv-reading);
+  background: var(--cv-ground);
+}
+
+.photoset-count {
+  margin: 0;
+  color: var(--cv-mute);
+  font-size: var(--cv-fs-meta);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The strip glides between pictures unless the reader asked it not to;
+   the script matches this for the scrolls it drives. */
+@media (prefers-reduced-motion: no-preference) {
+  .photoset-track {
+    scroll-behavior: smooth;
+  }
+}
+
+@media print {
+  /* Print has no scroller: the set prints as the set. */
+  .photoset-track {
+    display: block;
+    overflow: visible;
+    border: 0;
+  }
+  .photoset-bar {
+    display: none;
+  }
+  .photoset-slide img {
+    max-height: none;
+  }
+}

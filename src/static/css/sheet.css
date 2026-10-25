@@ -1,0 +1,250 @@
+/* THE SHEET's own layout (/admin/kit): the plates, and the few things a plate
+   draws that the kit does not. The controls are kit.css, the grammar's table
+   (.ks-gram) and its row are kit-specimen.css, and nothing here restyles
+   either: a plate is a head and a table in the grammar's own shape, so the
+   whole page reads one way. Everything is a token or a whole number of cells.
+   Prefix ks-. */
+
+/* the plates' index: a row of the kit's buttons, each a number you can say */
+.ks-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cv-sp-2);
+}
+
+.ks-plate {
+  display: grid;
+  gap: var(--cv-sp-5);
+  min-width: 0;
+  padding: var(--cv-sp-6);
+  background: var(--cv-ground);
+  color: var(--cv-ink);
+}
+/* the hardware plate is the sections that were here first; its head stands
+   over them, and they keep their own ground */
+.ks-plate-hardware {
+  padding-bottom: 0;
+}
+/* the way back to the index, at the end of every head: the page is long */
+.ks-top {
+  margin-left: auto;
+}
+
+/* a plate's head: two cells of rule, its number, its name, what it is for */
+.ks-ph {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--cv-sp-2) var(--cv-sp-4);
+  margin: 0;
+  padding-top: var(--cv-sp-3);
+  border-top: calc(2 * var(--cv-px)) solid var(--cv-ink);
+}
+.ks-ph h2 {
+  margin: 0;
+  font-weight: 400;
+}
+
+/* a name that is a machine literal is code, in the code face */
+.ks-mono {
+  font-family: var(--cv-font-code);
+  font-size: var(--cv-fs-0);
+  text-shadow: none;
+}
+.ks-list {
+  display: grid;
+  gap: var(--cv-sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- a colour: the chip is the live token ---- */
+.ks-sw {
+  display: grid;
+  gap: var(--cv-sp-1);
+  justify-items: start;
+  min-width: calc(20 * var(--cv-px));
+}
+/* forced-ok: a colour specimen IS the colour, and the chip holds no text, so no backplate is lost with it */
+.ks-chip {
+  display: block;
+  box-sizing: border-box;
+  width: calc(20 * var(--cv-px));
+  height: calc(8 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  background: var(--sw);
+  forced-color-adjust: none;
+}
+
+/* ---- the cell, and the dither ---- */
+.ks-lattice {
+  display: grid;
+  flex: none;
+  grid-template-columns: repeat(12, var(--cv-px));
+  grid-auto-rows: var(--cv-px);
+  border: var(--cv-px) solid var(--cv-ink);
+}
+.ks-lattice i {
+  background: var(--cv-ground);
+}
+.ks-lattice i.on {
+  background: var(--cv-mid);
+}
+.ks-facts {
+  display: grid;
+  gap: var(--cv-sp-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ks-facts li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--cv-sp-3);
+}
+.ks-facts .k-lbl {
+  min-width: calc(14 * var(--cv-px));
+}
+/* a Bayer glyph at four pixels a dot, so the pattern can be read */
+.ks-bz {
+  display: grid;
+  grid-template-columns: repeat(4, var(--cv-px));
+  grid-auto-rows: var(--cv-px);
+  border: var(--cv-px) solid var(--cv-line);
+}
+.ks-bz i {
+  background: var(--cv-ground);
+}
+.ks-bz i.on {
+  background: var(--cv-ink);
+}
+.ks-dens {
+  display: grid;
+  gap: var(--cv-sp-1);
+  min-width: calc(40 * var(--cv-px));
+  padding: var(--cv-sp-3);
+  border: var(--cv-px) solid var(--cv-ink);
+}
+
+/* ---- type ---- */
+.ks-t16 {
+  font-size: var(--cv-fs-0);
+  line-height: var(--cv-lh-prose);
+}
+.ks-t32 {
+  font-size: var(--cv-fs-3);
+  line-height: var(--cv-lh-display);
+}
+.ks-t48 {
+  font-size: var(--cv-fs-4);
+  line-height: var(--cv-lh-display);
+}
+.ks-t64 {
+  font-size: var(--cv-fs-6);
+  line-height: var(--cv-lh-display);
+}
+.ks-inv {
+  padding: 0 var(--cv-sp-3);
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+  text-shadow: none;
+}
+/* the display face, shown as a specimen: it scrolls rather than shrinking,
+   because a pixel face is crisp at its own size and at no other */
+.ks-face {
+  display: grid;
+  gap: var(--cv-sp-3);
+  max-width: 100%;
+  overflow-x: auto;
+}
+.ks-face .px {
+  display: block;
+  width: auto;
+  height: auto;
+}
+.ks-measure {
+  display: block;
+  max-width: var(--cv-reading);
+}
+
+/* ---- code: the case study's own block, so it is the block a reader meets ---- */
+/* the case study's column is the reading measure, and the block and its copy
+   key are sized to it; a desk page is wider, so the wrapper stands in for it.
+   The shell the canvas gives its pages also resets a link to the ink it sits
+   in, which a desk page does not, so the wrapper does that too. */
+.ks-codewrap {
+  min-width: 0;
+  max-width: calc(200 * var(--cv-px));
+}
+.ks-codewrap a {
+  color: inherit;
+}
+
+/* ---- surfaces ---- */
+.ks-shape {
+  display: grid;
+  gap: var(--cv-sp-1);
+  align-content: end;
+  justify-items: start;
+}
+/* a module is twelve cells; the diagram draws it at three */
+.ks-shape i {
+  display: block;
+  box-sizing: border-box;
+  width: calc(var(--w) * 3 * var(--cv-px));
+  height: calc(var(--h) * 3 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  background: var(--cv-surface);
+}
+
+/* ---- motion: a staircase is a waveform, and a bar is a duration ---- */
+.ks-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--cv-px);
+  height: calc(8 * var(--cv-px));
+}
+.ks-wave i {
+  display: block;
+  width: calc(3 * var(--cv-px));
+  height: calc(var(--n) * var(--cv-px));
+  background: var(--cv-ink);
+}
+/* one cell for ten milliseconds */
+.ks-dur {
+  display: block;
+  width: calc(var(--c) * var(--cv-px));
+  height: var(--cv-sp-2);
+  background: var(--cv-ink);
+}
+
+/* ---- assets: shown as shipped, never smoothed ---- */
+.ks-figs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--cv-sp-5);
+}
+.ks-fig {
+  display: grid;
+  gap: var(--cv-sp-2);
+  margin: 0;
+}
+/* a card wider than six hundred is shown at half, a whole step down */
+.ks-img {
+  max-width: calc(150 * var(--cv-px));
+  height: auto;
+}
+
+/* a fill is the first thing a forced palette takes: the drawn ones come back
+   in the system's ink */
+@media (forced-colors: active) {
+  .ks-lattice i.on,
+  .ks-bz i.on,
+  .ks-wave i,
+  .ks-dur {
+    background: CanvasText;
+  }
+}
