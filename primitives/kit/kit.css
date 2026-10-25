@@ -1,0 +1,1605 @@
+/* multiplayer-canvas/kit.css: the controls: buttons, fields, switches, tabs, the snap scrollbar, marquee, tags.
+   Inputs: class names on plain HTML (.k-btn, .k-field, .k-scroll, .k-marquee, .k-tag); needs tokens.css first.
+   Outputs: styles only, no script. */
+/* =========================================================
+   kit.css: the one set of controls (#313, Lo-Hi tech).
+
+   A control is a picture of its state, lit from the top left and dithered:
+   the hardware (knob, toggle, push button, radio button, lamp, call, key,
+   piano key, pin, fader cap) is a baked part from src/lib/kit-parts.js under
+   /img/kit/, one PNG per state, shown 1:1 on the cell, worn through
+   --kp-<part>-<state>, which the page sets at the file's hash (kit/parts.njk). Software is drawn in
+   CSS with lines of one cell (--cv-px, 4px) and nothing else: the outline
+   button, the checkbox, the field with its block caret, the section rules,
+   the scope, the chip, the dock, the bank, the snap scrollbar, the menu, the
+   selection mark, the loader and the marquee.
+
+   No shadow (test/ink-chrome.test.js). No radius. No curve: a state changes
+   in a step. The face is --cv-font on the canvas's ladder (fs-0 16, fs-3 32,
+   fs-6 64); dark on light is smear bold (--cv-smear), light on dark is
+   regular. The hands are the drawn cursors (js/kit.js sets them on <html>;
+   nothing here picks its own). Prefix k-. Every class is documented at its rule.
+   ========================================================= */
+
+/* ---- the ground: a kit stands on the ground or on white, in the face ---- */
+.k-ground {
+  font-family: var(--cv-font);
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+  color: var(--cv-ink);
+  -webkit-font-smoothing: none;
+  text-shadow: var(--cv-smear);
+}
+/* light on dark stays regular: every inverted face below resets the smear */
+.k-btn:hover,
+.k-btn.is-on,
+.k-btn.k-solid,
+.k-btn:active,
+.k-hw:active,
+.k-hw.is-down,
+.k-hw.is-hot,
+.k-rk:active,
+.k-rk.is-down,
+.k-rk[aria-checked='true'],
+.k-rk[aria-current],
+.k-dock .is-on,
+.k-flap {
+  text-shadow: none;
+}
+/* a picture is never smoothed */
+.k-px {
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* ---- type: three sizes, two colours ---- */
+.k-lbl {
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+}
+.k-ctl {
+  font-size: var(--cv-fs-3);
+  line-height: calc(12 * var(--cv-px));
+}
+/* the screen-printed label: mute, regular, for what a panel says about a
+   section */
+.k-meta {
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+  color: var(--cv-mute);
+  text-shadow: none;
+}
+
+/* the chip: a word a panel reads out, a status or a number. Plain it is a
+   word in ink; raised (.is-on) it is the one that is true now, an ink block
+   under a bright word, the way a lit key is. It is read and never pressed,
+   and raised or not its word stays where it is. */
+.k-chip {
+  display: inline-block;
+  padding: 0 var(--cv-sp-1);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.k-chip.is-on {
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+  text-shadow: none;
+}
+
+/* the tag: what a thing is about, a word in the code face in a block whose
+   edge is one cell of the line tone. It is read and never pressed, so it
+   answers nothing, and a row of them wraps on a two-cell gap. Made of
+   tokens alone, it is the same drawing on the ground, on a card and on a
+   page, and a quotation that rebinds the tokens re-dresses it. */
+.k-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cv-sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.k-tag {
+  display: inline-block;
+  padding: 0 var(--cv-sp-2);
+  border: var(--cv-px) solid var(--cv-line);
+  background: var(--cv-surface);
+  color: var(--cv-ink);
+  font-family: var(--cv-font-code);
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+/* ---- the reset every pressable thing shares ---- */
+.k-btn,
+.k-hw,
+.k-rk,
+.k-part,
+.k-check,
+.k-key,
+.k-cell,
+.k-cardtab,
+.k-tab,
+.k-switch {
+  font: inherit;
+  color: inherit;
+  cursor: inherit;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  box-sizing: border-box;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+/* focus is a ring of ink one cell thick and one cell out, on every pressable
+   thing alike */
+.k-btn:focus-visible,
+.k-hw:focus-visible,
+.k-rk:focus-visible,
+.k-part:focus-visible,
+.k-check:focus-visible,
+.k-key:focus-visible,
+.k-cell:focus-visible,
+.k-cardtab:focus-visible,
+.k-switch:focus-visible,
+.k-field:focus-within {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-px);
+}
+/* disabled is unpowered: mute, regular, and it answers nothing */
+.k-btn:disabled,
+.k-hw:disabled,
+.k-rk:disabled,
+.k-part:disabled,
+.k-check:disabled,
+.k-key:disabled {
+  color: var(--cv-mute);
+  text-shadow: none;
+  pointer-events: none;
+}
+.k-part:disabled .k-px,
+.k-hw:disabled,
+.k-rk:disabled,
+.k-key:disabled {
+  filter: grayscale(1) contrast(0.6);
+}
+
+/* ---- the outline button: software's button. Hover fills ink, pressing
+   flashes brick, .k-solid is the primary (filled) one. ---- */
+.k-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(2 * var(--cv-px));
+  min-height: var(--cv-ctrl-h);
+  min-width: var(--cv-ctrl-h);
+  padding: 0 calc(4 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  color: var(--cv-ink);
+  text-decoration: none;
+}
+.k-btn:hover,
+.k-btn.is-on {
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+}
+.k-btn:active {
+  background: var(--cv-brick);
+  border-color: var(--cv-brick);
+  color: var(--cv-bright);
+}
+.k-btn.k-solid {
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+}
+.k-btn.k-solid:hover {
+  background: var(--cv-brick);
+  border-color: var(--cv-brick);
+}
+.k-btn:disabled {
+  border-color: var(--cv-mute);
+  background: transparent;
+}
+/* an outline button states its display, which outranks the platform's
+   [hidden]: the kit gives it back once, for every page that hides one */
+.k-btn[hidden] {
+  display: none;
+}
+/* an icon button is square */
+.k-btn.k-ico {
+  width: var(--cv-ctrl-h);
+  padding: 0;
+}
+
+/* ---- the hardware push button: the baked face, a 32 label on it. Down
+   drops the label a cell; hot is the armed (brick) face. ---- */
+.k-hw {
+  width: calc(36 * var(--cv-px));
+  height: calc(18 * var(--cv-px));
+  font-size: var(--cv-fs-3);
+  line-height: calc(12 * var(--cv-px));
+  background: var(--kp-btn-up) 0 0 / 100% 100%;
+  image-rendering: pixelated;
+  color: var(--cv-ink);
+}
+.k-hw:hover {
+  color: var(--cv-deep);
+}
+.k-hw:active,
+.k-hw.is-down {
+  background-image: var(--kp-btn-down);
+  color: var(--cv-bright);
+  padding-top: var(--cv-px);
+}
+.k-hw.is-hot {
+  background-image: var(--kp-btn-hot);
+  color: var(--cv-bright);
+  padding-top: var(--cv-px);
+}
+
+/* ---- the radio push-button: one of many. The chosen one stays down and
+   the rest pop up, the way a car radio does it. ---- */
+.k-rk {
+  width: calc(14 * var(--cv-px));
+  height: calc(16 * var(--cv-px));
+  font-size: var(--cv-fs-3);
+  line-height: calc(12 * var(--cv-px));
+  background: var(--kp-rbtn-up) 0 0 / 100% 100%;
+  image-rendering: pixelated;
+  color: var(--cv-ink);
+}
+.k-rk:hover {
+  color: var(--cv-deep);
+}
+.k-rk:active,
+.k-rk.is-down,
+.k-rk[aria-checked='true'],
+.k-rk[aria-current] {
+  background-image: var(--kp-rbtn-down);
+  color: var(--cv-bright);
+  padding-top: var(--cv-px);
+}
+.k-radio {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--cv-px);
+}
+/* round a real radio (a form's one of a few: how long a hook lasts, a
+   colour sampled or fixed): the platform walks the group on the arrows and
+   the form sends the checked one; the checked one is down */
+.k-rk:has(> input[type='radio']) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.k-rk > input[type='radio'] {
+  position: absolute;
+  /* px-ok: a visually hidden input is one pixel, the least a screen reader still reads */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.k-rk:has(> input:checked) {
+  background-image: var(--kp-rbtn-down);
+  color: var(--cv-bright);
+  padding-top: var(--cv-px);
+}
+.k-rk.k-wide:has(> input:checked) {
+  background-image: var(--kp-rbtnw-down);
+}
+.k-rk:has(> input:focus-visible) {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-px);
+}
+/* a labelled choice in a form: its name over its row */
+.k-choose {
+  display: grid;
+  gap: var(--cv-sp-2);
+  justify-items: start;
+}
+/* the labelled one: the word is on the face at 16, so the face is wide and
+   short (its own baked picture, never the tall one stretched) */
+.k-rk.k-wide {
+  width: calc(22 * var(--cv-px));
+  height: calc(12 * var(--cv-px));
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+  white-space: nowrap;
+  background-image: var(--kp-rbtnw-up);
+}
+.k-rk.k-wide:active,
+.k-rk.k-wide.is-down,
+.k-rk.k-wide[aria-checked='true'],
+.k-rk.k-wide[aria-current] {
+  background-image: var(--kp-rbtnw-down);
+}
+
+/* ---- a part: a picture button. The picture is the state; the script swaps
+   the src. A hit pad grown to the tap floor sits under the small ones
+   (the lamp is not pressable, so it is an img, not a part). ---- */
+.k-part {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+.k-part::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--cv-ctrl-h) * var(--cv-world-k, 1));
+  height: calc(var(--cv-ctrl-h) * var(--cv-world-k, 1));
+  transform: translate(-50%, -50%);
+}
+/* A part never travels under the hand: a knob, a switch or a pin does not
+   come toward you when you touch it, its state is its picture (the script
+   swaps it on the press). Under the finger the face is lit, the same as
+   under the pointer, because a touch has no hover (test/kit.test.js fails a
+   transform, an offset or a margin on a part's :active). */
+.k-part:hover .k-px,
+.k-part:active .k-px {
+  filter: brightness(1.08);
+}
+/* the knob turns by drag or click; each of its eight angles is a picture */
+.k-knob .k-px {
+  width: calc(22 * var(--cv-px));
+  height: calc(22 * var(--cv-px));
+}
+.k-toggle .k-px {
+  width: calc(18 * var(--cv-px));
+  height: calc(30 * var(--cv-px));
+}
+.k-lamp {
+  width: calc(8 * var(--cv-px));
+  height: calc(8 * var(--cv-px));
+}
+.k-pin .k-px {
+  width: calc(16 * var(--cv-px));
+  height: calc(16 * var(--cv-px));
+}
+/* the keycap: a round key with a 16 letter on it; down while it sounds */
+.k-key {
+  width: calc(14 * var(--cv-px));
+  height: calc(14 * var(--cv-px));
+  padding-bottom: var(--cv-px);
+  background: var(--kp-key-up) 0 0 / 100% 100%;
+  image-rendering: pixelated;
+  color: var(--cv-ink);
+}
+.k-key:hover {
+  color: var(--cv-deep);
+}
+.k-key:active,
+.k-key.is-down {
+  background-image: var(--kp-key-down);
+  padding-bottom: 0;
+}
+/* the piano: white keys side by side (a key's own dark left column is the
+   seam), black keys over the seams. The keys are the taller ones from the
+   Synth board: a white 22 by 44 cells, a black 12 by 28. */
+.k-piano {
+  position: relative;
+  display: inline-flex;
+  height: calc(44 * var(--cv-px));
+}
+.k-piano .k-white .k-px {
+  width: calc(22 * var(--cv-px));
+  height: calc(44 * var(--cv-px));
+}
+.k-piano .k-black {
+  position: absolute;
+  top: 0;
+  z-index: var(--cv-z-over);
+}
+.k-piano .k-black .k-px {
+  width: calc(12 * var(--cv-px));
+  height: calc(28 * var(--cv-px));
+}
+
+/* ---- the fader: a track one cell thick with ticks, the thin cap on it. The
+   track sits on the cell, centred under the cap. The cap is
+   dragged; the track is the hit area, a fingertip tall. ---- */
+.k-fader {
+  position: relative;
+  display: block;
+  width: calc(64 * var(--cv-px));
+  height: var(--cv-ctrl-h);
+  cursor: inherit;
+}
+.k-fader::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--cv-px);
+  margin-top: calc(-0.5 * var(--cv-px));
+  background: var(--cv-ink);
+}
+.k-fader .k-tick {
+  position: absolute;
+  bottom: 0;
+  width: var(--cv-px);
+  height: calc(2 * var(--cv-px));
+  background: var(--cv-mute);
+}
+.k-fader .k-cap {
+  position: absolute;
+  top: 50%;
+  width: calc(8 * var(--cv-px));
+  height: calc(12 * var(--cv-px));
+  margin: calc(-6 * var(--cv-px)) 0 0 calc(-4 * var(--cv-px));
+  pointer-events: none;
+}
+.k-fader:focus-visible {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-px);
+}
+/* the thin fader stood on end, for a row of them side by side (an
+   envelope's A D S R): up is more (U3). The fader's --k-at (0 to 1) puts the
+   cap; a tick's --k-at puts the tick. The track stops a cap's half short of
+   each end, so the cap never hangs off the fader. */
+.k-fader.k-vert {
+  width: calc(8 * var(--cv-px));
+  height: calc(44 * var(--cv-px));
+}
+.k-fader.k-vert::before {
+  left: 50%;
+  right: auto;
+  top: calc(6 * var(--cv-px));
+  bottom: calc(6 * var(--cv-px));
+  width: var(--cv-px);
+  height: auto;
+  margin: 0 0 0 calc(-0.5 * var(--cv-px));
+}
+.k-fader.k-vert .k-tick,
+.k-fader.k-vert .k-cap {
+  top: calc(6 * var(--cv-px) + (100% - 12 * var(--cv-px)) * (1 - var(--k-at, 0)));
+}
+.k-fader.k-vert .k-tick {
+  left: auto;
+  right: 0;
+  bottom: auto;
+  width: calc(2 * var(--cv-px));
+  height: var(--cv-px);
+  margin-top: calc(-0.5 * var(--cv-px));
+}
+.k-fader.k-vert .k-cap {
+  left: 50%;
+}
+
+/* ---- the checkbox: many of many. A box of one-cell lines, a block of ink
+   one cell in from them when checked; the label is part of the button. ---- */
+.k-check {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(3 * var(--cv-px));
+  min-height: var(--cv-ctrl-h);
+  text-align: left;
+}
+.k-check .k-box {
+  width: calc(6 * var(--cv-px));
+  height: calc(6 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.k-check[aria-checked='true'] .k-box::after {
+  content: '';
+  width: calc(2 * var(--cv-px));
+  height: calc(2 * var(--cv-px));
+  background: var(--cv-ink);
+}
+.k-check:hover .k-box {
+  background: var(--cv-bright);
+}
+.k-check:disabled .k-box {
+  border-color: var(--cv-mute);
+}
+
+/* ---- the flip switch: a binary you SET (a setting that stays: a page's
+   Dark Mode, a room's pin, a pass in textmode, an effect on or off) is a
+   panel's toggle switch, the lever thrown up for on, the way a light
+   switch or a stompbox tells you its state from across the room. The
+   lever is the part's own picture (`flip`, the instruments' toggle at the
+   size of a row of words). A binary you only READ is a lamp (.k-lamp),
+   never a switch; a choice of several is a radio row. The same two
+   markups as the check box: a button[role=switch] with aria-checked, or a
+   label round a real checkbox so a form still sends it and Space still
+   throws it. The word is the setting's name, never "on" or "off": the
+   lever says which. ---- */
+.k-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(3 * var(--cv-px));
+  min-height: var(--cv-ctrl-h);
+  text-align: left;
+}
+.k-switch .k-lever {
+  flex-shrink: 0;
+  width: calc(6 * var(--cv-px));
+  height: calc(10 * var(--cv-px));
+  background: var(--kp-flip-off) 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+.k-switch[aria-checked='true'] .k-lever,
+.k-switch > input:checked + .k-lever {
+  background-image: var(--kp-flip-on);
+}
+.k-switch > input[type='checkbox'] {
+  position: absolute;
+  /* px-ok: a visually hidden input is one pixel, the least a screen reader still reads */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.k-switch:hover {
+  color: var(--cv-deep);
+}
+.k-switch:has(> input:focus-visible) {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-px);
+}
+.k-switch:has(> input:disabled),
+.k-switch:disabled {
+  color: var(--cv-mute);
+}
+
+/* ---- the field: a rule under the text and a block caret at the
+   insertion point. The caret blinks in a step, and only while the field is
+   focused. js/kit-caret.js measures where it stands and marks the field
+   .k-tracked; until it has, the platform's own caret shows, in ink, so a
+   field is never without a working caret. ---- */
+.k-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--cv-ctrl-h);
+  border-bottom: var(--cv-px) solid var(--cv-ink);
+  font-size: var(--cv-fs-3);
+  line-height: calc(12 * var(--cv-px));
+}
+.k-field input {
+  font: inherit;
+  color: inherit;
+  text-shadow: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  min-width: 0;
+  flex: 1;
+  /* the field's whole height is the input's: a finger on the box's upper
+     or lower half lands in the field, not on its frame (the input was one
+     line of words tall in a tap-floor box, 25px of 44 at 390) */
+  align-self: stretch;
+  /* the room the block takes after the last letter, so the words never run
+     under it; the field's box is what it was when the caret sat in the row */
+  padding-right: calc(4 * var(--cv-px) + var(--cv-sp-hair));
+  caret-color: var(--cv-ink);
+}
+.k-field.k-sm input {
+  padding-right: calc(2 * var(--cv-px) + var(--cv-sp-hair));
+}
+.k-field.k-tracked input {
+  caret-color: transparent;
+}
+/* the caret stands over the field, out of the row, so moving it never
+   moves the words: --k-caret-x is where the insertion point is (after the
+   words it is the block, a hair off the last letter; between two letters
+   it is one cell wide, a bar that hides neither) */
+.k-field .k-caret {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  translate: calc(var(--k-caret-x, 0px) + var(--cv-sp-hair)) -50%;
+  width: calc(4 * var(--cv-px));
+  height: calc(8 * var(--cv-px));
+  background: var(--cv-ink);
+  pointer-events: none;
+  visibility: hidden;
+}
+/* the face's letters start on their first column and end a cell short of
+   the next, so the bar stands one cell back, in the gap the letter before
+   left, and never before the field starts */
+.k-field.k-tracked[data-caret='bar'] .k-caret {
+  translate: max(0px, calc(var(--k-caret-x, 0px) - var(--cv-px))) -50%;
+  width: var(--cv-px);
+}
+.k-field.k-tracked:focus-within:not([data-caret='none']) .k-caret {
+  visibility: visible;
+  animation: k-blink calc(2 * var(--cv-dur-drift)) var(--cv-ease-step) infinite;
+}
+@keyframes k-blink {
+  50% {
+    visibility: hidden;
+  }
+}
+/* the field in a bar (.k-sm): the words at the label's 16, the tap floor
+   tall, and the caret the label's own block, a cell less each way */
+.k-field.k-sm {
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+  box-sizing: border-box;
+  height: var(--cv-ctrl-h);
+}
+.k-field.k-sm .k-caret {
+  width: calc(2 * var(--cv-px));
+  height: calc(4 * var(--cv-px));
+}
+/* the boxed field (.k-boxed): the same field closed on all four sides by the
+   one-cell line, for a field that floats over a busy ground (the canvas's
+   search, over whatever part of the world is under the bar), where a rule
+   under the words alone reads as one more line of the world. A field in a
+   form keeps its rule. */
+.k-field.k-boxed {
+  border: var(--cv-px) solid var(--cv-ink);
+}
+
+/* ---- rules and the panel: one panel per tool, its sections divided by
+   one-cell rules and screen-printed labels, laid out along what the tool
+   does ---- */
+.k-rb {
+  border-bottom: var(--cv-px) solid var(--cv-ink);
+}
+.k-rt {
+  border-top: var(--cv-px) solid var(--cv-ink);
+}
+.k-rl {
+  border-left: var(--cv-px) solid var(--cv-ink);
+}
+.k-panel {
+  display: flex;
+  border: var(--cv-px) solid var(--cv-ink);
+}
+.k-panel > .k-sec {
+  display: flex;
+  flex-direction: column;
+  gap: calc(3 * var(--cv-px));
+  padding: calc(4 * var(--cv-px));
+  border-right: var(--cv-px) solid var(--cv-ink);
+}
+.k-panel > .k-sec:last-child {
+  border-right: 0;
+}
+.k-sec > .k-meta {
+  order: 1;
+}
+
+/* ---- the scope: a screen of cells. What it draws is the script's
+   (a wave, a life, a doodle); the grid is the screen. ---- */
+/* A screen's pitch is two cells unless it says --k-cell; an instrument's
+   scope draws at one (the Synth board's), fine enough to read a wave. */
+/* forced-ok: the dot ground is texture; under a forced palette the border and the ink cells carry the screen */
+.k-scope {
+  display: grid;
+  grid-template-columns: repeat(var(--k-cols, 32), var(--k-cell, calc(2 * var(--cv-px))));
+  grid-auto-rows: var(--k-cell, calc(2 * var(--cv-px)));
+  border: var(--cv-px) solid var(--cv-ink);
+  background-color: var(--cv-bright);
+  /* the graticule: a dot half a cell square in the middle of every two-cell
+     pitch, the label lattice's own pixel (a conic's top left quarter is the
+     dot, so its edges are hard where a radial one smeared round) */
+  background-image: conic-gradient(
+    at calc(var(--cv-px) / 2) calc(var(--cv-px) / 2),
+    transparent 0 270deg,
+    var(--cv-mid) 0
+  );
+  background-size: calc(2 * var(--cv-px)) calc(2 * var(--cv-px));
+  background-position: calc(3 * var(--cv-px) / 4) calc(3 * var(--cv-px) / 4);
+}
+.k-cell {
+  width: var(--k-cell, calc(2 * var(--cv-px)));
+  height: var(--k-cell, calc(2 * var(--cv-px)));
+}
+.k-cell.is-ink {
+  background: var(--cv-ink);
+}
+.k-cell.is-live {
+  background: var(--cv-brick);
+}
+/* the plain screen: the same bright glass with no dot ground, for a screen
+   whose picture is its own rules (a music staff), where the dots would read
+   as more lines. The dots belong to a scope, where they are the graticule
+   the trace is read against. */
+.k-scope.k-plain {
+  background-image: none;
+}
+
+/* ---- the index card: the tabs are cut into the card, the way an index
+   card's tab is one piece of card with it. The tab list stands directly on
+   the card (the page lays nothing between them), every tab is the one 16
+   face, and the tabs' tops line up. The current tab is a cell taller: it
+   runs down over the card's top rule, its floor is the card's own ground,
+   and its outline continues into the card's; its label is ink with the
+   smear. The others stand behind: the same ground, a mute label, and the
+   card's rule runs under them. Inside the card there is one panel and
+   nothing nested. ---- */
+.k-cardtabs {
+  position: relative;
+  z-index: var(--cv-z-over);
+  display: flex;
+  align-items: flex-end;
+  gap: calc(2 * var(--cv-px));
+  padding-left: calc(6 * var(--cv-px));
+}
+.k-cardtab {
+  height: var(--cv-ctrl-h);
+  padding: 0 calc(5 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  border-bottom: 0;
+  background: var(--cv-ground);
+  color: var(--cv-mute);
+  text-shadow: none;
+  white-space: nowrap;
+}
+.k-cardtab:hover {
+  color: var(--cv-ink);
+}
+.k-cardtab[aria-selected='true'] {
+  height: calc(var(--cv-ctrl-h) + var(--cv-px));
+  margin-bottom: calc(-1 * var(--cv-px));
+  color: var(--cv-ink);
+  /* the smear the kit's ground set, back on the one tab that is lit */
+  text-shadow: inherit;
+}
+/* ---- the page tab (.k-tab), for a strip of pages rather than a card's
+   sections: the page bar holds a collection the way a browser holds its
+   pages, and a browser's tab is the index card's (author, 2026-09-26: "the
+   desktop was meant to be tabs not buttons, make it more like the web
+   instruments tabs"). So a page tab is the card tab above, one piece with
+   the page under it: the same one-cell outline open at the foot, the same
+   ground and mute words for a tab that stands behind with the bar's rule
+   running under it, and the page you are on a cell taller, its floor the
+   page's own ground (the host says which, --k-tab-ground) and its words
+   ink with the smear. It replaced a radio push-button baked through
+   textmode (section 12): a tab that read as a button. A tab is as wide as
+   its nearness earns; its link is its whole face, its title ending in an
+   ellipsis when the tab is narrower than the title, and the lit tab may
+   carry a close box after its title. ---- */
+.k-tab {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: var(--cv-ctrl-h);
+  margin-bottom: var(--cv-px);
+  padding: 0 calc(2 * var(--cv-px)) 0 calc(4 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  border-bottom: 0;
+  background: var(--cv-ground);
+  color: var(--cv-mute);
+  text-shadow: none;
+  white-space: nowrap;
+}
+.k-tab:hover {
+  color: var(--cv-ink);
+}
+.k-tab.is-on {
+  height: calc(var(--cv-ctrl-h) + var(--cv-px));
+  margin-bottom: 0;
+  background: var(--k-tab-ground, var(--cv-ground));
+  color: var(--cv-ink);
+  /* the smear the kit's ground set, back on the one tab that is lit */
+  text-shadow: inherit;
+}
+.k-tab > .k-tab-go {
+  flex: 1 1 auto;
+  min-width: 0;
+  align-self: stretch;
+  /* a block, not a flex box, or the ellipsis never shows: the tab's own
+     height is the line, so the title sits on the tab's middle */
+  display: block;
+  line-height: var(--cv-ctrl-h);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: none;
+}
+/* the ring comes a cell in: the strip scrolls sideways and clips anything
+   drawn outside a tab */
+.k-tab > .k-tab-go:focus-visible {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: calc(-1 * var(--cv-px));
+}
+.k-card {
+  border: var(--cv-px) solid var(--cv-ink);
+  background: var(--cv-ground);
+}
+/* the one panel inside a card: sections side by side along the signal
+   path, each ruled on its left and top. The strip clips the rules that
+   would double the card's own outline, so a row that wraps on a narrow
+   screen is still divided by single one-cell rules and nothing else. */
+.k-strip {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.k-strip > .k-sec {
+  display: flex;
+  flex-direction: column;
+  gap: calc(3 * var(--cv-px));
+  padding: calc(4 * var(--cv-px));
+  margin: calc(-1 * var(--cv-px)) 0 0 calc(-1 * var(--cv-px));
+  border-left: var(--cv-px) solid var(--cv-ink);
+  border-top: var(--cv-px) solid var(--cv-ink);
+}
+
+/* ---- the dock: prev, all, next, as one strip of outline buttons ---- */
+.k-dock {
+  display: inline-flex;
+  border: var(--cv-px) solid var(--cv-ink);
+  background: var(--cv-ground);
+}
+.k-dock .k-btn {
+  border: 0;
+  border-right: var(--cv-px) solid var(--cv-ink);
+}
+.k-dock .k-btn:last-child {
+  border-right: 0;
+}
+
+/* ---- the bank: keys in a row, every one the same width, the way a panel's
+   are. A key is whole cells wide and one cell of rule parts it from the
+   next, however the row wraps: a row of four on a desk, two by two on a
+   phone. The keys overlap by their rule, so the pitch is a cell short of
+   the key and the grid keeps a cell for the last one's edge. ---- */
+.k-bank {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, calc(28 * var(--cv-px)));
+  justify-content: center;
+  width: 100%;
+  padding: 0 var(--cv-px) var(--cv-px) 0;
+}
+.k-bank .k-btn {
+  margin: 0 calc(-1 * var(--cv-px)) calc(-1 * var(--cv-px)) 0;
+  white-space: nowrap;
+}
+
+/* ---- the snap scrollbar (#338): a stepper at each end, a track between
+   them, one thumb. An INDEX PICKER over N things, not a scroll position:
+   the thumb is the track over N (never under two cells) and sits at slot
+   --k-at of --k-n; it snaps, it never rests between slots. Steppers step by
+   one and wrap (a collection is a ring); a press on the track jumps to that
+   slot, a held press scrubs it, a wheel notch steps, the arrows step, Home
+   and End go to the ends (js/kit-scroll.js, the one script; markup from the
+   same file). Horizontal by default, .k-vert stands it on end. Software,
+   so it is lines of one cell on the ground and a solid ink thumb; the
+   thumb goes brick while it is held (armed), and every change is a step.
+   --k-step is the stepper's side and the track's thickness: the tap floor
+   on a page, and six cells beside a pile in the world, where the pad under
+   each stepper grows the hit to the floor on the screen (as .k-part). ---- */
+.k-scroll {
+  --k-n: 1;
+  --k-at: 0;
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--k-step, var(--cv-ctrl-h));
+  border: var(--cv-px) solid var(--cv-ink);
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+.k-scroll > .k-step {
+  position: relative;
+  flex: none;
+  width: var(--k-step, var(--cv-ctrl-h));
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+}
+.k-scroll > .k-prev {
+  border-right: var(--cv-px) solid var(--cv-ink);
+}
+.k-scroll > .k-next {
+  border-left: var(--cv-px) solid var(--cv-ink);
+}
+/* the chevron on the label lattice, half a cell a pixel */
+.k-scroll > .k-step svg {
+  display: block;
+  width: calc(11 * var(--cv-px) / 2);
+  height: calc(11 * var(--cv-px) / 2);
+  fill: currentColor;
+}
+/* The pad grows AWAY from the track: a stepper's press is never taken by the
+   track beside it (painted after the first stepper, so it covered that pad)
+   and never takes the track's end slot (painted under the last stepper's
+   pad). So the pad is anchored on the stepper's inner edge and centred
+   across the bar. */
+.k-scroll > .k-step::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: max(100%, calc(var(--cv-ctrl-h) * var(--cv-world-k, 1)));
+  height: max(100%, calc(var(--cv-ctrl-h) * var(--cv-world-k, 1)));
+  transform: translateY(-50%);
+}
+.k-scroll > .k-prev::after {
+  right: 0;
+}
+.k-scroll > .k-next::after {
+  left: 0;
+}
+.k-scroll.k-vert > .k-step::after {
+  top: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.k-scroll.k-vert > .k-prev::after {
+  right: auto;
+  bottom: 0;
+}
+.k-scroll.k-vert > .k-next::after {
+  left: 50%;
+  top: 0;
+}
+.k-scroll > .k-track {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  /* touch-ok: the track is the control; a finger on it scrubs the thumb,
+     and the page scrolls from everything around it */
+  touch-action: none;
+}
+/* a cell in: the steppers stand hard against the track on both sides */
+.k-scroll > .k-track:focus-visible {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: calc(-1 * var(--cv-px));
+}
+.k-scroll .k-thumb {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--k-at) * 100% / var(--k-n));
+  width: max(calc(100% / var(--k-n)), calc(2 * var(--cv-px)));
+  background: var(--cv-ink);
+}
+.k-scroll > .k-track:hover .k-thumb {
+  background: var(--cv-deep);
+}
+.k-scroll.is-drag .k-thumb,
+.k-scroll > .k-track:active .k-thumb {
+  background: var(--cv-brick);
+}
+/* on end: the steppers stack, the thumb runs down the track */
+.k-scroll.k-vert {
+  flex-direction: column;
+  width: var(--k-step, var(--cv-ctrl-h));
+  height: auto;
+}
+.k-scroll.k-vert > .k-step {
+  width: 100%;
+  height: var(--k-step, var(--cv-ctrl-h));
+}
+.k-scroll.k-vert > .k-prev {
+  border-right: 0;
+  border-bottom: var(--cv-px) solid var(--cv-ink);
+}
+.k-scroll.k-vert > .k-next {
+  border-left: 0;
+  border-top: var(--cv-px) solid var(--cv-ink);
+}
+.k-scroll.k-vert .k-thumb {
+  left: 0;
+  right: 0;
+  width: auto;
+  top: calc(var(--k-at) * 100% / var(--k-n));
+  height: max(calc(100% / var(--k-n)), calc(2 * var(--cv-px)));
+}
+
+/* ---- the counter: split flaps, one digit each, for a number everyone
+   shares. A flap is --k-rows cells tall, and a change turns it a row a
+   frame, so the count of frames is read off the flap (canvas-home.css
+   cv-burn, cv-rise). ---- */
+.k-flaps {
+  display: inline-flex;
+  gap: var(--cv-px);
+}
+.k-flap {
+  --k-rows: 20;
+  position: relative;
+  width: calc(12 * var(--cv-px));
+  height: calc(var(--k-rows) * var(--cv-px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+  font-size: var(--cv-fs-6);
+  line-height: calc(var(--k-rows) * var(--cv-px));
+}
+.k-flap::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--cv-px);
+  background: var(--cv-ground);
+}
+/* the small flaps (.k-sm): the same flap at the label's 16, one type line
+   tall, for a tally that sits in a line of words (the canvas's "others
+   here"); the seam is half a cell, so it cuts a 16 digit without eating it */
+.k-flaps.k-sm .k-flap {
+  --k-rows: 6;
+  width: calc(4 * var(--cv-px));
+  font-size: var(--cv-fs-0);
+}
+.k-flaps.k-sm .k-flap::after {
+  height: calc(var(--cv-px) / 2);
+  margin-top: calc(var(--cv-px) / -4);
+}
+
+/* =========================================================
+   FORM PARTS (#336): the native elements a form needs, drawn the kit's
+   way. Each keeps its element and its semantics (a <select> is still a
+   select, a <details> still a disclosure, a <progress> still a progress)
+   and wears one-cell lines, the type face and stepped states; the
+   browser's own picture is switched off with appearance: none and drawn
+   again in ink. The one drawing is the chevron: six cells by three, cut
+   from a block of ink on the cell (a clip-path, never a picture). In
+   order: select, textarea, date, file drop, progress, disclosure, the
+   fader and the checkbox on their native inputs, the swatch, the radio
+   push-button as a link (in the radio's own rules), and sections down a page.
+   ========================================================= */
+
+/* ---- the chevron: a block of ink six cells wide and three tall, cut to
+   the pixel v (row 0: cells 0 and 5, row 1: cells 1 and 4, row 2: cells
+   2 and 3). The percentages are sixths and thirds of that box. ---- */
+.k-select::after,
+.k-date::after,
+.k-disc > summary::after {
+  content: '';
+  flex-shrink: 0;
+  width: calc(6 * var(--cv-px));
+  height: calc(3 * var(--cv-px));
+  background: var(--cv-ink);
+  clip-path: polygon(
+    0 0,
+    16.667% 0,
+    16.667% 33.333%,
+    33.333% 33.333%,
+    33.333% 66.667%,
+    66.667% 66.667%,
+    66.667% 33.333%,
+    83.333% 33.333%,
+    83.333% 0,
+    100% 0,
+    100% 33.333%,
+    83.333% 33.333%,
+    83.333% 66.667%,
+    66.667% 66.667%,
+    66.667% 100%,
+    33.333% 100%,
+    33.333% 66.667%,
+    16.667% 66.667%,
+    16.667% 33.333%,
+    0 33.333%
+  );
+  pointer-events: none;
+}
+
+/* ---- the select: the field's rule under the chosen word and the
+   chevron at its end. The list that opens is the OS's own picker, which
+   appearance: none leaves alone on purpose: it is the one a finger
+   knows. ---- */
+.k-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--cv-ctrl-h);
+  border-bottom: var(--cv-px) solid var(--cv-ink);
+  font-size: var(--cv-fs-3);
+  line-height: calc(12 * var(--cv-px));
+}
+.k-select select {
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  text-shadow: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 calc(8 * var(--cv-px)) 0 0;
+  min-width: 0;
+  width: 100%;
+  min-height: var(--cv-ctrl-h);
+  outline: 0;
+  cursor: inherit;
+}
+.k-select select:disabled {
+  color: var(--cv-mute);
+  text-shadow: none;
+}
+.k-select::after,
+.k-date::after {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: calc(-1.5 * var(--cv-px));
+}
+.k-select:focus-within,
+.k-date:focus-within,
+.k-textarea:focus-within,
+.k-file:focus-within,
+.k-check:focus-within,
+.k-range:focus-visible,
+.k-swatch:focus-visible {
+  outline: var(--cv-px) solid var(--cv-ink);
+  outline-offset: var(--cv-px);
+}
+
+/* ---- the textarea: a box of one-cell lines (a field is one line and
+   wears a rule; a box is for more than one), the text at 16 inside it,
+   no resize grip: the rows are the height. ---- */
+.k-textarea {
+  display: block;
+  border: var(--cv-px) solid var(--cv-ink);
+}
+.k-textarea textarea {
+  display: block;
+  width: 100%;
+  min-height: calc(18 * var(--cv-px));
+  font: inherit;
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+  color: inherit;
+  text-shadow: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding: calc(2 * var(--cv-px)) calc(3 * var(--cv-px));
+  box-sizing: border-box;
+  resize: none;
+  outline: 0;
+}
+.k-textarea textarea::placeholder {
+  color: var(--cv-mute);
+  opacity: 1;
+}
+
+/* ---- the date: a field for a datetime-local. The browser's calendar
+   button is kept, invisible, over the chevron, so a press on the chevron
+   opens the OS's picker and the segments still take typing. ---- */
+.k-date {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--cv-ctrl-h);
+  border-bottom: var(--cv-px) solid var(--cv-ink);
+  font-size: var(--cv-fs-0);
+  line-height: calc(6 * var(--cv-px));
+}
+.k-date input {
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  text-shadow: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 calc(8 * var(--cv-px)) 0 0;
+  min-width: 0;
+  width: 100%;
+  min-height: var(--cv-ctrl-h);
+  outline: 0;
+  cursor: inherit;
+}
+.k-date input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: calc(8 * var(--cv-px));
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/* ---- the file drop: a box of one-cell lines that is the desk. A drop
+   or a press on it picks files; the input is inside, out of sight but
+   focusable, and the box lights (ink) while a drag is over it (.is-over,
+   the script's), while it has focus, and under the hand. The word is at
+   32, the line under it at 16. ---- */
+.k-file {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: calc(2 * var(--cv-px));
+  min-height: calc(24 * var(--cv-px));
+  padding: calc(4 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  color: var(--cv-ink);
+  text-align: center;
+  font-size: var(--cv-fs-3);
+  line-height: calc(12 * var(--cv-px));
+  cursor: inherit;
+}
+.k-file input {
+  position: absolute;
+  /* px-ok: a visually hidden input is one pixel, the least a screen reader still reads */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.k-file:hover,
+.k-file:focus-within,
+.k-file.is-over {
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+  text-shadow: none;
+}
+
+/* ---- the progress: a bar of one-cell lines, four cells tall, filled in
+   ink segments two cells wide with a cell between (an LED ladder), so the
+   fill reads in steps rather than as a smear. ---- */
+.k-progress {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: calc(4 * var(--cv-px));
+  margin: 0;
+  border: var(--cv-px) solid var(--cv-ink);
+  background: transparent;
+  box-sizing: border-box;
+}
+.k-progress::-webkit-progress-bar {
+  background: transparent;
+}
+/* forced-ok: the segments are texture; under a forced palette the border carries the bar */
+.k-progress::-webkit-progress-value {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cv-ink) 0 calc(2 * var(--cv-px)),
+    transparent calc(2 * var(--cv-px)) calc(3 * var(--cv-px))
+  );
+}
+/* forced-ok: the segments are texture; under a forced palette the border carries the bar */
+.k-progress::-moz-progress-bar {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cv-ink) 0 calc(2 * var(--cv-px)),
+    transparent calc(2 * var(--cv-px)) calc(3 * var(--cv-px))
+  );
+}
+
+/* ---- the disclosure: a <details> whose summary is the outline button
+   (summary.k-btn) with the chevron, which turns over when it is open (a
+   flip, one step). Under the button, .k-body is what unfolds. ---- */
+.k-disc > summary {
+  list-style: none;
+  width: fit-content;
+}
+.k-disc > summary::-webkit-details-marker {
+  display: none;
+}
+.k-disc > summary:hover::after,
+.k-disc > summary:active::after {
+  background: var(--cv-bright);
+}
+.k-disc[open] > summary::after {
+  transform: scaleY(-1);
+}
+.k-disc > .k-body {
+  padding-top: calc(3 * var(--cv-px));
+}
+
+/* ---- the fader on a native range input: the same one-cell track and
+   thin cap as .k-fader, for a slider a form owns (the script reads its
+   value like any input). Twelve cells tall, the cap's own height. ---- */
+.k-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: calc(12 * var(--cv-px));
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: inherit;
+}
+.k-range::-webkit-slider-runnable-track {
+  height: var(--cv-px);
+  background: var(--cv-ink);
+}
+.k-range::-webkit-slider-thumb {
+  appearance: none;
+  width: calc(8 * var(--cv-px));
+  height: calc(12 * var(--cv-px));
+  margin-top: calc(-5.5 * var(--cv-px));
+  border: 0;
+  border-radius: 0;
+  background: var(--kp-cap-thin) 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+.k-range::-moz-range-track {
+  height: var(--cv-px);
+  background: var(--cv-ink);
+}
+.k-range::-moz-range-thumb {
+  width: calc(8 * var(--cv-px));
+  height: calc(12 * var(--cv-px));
+  border: 0;
+  border-radius: 0;
+  background: var(--kp-cap-thin) 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+.k-range:disabled {
+  filter: grayscale(1) contrast(0.6);
+  pointer-events: none;
+}
+
+/* ---- the checkbox on a native input: the same box and block, the
+   <input type=checkbox> inside the label out of sight but focusable, so a
+   form reads it as any checkbox. ---- */
+.k-check {
+  position: relative;
+}
+.k-check > input[type='checkbox'] {
+  position: absolute;
+  /* px-ok: a visually hidden input is one pixel, the least a screen reader still reads */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.k-check > input:checked + .k-box::after {
+  content: '';
+  width: calc(2 * var(--cv-px));
+  height: calc(2 * var(--cv-px));
+  background: var(--cv-ink);
+}
+.k-check > input:disabled ~ .k-box {
+  border-color: var(--cv-mute);
+}
+
+/* ---- the swatch: a colour input as a square of one-cell lines holding
+   the colour and nothing else. ---- */
+.k-swatch {
+  appearance: none;
+  width: var(--cv-ctrl-h);
+  height: var(--cv-ctrl-h);
+  margin: 0;
+  padding: 0;
+  border: var(--cv-px) solid var(--cv-ink);
+  border-radius: 0;
+  background: transparent;
+  box-sizing: border-box;
+  cursor: inherit;
+}
+.k-swatch::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.k-swatch::-webkit-color-swatch {
+  border: 0;
+  border-radius: 0;
+}
+.k-swatch::-moz-color-swatch {
+  border: 0;
+  border-radius: 0;
+}
+
+/* ---- the outline button armed: the same brick face as .k-hw.is-hot,
+   for a destructive action whose label is too long for the hardware
+   button ("sign out everywhere else"). The first press arms it, the
+   second acts; brick means armed. ---- */
+.k-btn.is-hot {
+  background: var(--cv-brick);
+  border-color: var(--cv-brick);
+  color: var(--cv-bright);
+  text-shadow: none;
+}
+
+/* ---- the radio push-button as a link: a nav is one of many, and the
+   page you are on is the button that is down. aria-current sits beside
+   aria-checked in the radio's own down rules above (the desk's nav). ---- */
+
+/* ---- sections down a page: a tool that is a page rather than a rack
+   divides its sections with a one-cell rule across the top of each, a
+   32 head, and no box around any of them. ---- */
+.k-secs {
+  display: grid;
+  gap: calc(6 * var(--cv-px));
+}
+.k-secs > .k-sec {
+  display: flex;
+  flex-direction: column;
+  gap: calc(3 * var(--cv-px));
+  min-width: 0;
+  padding-top: calc(4 * var(--cv-px));
+  border-top: var(--cv-px) solid var(--cv-ink);
+}
+.k-secs > .k-sec > .k-ctl {
+  margin: 0;
+  font-weight: 400;
+}
+
+/* =========================================================
+   CHROME PARTS (#336): the four a window's chrome needs that a form does
+   not. A menu to pick a command from, a mark for the thing that is picked,
+   a loader for a wait whose length nobody knows, and a marquee for a line
+   longer than its box. Software, so each is lines of one cell and solid
+   ink, and every change is a step.
+   ========================================================= */
+
+/* ---- the menu: rows of outline buttons in one box of one-cell lines, a
+   one-cell rule between two rows and no outline of a row's own. The row
+   the keyboard is on is the lit one (.is-on, or aria-selected in a
+   listbox), ink with the bright word, the same face the hand lights on
+   hover, so a mouse and the arrow keys point the same way. A row's second
+   word (its hint, or a command's name) is the .k-meta beside it, and it
+   goes bright with the row. .k-up is a menu that opens upward off a bar:
+   its first row is the one nearest the bar, at the bottom. ---- */
+.k-menu {
+  display: flex;
+  flex-direction: column;
+  border: var(--cv-px) solid var(--cv-ink);
+  background: var(--cv-ground);
+}
+.k-menu > .k-btn {
+  justify-content: flex-start;
+  width: 100%;
+  border: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+/* a row's own border: 0 (above) outranks a bare `* + *`, so the rows
+   name themselves here too, or no menu draws the rule between them */
+.k-menu > * + *,
+.k-menu > .k-btn + .k-btn {
+  border-top: var(--cv-px) solid var(--cv-ink);
+}
+.k-menu > .k-btn[aria-selected='true'] {
+  background: var(--cv-ink);
+  color: var(--cv-bright);
+  text-shadow: none;
+}
+.k-menu > .k-btn:hover .k-meta,
+.k-menu > .k-btn:active .k-meta,
+.k-menu > .k-btn.is-on .k-meta,
+.k-menu > .k-btn[aria-selected='true'] .k-meta {
+  color: inherit;
+}
+.k-menu > .k-meta {
+  display: flex;
+  align-items: center;
+  min-height: var(--cv-ctrl-h);
+  padding: 0 calc(4 * var(--cv-px));
+}
+.k-menu.k-up {
+  flex-direction: column-reverse;
+}
+.k-menu.k-up > * + * {
+  border-top: 0;
+  border-bottom: var(--cv-px) solid var(--cv-ink);
+}
+
+/* ---- the selection mark: what is picked, marked round its edge the way a
+   drawing program marks a selection. A one-cell ink outline one cell off
+   the thing, and a handle of solid ink three cells square on each corner.
+   It stands outside the box, takes no pointer and has no glow: it is on or
+   it is off, in one step. The host puts it inside the picked thing, which
+   is positioned. ---- */
+.k-sel {
+  position: absolute;
+  inset: calc(-2 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  pointer-events: none;
+}
+/* forced-ok: the handles are texture on the outline; under a forced palette the border carries the mark */
+.k-sel::before {
+  content: '';
+  position: absolute;
+  inset: calc(-2 * var(--cv-px));
+  background:
+    linear-gradient(var(--cv-ink), var(--cv-ink)) 0 0 / calc(3 * var(--cv-px))
+      calc(3 * var(--cv-px)) no-repeat,
+    linear-gradient(var(--cv-ink), var(--cv-ink)) 100% 0 / calc(3 * var(--cv-px))
+      calc(3 * var(--cv-px)) no-repeat,
+    linear-gradient(var(--cv-ink), var(--cv-ink)) 0 100% / calc(3 * var(--cv-px))
+      calc(3 * var(--cv-px)) no-repeat,
+    linear-gradient(var(--cv-ink), var(--cv-ink)) 100% 100% / calc(3 * var(--cv-px))
+      calc(3 * var(--cv-px)) no-repeat;
+}
+
+/* ---- the loader: a meter with no length to fill (a fetch that does not
+   say how big it is), thirty-two cells long in a line of one cell, and a
+   block of ink eight cells long that walks it in four steps and starts
+   again. A meter is the same box filled when the length is
+   known. Under reduced motion the block waits at the start. ---- */
+.k-load {
+  display: block;
+  box-sizing: content-box;
+  width: calc(32 * var(--cv-px));
+  height: calc(2 * var(--cv-px));
+  border: var(--cv-px) solid var(--cv-ink);
+  overflow: hidden;
+}
+.k-load::before {
+  content: '';
+  display: block;
+  width: calc(8 * var(--cv-px));
+  height: 100%;
+  background: var(--cv-ink);
+  animation: k-walk var(--cv-dur-drift) var(--cv-ease-step) infinite;
+}
+@keyframes k-walk {
+  to {
+    transform: translateX(calc(32 * var(--cv-px)));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .k-load::before {
+    animation: none;
+  }
+}
+
+/* ---- the marquee: one line of type in a box that clips it. A line that
+   fits stands still; a line longer than its box (js/kit-marquee.js
+   measures it once per text and sets .is-over, the distance --mq-d and
+   the steps --mq-n, one a cell) waits, walks left through the box a cell
+   a step until its end shows, waits there, and is back at its start in
+   one frame, the way close is instant. Every marquee runs on the one
+   cadence (--cv-dur-marquee) and starts --mq-i tenths of it late, so the
+   lines of a list take turns rather than walking in lockstep. Under
+   reduced motion nothing walks: the line ends in an ellipsis, and the
+   whole text is still the element's text for a reader. ---- */
+.k-marquee {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.k-marquee.is-over {
+  text-overflow: clip;
+}
+.k-marquee.is-over .k-mq {
+  display: inline-block;
+  /* the steps ride the element, not the keyframe: a keyframe cannot read
+     the line's own --mq-n, and each stretch of the loop takes the element's
+     timing, so the walk is n steps and the waits are still */
+  animation: k-marquee var(--cv-dur-marquee) steps(var(--mq-n, 1), end) infinite;
+  animation-delay: calc(var(--cv-dur-marquee) * var(--mq-i, 0) / 10);
+}
+@keyframes k-marquee {
+  0%,
+  25% {
+    transform: translateX(0);
+  }
+  70%,
+  100% {
+    transform: translateX(calc(-1 * var(--mq-d, 0px)));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .k-marquee.is-over {
+    text-overflow: ellipsis;
+  }
+  .k-marquee.is-over .k-mq {
+    display: inline;
+    animation: none;
+  }
+}

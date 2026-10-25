@@ -1,0 +1,357 @@
+/* multiplayer-canvas/tokens.css: every design token: inks, the type ladder, spacing, the cell and module.
+   Inputs: none; link it before kit.css.
+   Outputs: --cv-* custom properties on the root element, light and dark. */
+/* =========================================================
+   canvas-tokens.css: the one place ink exists.
+
+   The runtime mirror of BIBLE.md. Every canvas surface (the home shell,
+   the private pages, the entry chain inside sheets) links this file first
+   and declares no color of its own; test/palette.test.js allowlists
+   exactly this file for chrome hex, and test/bible-sync.test.js fails the
+   build if these values drift from BIBLE.md's frontmatter.
+
+   Blue-black ink on one cool grey ground for everything NATIVE, and the
+   QUOTATION LAW for everything that is not: a tile whose data lives on a
+   platform wears that platform's own livery (the guest inks below), the
+   way the last-5 player is dark because a player is dark. Guest inks
+   exist here and nowhere else; chrome never borrows them.
+
+   ONE GROUND (2026-09-15). There is no second theme and no flip. Every
+   name below resolves to exactly one value, and that is the whole colour
+   system: the site had two themes, each of them got half the palette
+   right, and keeping both honest was work that bought nothing a visitor
+   ever asked for. What it cost to keep was worse than the feature: every
+   accent needed a light value AND a lifted dark one, every contrast pair
+   had to be measured twice, and a fix in one mode routinely broke the
+   other. Deleting the flip made every accent a single colour again.
+   A guest that is dark is dark because its HOST is dark, which
+   is the quotation law doing its job, not a theme surviving in a corner.
+   ========================================================= */
+
+/* THE FACE (#313, Lo-Hi tech): DotGothic16, a 16px dot-matrix gothic, OFL,
+   vendored as the latin subset with its licence beside it
+   (fonts/LICENSE-DotGothic16.txt). It replaced the face before it on
+   2026-09-24 through the one token below: every stylesheet and every measurement reads
+   --cv-font, so the swap was this block and that line. */
+@font-face {
+  font-family: 'DotGothic16';
+  src: url('/fonts/dotgothic16-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Hasklig';
+  src:
+    url('/fonts/hasklig-regular.woff2') format('woff2'),
+    url('/fonts/hasklig-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- ONE GROUND (2026-09-15): A REFLECTIVE GREY -----------------------
+     RETUNED (#366): ink #18181b on ground #e4e4e7, the zinc pair. The note
+     below is the history of the first grey: #c8c8be was the WINDOWS CLASSIC
+     face as XP shipped it, the grey you get
+     with Luna turned off, which is the machine this site's author actually
+     ran. Luna's own ButtonFace (#ece9d8) was tried and is too yellow to be a
+     ground; #d4d0c8 is the 95/98/2000 face, one step lighter than this.
+     There is no second theme and no switch: every accent below has ONE
+     value, chosen to sit on this ground, so the fire, Maurice and the guest
+     palettes are their own colour rather than a colour adjusted to survive
+     two grounds.
+
+     Every accent was retuned for it, because a ground this dark eats
+     contrast. The first pass solved them at 3:1, the graphics threshold, and
+     the contrast guard caught the mistake: several of these carry TEXT (an
+     entry link, an aphorism's strong, a numeric readout), so they owe 4.5:1,
+     not 3. They are darkened along their own hue until they clear it. The recess was re-derived too,
+     because the old one was LIGHTER than this ground and would have drawn a
+     cut that stuck out of the ground instead of into it. Measured, not
+     chosen. ---- */
+  /* the UA renders scrollbars and form controls in the active scheme */
+  color-scheme: light;
+  /* ---- ink ---- */
+  --cv-ink: #18181b;
+  --cv-ground: #e4e4e7;
+  /* the surface (2026-09-11): a card is one tonal step off the ground, white
+     on the ground. It had a lifted near-black twin for the night until
+     the flip went; one ground, one surface. Depth is the step plus the
+     hairline. */
+  --cv-surface: #ffffff;
+  /* THE SECOND GROUND, BY DECISION (#313): case-study pages stand on white,
+     experiment pages on the ground. White is a ground here, not a card, so
+     it has its own name even while it shares the surface's value. */
+  --cv-white: #ffffff;
+  --cv-mute: #505053;
+  /* Ink at partial strength: the hairline that structures every card and
+     control and the sheet scrim. Twelve percent: a line that
+     defines an edge without drawing a box around it. */
+  --cv-line: color-mix(in srgb, var(--cv-ink) 12%, transparent);
+  /* The drawn grid (BIBLE.md section 2): the module lattice always, the
+     cell lattice as the camera nears 1:1. Texture, not information, so it
+     sits far below the hairline: a lattice at hairline strength is a cage. */
+  --cv-grid: color-mix(in srgb, var(--cv-ink) 6%, transparent);
+  --cv-grid-fine: color-mix(in srgb, var(--cv-ink) 4%, transparent);
+  --cv-scrim: rgba(24, 24, 27, 0.55);
+  /* NO SHADOW (#313). No box-shadow, no drop-shadow, and the one-cell hard
+     cast is retired (BIBLE.md section 12). A control is a picture of its
+     state, lit from the top left and dithered (the parts under img/kit/,
+     baked from their shading functions through the textmode Bayer preset),
+     so nothing on the page needs a cast to read as raised.
+     test/ink-chrome.test.js fails any box-shadow or drop-shadow; the one
+     text-shadow it passes is the smear below. */
+  /* the lift: where a thing goes when a hand rests on it, one cell up and
+     left. Standing up (BIBLE.md section 3) the scene turns it, in
+     canvas-home.css, whole: never composed per element. */
+  --cv-lift-x: calc(-1 * var(--cv-px));
+  --cv-lift-y: calc(-1 * var(--cv-px));
+  /* THE RECESS (2026-09-15): the floor of a thing cut INTO the ground, one
+     tonal step under it. Its walls are tone bands now, not a cast. */
+  --cv-recess: #d4d4d7;
+  /* the border a figure in a page is framed with: a whole cell of the cut
+     tone, never a hairline (BIBLE.md section 12, the hairline pass) */
+  --cv-bd: var(--cv-px) solid var(--cv-line);
+  /* THE CUT (2026-09-15): how two blocks of surface are told apart now that
+     nothing on the canvas is outlined. The ground showing through at the
+     chrome's half-cell: a colour block, not a hairline. On the ground itself
+     the same idea is drawn at the full cell (--cv-px), because a mark on the
+     canvas is scaled by the camera and a mark on the chrome is not. */
+  --cv-bd-cut: 2px solid var(--cv-ground);
+  /* THE STRONG EDGE, A WHOLE CELL (2026-09-15, up from a half). Almost
+     nothing is edged any more: a tile is a block that meets the ground at a
+     change of colour and throws a cast, and that is the whole of it. What is
+     left edged is hero furniture and the controls that have to read from
+     across the room, and those take a WHOLE cell, because the zoom ladder
+     rests where one cell is a whole number of device pixels and a HALF cell
+     therefore lands on a half pixel at every odd rung of it: the opening
+     camera (z 0.875 at 2x) drew every one of these at three and a half
+     device pixels. A whole cell is crisp at every rung by construction. */
+  --cv-bd-ink: var(--cv-px) solid var(--cv-ink);
+
+  /* ---- THE RAMP (#313, Lo-Hi tech): the greys a part is dithered onto,
+     darkest first. ink, mute and ground are the tokens above; deep sits under
+     the ink (the floor of a knurl, the bore of a pin), mid between mute and
+     ground (a turned face half in light), bright above the ground (the lit
+     edge, and the light text on a dark face). scripts/img/kit-parts.mjs
+     reads these by name, so a retuned grey rebakes into every part, and
+     test/kit.test.js holds every kit PNG to exactly these colours. ---- */
+  --cv-deep: #0c0c0f;
+  --cv-mid: #99999c;
+  --cv-bright: #f4f4f5;
+  /* brick means ARMED or LIVE (BIBLE.md section 1): the lit lamp, the call
+     that is called, the reset that asks "sure?". Its ramp is the brick
+     token between a deep and a light, with Maurice's red (brick-fixed,
+     below) as the third step, so a lit jewel and the ladybug are one red. */
+  --cv-brick-deep: #3a1612;
+  --cv-brick-light: #e06a4a;
+
+  /* ---- content accents (figures and illustrations only; never chrome,
+     never tiles: tiles wear their host's livery, the guest inks below) ---- */
+  --cv-brick: #883c31;
+  /* 2.48:1 on the ground, and deliberately left there. Ochre is the one accent
+     with no text consumer anywhere in the tree: its one use is the `fill:` of an
+     instrument sprite's ochre cells (`.o` in instruments.css), always
+     inside an ink outline. WCAG 1.4.3 governs text and 1.4.11 governs components
+     and graphical objects required to understand content; an illustration
+     fill is neither, so darkening it would change the artwork and buy
+     nothing. test/contrast.test.js measures it and prints the number rather
+     than gating it, and says why in place. */
+  --cv-ochre: #6c4e27;
+  --cv-sage: #46564d;
+  /* THE PRINT ANCHORS, and the name is the contract: these are the two
+     ends of the greyscale, held still, for surfaces that are not the
+     ground. entry.css rebinds ink and ground to them inside @media print
+     (the screen ground is a grey that would print as a grey box). They are
+     NOT a second theme and never were a screen pair. */
+  --cv-ink-fixed: #18181b;
+  /* and the one red that is not on the accent ladder at all: Maurice's
+     shell (BIBLE.md section 5), sampled from his photograph. A ladybug is
+     content, not chrome, so his red is the photograph's rather than a
+     value tuned to sit on the ground. */
+  --cv-brick-fixed: #b81818;
+  --cv-ground-fixed: #e4e4e7;
+  /* ---- faces ----
+     THE FACE IS THIS ONE LINE (#313): every surface and every kit control
+     reads --cv-font, so swapping the face is here, with its @font-face
+     at the top of this file if the new face is a file. */
+  --cv-font: 'DotGothic16', system-ui, sans-serif;
+  --cv-font-code: 'Hasklig', ui-monospace, monospace;
+  /* THE SMEAR (#313): dark on light is smear bold, the glyph drawn again one
+     dot to the right. A dot-matrix face has one weight, and this is how a
+     terminal made a bold. It is a glyph weight, not a shadow, and it is the
+     one text-shadow test/ink-chrome.test.js passes: by this token only,
+     never retyped, so no blur can ride in on it. Light on dark stays regular
+     (a dark ground already reads heavy), so an inverted context sets
+     text-shadow: none. */
+  --cv-smear: calc(1em / 16) 0 0 currentColor;
+
+  /* ---- radius: no corner is round, a corner is a cell. The two names
+     stay as the roles they were (a card or control, the sheet). ---- */
+  --cv-r: 0px;
+  --cv-r-sheet: 0px;
+
+  /* ---- the cell: the logo's pixel (BIBLE.md section 3). Every size on
+     the ground is N of it; the 8px unit is two, the module twelve, the
+     maker's mark eleven. The label hand of the pixel type and the 24-grid
+     icons draw on its half. ---- */
+  --cv-px: 4px;
+  /* ---- spacing: the 8px grid (sp-hair/sp-1 are the documented sub-grid
+     exceptions: hairline nudges and chip padding only), plus the module
+     trio the world is built from ---- */
+  --cv-sp-hair: 2px;
+  --cv-sp-1: 4px;
+  --cv-sp-2: 8px;
+  --cv-sp-3: 12px;
+  --cv-sp-4: 16px;
+  --cv-sp-5: 20px;
+  --cv-sp-6: 24px;
+  --cv-sp-7: 32px;
+  --cv-sp-8: 40px;
+  --cv-sp-9: 56px;
+  --cv-sp-10: 80px;
+  --cv-module: 48px;
+  --cv-gutter: 48px;
+  --cv-air: 96px;
+
+  /* ---- type: one ladder for the kit and the canvas (BIBLE.md section 3).
+     The face is drawn on a 16 grid, crisp at whole multiples of 16 and at
+     nothing between, so every step is one: 16, 32, 48, 64 here, and 112,
+     which only the postcard sets (layout.js LADDER). The old names stay as
+     the roles they were (meta, body, lead, title), snapped to the nearest
+     crisp step. Display line height is five quarters, on the cell; prose
+     reads at three grid units on the 16px body (lh-prose = 24/16). ---- */
+  --cv-fs-meta: 16px;
+  --cv-fs-0: 16px;
+  --cv-fs-1: 16px;
+  --cv-fs-2: 32px;
+  --cv-fs-3: 32px;
+  --cv-fs-4: 48px;
+  --cv-fs-6: 64px;
+  --cv-lh-display: 1.25;
+  --cv-lh-prose: 1.5;
+
+  /* ---- control heights: every control in a row reads one of these
+     explicitly, never emergent line-height arithmetic. One height, because
+     the 36px watch variant that used to sit here existed to shrink a bar
+     that never worked on that screen at any size. The watch density carries
+     no chrome at all now (BIBLE.md section 8), so it needs no measure. ---- */
+  --cv-ctrl-h: 44px;
+  --cv-hero-btn-h: 56px;
+
+  /* ---- reading measure for prose columns ----
+     `ch` is the width of "0", which in a dot-matrix face is half the em
+     (8px at the 16px body), so 60ch is 480px and carries about 60 characters.
+     The measure is tuned here and nowhere else. */
+  --cv-reading: 60ch;
+
+  /* ---- motion: a state machine (BIBLE.md section 9). A thing holds a pose
+     and snaps to the next on a frame; nothing tweens and nothing fades.
+     The frames are three names and there is no curve among them: the one
+     curve is the camera's flight, and that is arithmetic in layout.js
+     (flightPath), which reads no token. The glide easing and the spring
+     went with the tween (section 12). ---- */
+  --cv-dur-press: 120ms;
+  --cv-dur-quick: 150ms;
+  --cv-dur-glide: 250ms;
+  --cv-dur-slide: 320ms;
+  --cv-dur-drift: 600ms;
+  /* the one ambient loop, outside the bands: the marquee's cadence (kit.css
+     .k-marquee). A line longer than its box waits, walks and waits once a
+     cadence, and the lines of a list start a tenth of it apart. It was 96s
+     for the /work keyword ribbon, which is gone. */
+  --cv-dur-marquee: 12s;
+  /* a held pose: nothing between two keyframes, the next pose lands whole
+     on the frame, the way a sprite snaps between the poses it holds */
+  --cv-ease-hold: steps(1, end);
+  /* a lift, a settle, a press land in four frames, the way a sprite does */
+  --cv-ease-step: steps(4, end);
+  /* a long move (a page growing out of its card) lands in eight frames */
+  --cv-ease-frames: steps(8, end);
+
+  /* ---- layers: every z-index reads one of these (BIBLE.md section 8).
+     Ordered low to high, and a name only means something beside the names
+     it shares a stacking context with. The first five order the parts of
+     one box (a tile, the scene, a page, a bar); the rest are the screen's.
+     Two things on one layer stack by source order. ---- */
+  /* behind its own box's content: the tap pad under a glyph */
+  --cv-z-under: -1;
+  /* the floor a layer is stated on: the scene and the grid drawn on it,
+     and the world's two pictures over the scene (the plan, the map) */
+  --cv-z-ground: 0;
+  /* one part over its neighbours: the seam over the grid, a black key, a
+     card's tabs, the fan's grid, a bar's button */
+  --cv-z-over: 1;
+  /* over those: a node over the seam, a bar or a head over what scrolls
+     under it (the page bar, the fan's head, the desk's nav, a file's head) */
+  --cv-z-raised: 2;
+  /* whatever points: the room's hands and the finder's selection mark, over
+     everything in the box they point into */
+  --cv-z-hands: 3;
+  /* the collection, over the world */
+  --cv-z-fan: 4;
+  /* a page and its scrim, over the fan and any bar a page opens over */
+  --cv-z-sheet: 5;
+  /* the canvas's bar, over the page, and the frame round a follow */
+  --cv-z-chrome: 6;
+  /* what floats over the chrome: a menu off a bar, the room's panels */
+  --cv-z-menu: 7;
+  /* the skip link, over all of it once it has the keyboard */
+  --cv-z-skip: 8;
+  /* a move in flight (js/pixel-moves.js paints it over everything) */
+  --cv-z-move: 9;
+  /* the ?diag readout */
+  --cv-z-diag: 10;
+}
+
+/* =========================================================
+   THE GUEST INKS: palettes that belong to content, not to the site. The
+   sky is the one guest left: the weather window paints it from the data,
+   and chrome, the hero, the sheet and every native tile never read it.
+   ========================================================= */
+:root {
+  /* the sky in the weather window (canvas/outlook.js, issue #305), told by
+     the DATA: the ends of the day and of the night, and the three warm
+     inks a low sun paints (the rose and the glow at the horizon at dawn and
+     sunset, and the sun's own face). Nothing is written on the sky; the
+     reading is the tile's label. */
+  --guest-sky-day-1: #4a97e0;
+  --guest-sky-day-2: #8fc3f0;
+  --guest-sky-night-1: #182635;
+  --guest-sky-night-2: #31465e;
+  --guest-sky-rose: #c97b8c;
+  --guest-sky-glow: #f0a45c;
+  --guest-sky-sun: #fff3c4;
+}
+
+/* =========================================================
+   THE SYNTAX THEME: One Dark, quoted verbatim from its author. Code is
+   content (BIBLE.md section 1), and a syntax theme is its author's the way
+   a guest's livery is its host's, so these sit apart from the accents and
+   chrome never reads them. css/highlight.css paints every highlight.js
+   class with them. Two of its hues are under the text minimum on their
+   own ground; test/contrast.test.js freezes them as quotation debt.
+   ========================================================= */
+:root {
+  --cv-code-bg: #282c34;
+  --cv-code-ink: #abb2bf;
+  /* comments and quotes */
+  --cv-code-comment: #5c6370;
+  /* keywords, doc tags, formulas */
+  --cv-code-keyword: #c678dd;
+  /* names, sections, selector tags, substitutions, deletions */
+  --cv-code-name: #e06c75;
+  /* literals */
+  --cv-code-literal: #56b6c2;
+  /* strings, regexps, attributes, additions */
+  --cv-code-string: #98c379;
+  /* numbers, types, variables, attrs, selector classes */
+  --cv-code-number: #d19a66;
+  /* titles, links, symbols, bullets, meta, selector ids */
+  --cv-code-title: #61aeee;
+  /* built-ins and class names */
+  --cv-code-class: #e6c07b;
+}
