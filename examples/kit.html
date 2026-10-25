@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>kit example</title>
+    <link rel="stylesheet" href="/primitives/kit/canvas-tokens.css" />
+    <link rel="stylesheet" href="/primitives/kit/kit.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "multiplayer-canvas/kit/scroll": "/primitives/kit/kit-scroll.js",
+          "multiplayer-canvas/kit/marquee": "/primitives/kit/kit-marquee.js",
+          "multiplayer-canvas/kit/arm": "/primitives/kit/kit-arm.js"
+        }
+      }
+    </script>
+    <style>
+      body {
+        margin: 32px 16px;
+        background: var(--cv-ground);
+        color: var(--cv-ink);
+        font-family: monospace;
+      }
+      body > * {
+        margin-bottom: 24px;
+      }
+      #line {
+        display: block;
+        width: 160px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Showing: <span id="now">one</span></p>
+    <div id="pager"></div>
+    <div id="line"></div>
+    <button class="k-btn" id="wipe">delete</button>
+    <script type="module">
+      import { scrollMarkup, wireScroll } from 'multiplayer-canvas/kit/scroll'
+      import { marqueeMarkup, wireMarquees } from 'multiplayer-canvas/kit/marquee'
+      import { armed } from 'multiplayer-canvas/kit/arm'
+
+      const titles = ['one', 'two', 'three', 'four']
+      const pager = document.querySelector('#pager')
+      pager.innerHTML = scrollMarkup({ titles, label: 'pages' })
+      wireScroll(pager.firstElementChild, {
+        titles,
+        onCommit: (i) => (document.querySelector('#now').textContent = titles[i]),
+      })
+
+      const line = document.querySelector('#line')
+      line.innerHTML = marqueeMarkup('a line longer than the box it sits in walks through it')
+      wireMarquees(line)
+
+      armed(document.querySelector('#wipe'), async () => {
+        document.querySelector('#wipe').textContent = 'deleted'
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sky example</title>
+    <link rel="stylesheet" href="/primitives/kit/canvas-tokens.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "multiplayer-canvas/sky": "/primitives/sky/outlook.js"
+        }
+      }
+    </script>
+    <style>
+      body {
+        margin: 32px 16px;
+        background: var(--cv-ground);
+      }
+      canvas {
+        width: 240px;
+        image-rendering: pixelated;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="sky"></canvas>
+    <script type="module">
+      import { frame, INKS, SIZE, STEP_MS } from 'multiplayer-canvas/sky'
+
+      const canvas = document.querySelector('#sky')
+      canvas.width = canvas.height = SIZE
+      const ctx = canvas.getContext('2d')
+      const css = getComputedStyle(document.documentElement)
+      const inks = Object.fromEntries(
+        Object.entries(INKS).map(([k, v]) => [k, css.getPropertyValue(v).trim()])
+      )
+      const weather = { cond: 'rain', day: true }
+
+      let n = 0
+      setInterval(() => {
+        const rgba = frame(weather, Date.now(), n++, inks)
+        ctx.putImageData(new ImageData(rgba, SIZE, SIZE), 0, 0)
+      }, STEP_MS)
+    </script>
+  </body>
+</html>

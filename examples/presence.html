@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>presence example</title>
+    <link rel="stylesheet" href="/primitives/kit/canvas-tokens.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "multiplayer-canvas/presence": "/primitives/presence/presence.js",
+          "multiplayer-canvas/torus": "/primitives/torus.js",
+          "multiplayer-canvas/grid": "/primitives/grid.js"
+        }
+      }
+    </script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: var(--cv-ground);
+        color: var(--cv-ink);
+      }
+      #scene {
+        position: absolute;
+        inset: 0;
+      }
+      #cursors > * {
+        position: absolute;
+      }
+      p {
+        position: absolute;
+        margin: 16px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="scene"></div>
+    <p>Open this page in a second tab and move the mouse. Others here: <span id="n">0</span></p>
+    <script type="module">
+      import { initPresence } from 'multiplayer-canvas/presence'
+      import { wrapPos } from 'multiplayer-canvas/torus'
+
+      const p = initPresence({ scene: document.querySelector('#scene'), wrapPos })
+      p.onCount((n) => (document.querySelector('#n').textContent = n ?? 0))
+      addEventListener('pointermove', (e) =>
+        p.post(e.clientX / innerWidth, e.clientY / innerHeight)
+      )
+
+      const view = () => ({
+        camX: 0,
+        camY: 0,
+        WORLD_W: innerWidth,
+        WORLD_H: innerHeight,
+        VW: innerWidth,
+        VH: innerHeight,
+        Z: 1,
+        edge: { top: 0, bottom: innerHeight },
+      })
+      requestAnimationFrame(function tick(t) {
+        p.frame(view(), t)
+        requestAnimationFrame(tick)
+      })
+    </script>
+  </body>
+</html>

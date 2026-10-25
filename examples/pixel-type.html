@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>pixel-type example</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "multiplayer-canvas/pixel-type": "/primitives/pixel-type.js",
+          "multiplayer-canvas/dust": "/primitives/dust.js"
+        }
+      }
+    </script>
+    <style>
+      body {
+        margin: 32px 16px;
+        color: #222;
+        background: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title"></div>
+    <script type="module">
+      import { pixelText, gridOf } from 'multiplayer-canvas/pixel-type'
+      import { createDust } from 'multiplayer-canvas/dust'
+
+      const word = 'HELLO'
+      const box = document.querySelector('#title')
+      box.innerHTML = pixelText(word, 'display', { scale: 2 }).svg
+
+      const dust = createDust()
+      dust.wire(box.querySelector('svg'), gridOf(word, 'display', 0))
+      box.addEventListener('pointermove', (e) => dust.under(box, e.clientX, e.clientY))
+    </script>
+  </body>
+</html>

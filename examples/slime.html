@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>slime example</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "multiplayer-canvas/slime": "/primitives/slime/slime.js"
+        }
+      }
+    </script>
+    <style>
+      body {
+        margin: 32px 16px;
+        background: #eee;
+      }
+      canvas {
+        width: 320px;
+        image-rendering: pixelated;
+        cursor: crosshair;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="dish"></canvas>
+    <script type="module">
+      import {
+        createSlime,
+        step,
+        feed,
+        tones,
+        foodCells,
+        paintDish,
+        DISH,
+      } from 'multiplayer-canvas/slime'
+
+      const canvas = document.querySelector('#dish')
+      canvas.width = canvas.height = DISH
+      const ctx = canvas.getContext('2d')
+      const mould = createSlime(42)
+      const ink = [null, '#bbb', '#888', '#222']
+
+      canvas.addEventListener('click', (e) => {
+        const r = canvas.getBoundingClientRect()
+        feed(
+          mould,
+          Math.floor(((e.clientX - r.x) / r.width) * DISH),
+          Math.floor(((e.clientY - r.y) / r.height) * DISH)
+        )
+      })
+      setInterval(() => {
+        step(mould)
+        paintDish(ctx, tones(mould), foodCells(mould), ink, '#c33')
+      }, 100)
+    </script>
+  </body>
+</html>
