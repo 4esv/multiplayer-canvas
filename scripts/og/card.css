@@ -1,0 +1,289 @@
+/* The Open Graph card's stylesheet (scripts/og/cards.mjs builds the markup,
+   scripts/og/render.mjs draws it in Chrome and puts it on the ramp).
+
+   A card is the site at billboard size, made of the site's own parts: the
+   real tokens, the real kit, the pixel title the page sets, the marks the
+   home screen holds. This file is only what a card adds: the frame, the
+   grid it stands on, and where each part goes. Every length is a whole number
+   of cells (4px) from the card's top left, the type is the one face at whole
+   multiples of its 16px design size (a dot is a whole number of px), and
+   every colour is a grey token, because the card is snapped to the ramp.
+
+   One frame, six layouts. Five of them split the sheet in two, text on the
+   left and a window on the right that the sheet's edges cut:
+     .og-page     a case study: its tags, and its own figure at twice its size
+     .og-thing    an experiment: the baked picture, standing on the ground
+     .og-mark     a door that is a way out of the home screen: the mark, grown
+     .og-pile     a collection: its own cards, as the canvas draws them
+     .og-gallery  the work: each case study's figure in a cell
+   and the fifth is the ground itself:
+     .og-home     the statement and the ways out
+*/
+
+:root {
+  --og-cell: 4px;
+}
+
+html,
+body {
+  width: 1200px;
+  height: 630px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--cv-ground);
+  color: var(--cv-ink);
+  font-family: var(--cv-font);
+  -webkit-font-smoothing: none;
+  font-synthesis: none;
+  font-variant-ligatures: none;
+}
+body {
+  position: relative;
+}
+
+/* the ground shows its grid: a cell of mid in every module, a hard square
+   (the kit's conic trick), because a faint speck would not survive the ramp */
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(at 4px 4px, transparent 0 270deg, var(--cv-mid) 0) 0 0 / 48px 48px;
+}
+
+/* dark on light is smear bold, as on the site: the glyph again one dot to
+   the right. Set on the line of type, so the dot is that line's own */
+.og-smear {
+  text-shadow: calc(1em / 16) 0 0 currentColor;
+}
+
+/* the sheet: the bright token on the ground under an ink masthead four
+   cells deep, as a tile is */
+.og-sheet {
+  position: absolute;
+  inset: 32px 32px 34px;
+  background: var(--cv-bright);
+  border-top: calc(4 * var(--og-cell)) solid var(--cv-ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.og-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+}
+
+/* the foot under a rule of ground one cell deep */
+.og-foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: var(--og-cell) solid var(--cv-ground);
+  padding: 24px 60px 28px;
+}
+.og-brand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.og-logo {
+  display: grid;
+  place-content: center;
+  background: var(--cv-ground);
+  padding: 8px;
+}
+.og-logo svg {
+  display: block;
+  width: 44px;
+  height: 44px;
+}
+.og-word,
+.og-who {
+  font-size: 32px;
+  line-height: 40px;
+}
+.og-who {
+  color: var(--cv-mute);
+}
+
+/* the kit's tag at twice the size, every cell of it twice as big, so it is
+   still the same eight-cell block and a whole number of cells. The kit draws
+   its frame in the line tone, ink at a fraction, which the ramp would take
+   for the sheet it stands on: here the frame is the ground, a grey token */
+.og-text .k-tags,
+.og-made .k-tags {
+  gap: 16px;
+}
+.og-text .k-tag,
+.og-made .k-tag {
+  padding: 0 16px;
+  border: 8px solid var(--cv-ground);
+  background: var(--cv-bright);
+  font-size: 32px;
+  line-height: 48px;
+}
+
+/* the meta line over a title */
+.og-meta {
+  font-size: 32px;
+  line-height: 40px;
+  color: var(--cv-mute);
+}
+
+/* ---- the split ---------------------------------------------------------
+   Text on the left, a window on the right cut by the sheet's edges, the way
+   a page runs on past its frame. A figure is drawn on half a cell a unit, so
+   at four px a unit every one of its units is a whole cell and its type is at
+   whole dots. */
+.og-page .og-body,
+.og-thing .og-body,
+.og-mark .og-body,
+.og-pile .og-body,
+.og-gallery .og-body {
+  display: grid;
+  grid-template-columns: 416px 608px;
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: 52px;
+  padding: 0 0 0 60px;
+}
+.og-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+  padding: 40px 0 0;
+}
+.og-lede {
+  flex: 1 1 0;
+  min-height: 0;
+  font-size: 32px;
+  line-height: 48px;
+  color: var(--cv-mute);
+  overflow: hidden;
+  margin: 0;
+}
+.og-fig {
+  position: relative;
+  width: 608px;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* the pixel title, at a card's size: --tpx is the px one glyph pixel is */
+.og .ptitle {
+  --tpx: 6px;
+}
+.og-page .ptitle {
+  --tpx: 4px;
+}
+
+/* a case study: its figure, or a photograph, from the window's top left */
+.og-page .og-fig > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}
+.og-fig img {
+  image-rendering: pixelated;
+}
+
+/* a page that draws nothing is shown by what it says and what it was made of */
+.og-made {
+  padding: 40px 40px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.og-made .og-lede {
+  flex: none;
+}
+
+/* a thing, a mark or a pile: the window is a piece of the world, speck and
+   all, with the picture standing on it */
+.og-thing .og-fig,
+.og-mark .og-fig,
+.og-pile .og-fig {
+  display: grid;
+  place-content: center;
+  background: var(--cv-ground) conic-gradient(at 4px 4px, transparent 0 270deg, var(--cv-mid) 0) 0
+    0 / 48px 48px;
+}
+.og-fig svg {
+  display: block;
+}
+.og-mark .og-fig svg {
+  fill: currentColor;
+}
+
+/* the work: six cells, each the figure of one case study at the size its page
+   draws it, from the cell's top left */
+.og-cells {
+  display: grid;
+  grid-template-columns: repeat(3, 192px);
+  grid-template-rows: repeat(2, 208px);
+  gap: 16px;
+}
+.og-cell {
+  position: relative;
+  overflow: hidden;
+  border: var(--og-cell) solid var(--cv-ground);
+}
+.og-cell > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}
+.og-cell .ptitle {
+  --tpx: 2px;
+  padding: 12px;
+  row-gap: 8px;
+}
+
+/* ---- the home screen ----------------------------------------------------
+   The ground and nothing on it but the statement and the ways out: the
+   first screen, at billboard size. */
+.og-home .og-hero {
+  position: absolute;
+  inset: 0 0 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 72px;
+  padding: 0 96px;
+}
+.og-home .ptitle {
+  --tpx: 8px;
+  justify-content: center;
+  column-gap: 32px;
+  text-align: center;
+}
+.og-home .og-belt {
+  display: flex;
+  gap: 40px;
+}
+.og-home .og-glyph svg {
+  display: block;
+  width: 48px;
+  height: 48px;
+  fill: currentColor;
+}
+.og-foot-bare {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 0;
+  padding: 0 60px 40px;
+}
+
+/* the cards a pile holds are the canvas's own, at the size the canvas draws
+   them; their tags are the kit's at its own size. A host's line tone is a
+   fraction of ink and the ramp would take it for the card, and inside a
+   quotation the ground is the host's own, so the frame is the ramp's mid */
+.og-pile .k-tag {
+  border-color: var(--cv-mid);
+}
