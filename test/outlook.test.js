@@ -46,7 +46,7 @@ const key = (c) => c.join(',')
 const same = (a, b) => key(a) === key(b)
 const luma = ([r, g, b]) => 0.299 * r + 0.587 * g + 0.114 * b
 
-// Ithaca, 23 Sep 2026, Open-Meteo's own sunrise and sunset
+// a mid-latitude day near the equinox, as Open-Meteo reports sunrise and sunset
 const RISE = 1790160870
 const SET = 1790204486
 const AT = {
@@ -58,7 +58,7 @@ const AT = {
 const sky = (cond, phase, extra = {}) => ({
   tempF: 57,
   cond,
-  place: 'ithaca, ny',
+  place: 'london',
   day: phase !== 'night',
   rise: RISE,
   set: SET,

@@ -1242,7 +1242,7 @@ const LOADERS = {
   weather: async () => ({
     tempF: 41,
     condition: 'drizzle',
-    city: 'Ithaca',
+    city: 'London',
     isDay: false,
     highF: 44,
     lowF: 33,

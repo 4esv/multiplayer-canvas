@@ -124,6 +124,7 @@ const REMOVED_WORLD = new RegExp(
       'caddy',
       'porkbun',
       'cornell',
+      'ithaca',
       'birdie',
       'just heard',
       'aesv',
