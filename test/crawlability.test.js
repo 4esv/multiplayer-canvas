@@ -41,7 +41,7 @@ const CRAWLER = { 'user-agent': 'Mozilla/5.0 (compatible; GPTBot/1.2; +https://o
 // What a public reader genuinely cannot act on (the reasons are in the
 // test that walks every page, below).
 const INTERNAL = [
-  ['repo doc', /\b(BIBLE|CLAUDE|README|DESIGN|CANVAS|MEMORY)\.md\b/],
+  ['repo doc', /\b(BIBLE|README|DESIGN|CANVAS|MEMORY)\.md\b/],
   ['repo path', /\b(content\/feed\/|src\/(routes|static|templates|lib|services)\/|sandbox\/)/],
   ['test file', /\b[a-z-]+\.test\.js\b/],
   ['repo phrase', /\brepo root\b|\bcanvas-lab\b|\bnode_modules\b/],

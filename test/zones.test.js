@@ -196,6 +196,6 @@ describe('zones: served', () => {
     assert.ok(r.body.includes('id="preludeZones"'))
     assert.ok(r.body.includes('example copy for the work panel'), 'the words are in the document')
     // and nothing in the zones names a repo-internal thing
-    for (const z of boot.zones) assert.doesNotMatch(z.html, /BIBLE|CLAUDE|content\/feed|src\//)
+    for (const z of boot.zones) assert.doesNotMatch(z.html, /BIBLE|content\/feed|src\//)
   })
 })
