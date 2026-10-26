@@ -35,10 +35,10 @@ colors:
   # the floor of a cut: one tonal step UNDER the ground. On the old near-white
   # ground this was lighter than the ground, which drew a cut that stuck out.
   recess: '#d4d4d7'
-  # the second ground, by decision (#313): case-study pages stand on white,
+  # the second ground, by decision: case-study pages stand on white,
   # experiment pages on the ground
   white: '#ffffff'
-  # the parts ramp (#313, Lo-Hi tech): the greys a part is dithered onto,
+  # the parts ramp: the greys a part is dithered onto,
   # darkest first, with ink, mute and ground above. src/lib/kit-parts.js reads
   # them by name and test/kit.test.js holds every kit PNG to them.
   deep: '#0c0c0f'
@@ -157,12 +157,12 @@ components:
     backgroundColor: '{colors.sage}'
   figure-fill-ochre:
     backgroundColor: '{colors.ochre}'
-  # the kit (#313): each face a control can wear, with the label it carries
+  # the kit: each face a control can wear, with the label it carries
   page-case-study:
     backgroundColor: '{colors.white}'
     textColor: '{colors.ink}'
     typography: '{typography.body}'
-  # the kit (#313): the faces software draws in CSS; the hardware is a
+  # the kit: the faces software draws in CSS; the hardware is a
   # baked picture and carries no text pair
   kit-inverted:
     backgroundColor: '{colors.ink}'
@@ -211,7 +211,7 @@ Be terse, always. Don't overstate, the reader is not dumb.
 ## 0. The standard: Lo-Hi tech
 
 **North star.** A homogeneous, digital, interactive, multiplayer ode to
-interfaces and the web. In the author's words:
+interfaces and the web. In one statement:
 
 > This is an ode to interfaces, interaction and the digital. We're doing an
 > anachronistic hyper-digital experience. We are creating a seamless
@@ -255,7 +255,7 @@ answers. Digital but alive.
 
 - **Pictures:** dithered realism. Every picture we own goes through the
   site's textmode path, the Bayer preset (`PRESETS` in
-  `js/textmode-settings.js`, drawn by `js/textmode-draw.js`): the
+  `primitives/textmode-settings.js`, drawn by `js/textmode-draw.js`): the
   photographs, the renders and the OG cards. A photograph keeps its colour
   and gives up its continuous tone: each cell is a Bayer glyph of two
   neighbouring lightnesses of the grey ramp, and its dots take the cell's
@@ -282,9 +282,7 @@ answers. Digital but alive.
   `src/lib/kit-parts.js`, and `/admin/kit` is the sheet, the living specimen
   of everything (section 10).
 - **The control grammar.** A state is drawn by what a person can do with
-  it, so the brain reads it before the words do (the author: "we use flip
-  switches for binaries that can be toggled, lights for binaries that are
-  read only. Think in that frame"). Every control on the site is one row
+  it, so the brain reads it before the words do. Every control on the site is one row
   of this, and a row is chosen by the job, never by the look.
   - A binary you SET (a setting that stays): the flip switch, lever up for
     on (`.k-switch`, the `flip` part; the instruments' toggle is the same
@@ -345,7 +343,7 @@ answers. Digital but alive.
   dithered through the textmode Bayer preset (the site's own path; no second
   ditherer), baked to PNG, snapped to the cell and metadata-stripped
   (`scripts/img/bake-parts.mjs`). A new part is a new spec in that generator,
-  never a hand SVG. The Bayer order has one source, `js/textmode-settings.js`:
+  never a hand SVG. The Bayer order has one source, `primitives/textmode-settings.js`:
   every dither in the tree (the map, the sky, the photograph pixelator, the
   dither frames) imports it, and nothing else writes a threshold matrix or
   builds one (`test/one-bayer.test.js`).
@@ -358,7 +356,7 @@ answers. Digital but alive.
   experiments. There is ONE ground: no switch, no bulb, no stored preference,
   no OS listener, and every accent is a single colour
   (`test/one-ground.test.js`).
-- **The one stated exemption: a page that is READ.** The author: "make sure anyone can read it". A reader's eyes are not ours
+- **The one stated exemption: a page that is READ.** A reader's eyes are not ours
   to choose, so the shell of a page that is read (`#modal.reading`, a case
   study now, the articles and reports after it) may take the inverted
   ground, bright words on ink, when the reader says so (Dark Mode) or, with
@@ -601,10 +599,9 @@ answers. Digital but alive.
   count that appears is born on its digits, and only a change to one already
   showing turns (`test/first-paint.test.js`,
   `test/presence-optional.test.js`).
-- **THE VIEW TRAVELS WHERE ACTS DO.** The author: "Ensure everything that
-  can be synced (even video playback if possible) is."
+- **THE VIEW TRAVELS WHERE ACTS DO.**
   What a visitor is looking at is an act on a channel of its own, `view`
-  (`lib/presence-protocol.js`), so the room's audience rules hold it
+  (`primitives/presence/presence-protocol.js`), so the room's audience rules hold it
   unchanged: in the public room at large it goes nowhere and each
   visitor's view is their own; under a follow it goes from the one
   followed to the tabs following them; in a session it goes from everyone
@@ -615,7 +612,7 @@ answers. Digital but alive.
   cards is up. Spreading a pile is the visitor's own in the public room, and
   shared inside a follow or a session. A page's view carries the page's slug and is dropped on any
   other page, and every view is read strictly, anything malformed dropped
-  whole (`canvas/view-sync.js`). Applying one never says it back: a page
+  whole (`primitives/rooms/view-sync.js`). Applying one never says it back: a page
   script holds its own replay flag, and a state equal to the one just told
   is not news. A browser that refuses to start sound on a page nobody
   touched is never overruled in silence: the video plays along muted with
@@ -636,7 +633,7 @@ answers. Digital but alive.
   quantised (`QUANT`) to under a pixel of the world. The frame is IDENTICAL
   for every recipient, so it is serialised ONCE per tick; the sender's own
   entry rides along and the client skips its own id. The client eases
-  between snapshots (`SMOOTH_TAU` in canvas/presence.js), so the tick is the
+  between snapshots (`SMOOTH_TAU` in primitives/presence/presence.js), so the tick is the
   rate news ARRIVES at, not the rate anything is drawn at. Inbound is
   untouched: a client still sends `move`.
   A snapshot entry carries the hover key ONLY WHEN IT CHANGES. An entry has
@@ -661,7 +658,7 @@ answers. Digital but alive.
   remaining part is at the opposite edge, where the world starts again,
   and it is drawn there (layout.js `wrapSpots`: a second spot only for a
   span the view's edge cuts, the two parts disjoint). The node stands at
-  its own spot and every other part is a LIVE copy (`canvas/mirror.js`):
+  its own spot and every other part is a LIVE copy (`primitives/mirror.js`):
   inert and aria-hidden with no ids and no presence key, its canvases
   repainted from the node's every frame and the whole copy re-cloned on
   any change to the node, so it is the same tile now, never a frozen
@@ -756,7 +753,7 @@ answers. Digital but alive.
   to the readers of that page and the ground's to the visitors on the
   ground, a place with one person in it is sent nothing and sends nothing,
   and only a change of place goes to everyone, which is how the who's-here
-  list and a follower learn where somebody went (`lib/presence-room.js`).
+  list and a follower learn where somebody went (`primitives/presence/presence-room.js`).
   Following is picking a cursor (a click on it, or a row of the who's-here
   list off the tally or `/who`) and going where it goes: the camera keeps
   it under the middle of the frame, a page it opens opens here, its block
@@ -809,7 +806,7 @@ answers. Digital but alive.
   them in, in the room's own kind whatever the flag said. The owner's
   `&pin=` is the PIN (four digits), `off` (none), or absent (the desk's
   default); a guest's is the attempt. A PIN is four digits and twenty wrong
-  tries an hour, and is taken off the address once read (`lib/sessions.js`).
+  tries an hour, and is taken off the address once read (`primitives/rooms/sessions.js`).
   The flag STAYS in the address while the tab is in the room, rewritten to
   `?<kind>=<code>` once the room answers, and rides every canvas
   navigation (`finder-url.js` withRoom), so a reload or a walk to another
@@ -1321,22 +1318,17 @@ of either.
   under it. Every tab is a one-cell outline open at its foot; the ones
   behind stand on the bar's rule, ground with mute words, and the page you
   are on is a cell taller, its floor the page's own ground, so it stands in
-  the rule and the page runs up into it (the author: "the
-  desktop was meant to be tabs not buttons, make it more like the web
-  instruments tabs on desktop"). The close box is on the lit tab and
+  the rule and the page runs up into it. The close box is on the lit tab and
   no other, as a browser tab's is, and goes back where the page came from
   (its collection, else the canvas, exactly as Esc does). The bar ends in
   the CORNER CLOSE, the kit's close box with its word, "Close", going the
-  same way (the author: "Add another x to the top right for an
-  extra intuitive exit"): the one top-right button a page has, in reach
+  same way: the one top-right button a page has, in reach
   wherever the page is scrolled because the bar is. A case study's strip is
   named "Case Studies"; an experiment's is not named at all, because an
   experiment is not filed under a word for its kind anywhere a reader sees
-  (the author: "they can just be the thing they are"; its meta line
+  (; its meta line
   is its date, `test/served-labels.test.js`). A TAB SWITCHES IN PLACE
-  (the author: "I don't think the transition back to the collection
-  is necessary anymore; switching tabs should be its own quick and snappy
-  animation. Do keep the rect for opening and closing pages."): nothing
+  : nothing
   closes, nothing shrinks into its card, the collection is not walked, the
   address follows by replaceState, and the new page comes in top to bottom
   in four frames (section 9). A link in the prose to a page of the ring, a
@@ -1354,17 +1346,14 @@ of either.
   a browser strip's tab search (its name says where this page is, in how
   many), and it opens every page of the ring as the kit's menu: each row a real link, the page's whole title
   over its one-line summary, never cut, the page you are on lit; a row
-  switches in place as a tab does (the author: "they want to see what case
-  studies there are to jump between them. This mildly accomplishes that but
-  obscures most of the info"). The list is a native popover, so Esc and a
+  switches in place as a tab does. The list is a native popover, so Esc and a
   tap outside close it with no script. ON A PHONE (the width where the
   corner close drops its word) the bar is what a phone browser's is: the
-  tab you are on, the v and the X (the author: "on mobile we show one tab
-  that's the dropdown, the v and the X like a mobile browser"). The other
+  tab you are on, the v and the X. The other
   tabs step aside, the lit one takes the strip and a tap on it opens the
   list, and its own close steps aside for the corner's. A ring of one
   carries no v. Nothing else rides
-  the bar. The markup is `js/kit-scroll.js`, SSR'd on a direct load and
+  the bar. The markup is `primitives/kit/kit-scroll.js`, SSR'd on a direct load and
   painted on a click, one string. It publishes its height as
   `--page-bar-h` (and the one-line head under it as `--page-head-h`) so an
   experiment sizes itself to the frame under it: an experiment is an app
@@ -1392,9 +1381,7 @@ of either.
 - **The page's foot.** The way back to the top is where the web puts it:
   after the last of a long page's content, in its flow, one outline button
   (`.k-btn`) that says "back to the top" with the up chevron before the
-  words. The author: "The back to top button should show at the bottom of
-  long things not be a confusing arrow up top. Intuitive please. We're not
-  inventing any wheels here." It shows only on a page whose scroll owner is
+  words. It shows only on a page whose scroll owner is
   over two screens tall, measured once the layout is real and again when
   the page's height changes (`app.js` footTop), and nothing stands beside
   it: it is the page's foot, not a second nav. `test/page-bar.test.js`.
@@ -1434,13 +1421,11 @@ of either.
   steppers flank it at the tap floor (`test/touch-affordance.test.js`), so a touch screen walks
   the results the way the arrow keys do, and they take the pointer without
   taking the keyboard from the field.
-  THE FINDER IS IN THE ADDRESS. The author: "Let's make search shareable by
-  tracking the bar state with a flag parameter ?search=, cleanly encoded of
-  course." The bar is open while the field has the focus or holds a
+  THE FINDER IS IN THE ADDRESS. The bar is open while the field has the focus or holds a
   query: `?search=` open and empty, `?search=<query>` (encodeURIComponent)
   holding one, no param shut. Typing REPLACES the entry, a beat after the
   last key, so a query typed letter by letter is one place in the history;
-  every other param stays byte for byte (`canvas/finder-url.js`). A load
+  every other param stays byte for byte (`primitives/rooms/finder-url.js`). A load
   that carries it opens the bar, puts the query in the field and runs the
   find, flight and all, except over a page or a fan loaded on its own path,
   where the query waits in the field (a find closes the page, and the page
@@ -1455,8 +1440,7 @@ of either.
   inside a page traps focus either: tab leaves, always.
 - "/" pops the quick-command roster, filtered past the slash (the names
   that start so first, then the fuzzy net), walked with arrows, completed
-  with Tab, run with Enter. THE BAR IS A COMMAND LINE. The author: "slash
-  based", "do add params and flags". A line is read the way a shell reads
+  with Tab, run with Enter. THE BAR IS A COMMAND LINE. , "do add params and flags". A line is read the way a shell reads
   one: words, quotes that hold words together, `--flag value`,
   `--flag=value` and a bare `--flag`, the word after a flag its value only
   where the command says that flag takes one. A flag the command does not
@@ -1563,7 +1547,7 @@ Four slots, one grammar, every tile:
 - **figure**: fills the remainder.
 
 Tags are the one thing a card, a page and a list row all say the same way
-(`js/tags.js` writes them, `.k-tag` draws them). A card's stand at its floor
+(`primitives/kit/tags.js` writes them, `.k-tag` draws them). A card's stand at its floor
 in ONE row: a tag that does not fit on the first line is cut off whole, never
 the summary, and the page lists them all. A page's stand under its meta line
 inside the same block, so the page has the same blocks with or without them
@@ -1619,8 +1603,7 @@ armature is wrong or the tile is; fix the system, not the instance.
   The command roster is the bar's one popup and grows UPWARD, best hit
   nearest the field. The explore hint is not chrome; it is etched into the
   world (section 4).
-- **The owner's bar is the same box with its line in brick.** The author:
-  "just give me a special border". Brick is the one accent chrome may wear
+- **The owner's bar is the same box with its line in brick.** Brick is the one accent chrome may wear
   (armed or live, section 1), and only the line's colour changes: the width,
   the style and the box are the kit's, so the field keeps its outer size to
   the pixel and nothing measured off it (`CHROME.searchW`, the bar, the
@@ -1632,9 +1615,7 @@ armature is wrong or the tile is; fix the system, not the instance.
   the owner's commands. A guest never makes the request, and a hint the
   server does not back is wiped. `test/canvas-chrome-kit.test.js`,
   `test/auth.test.js`, `test/commands.test.js`.
-- **The minimap**: the world in miniature, an actual map (the author: "the
-  minimap should be a full size screenshot of the world ran through
-  textmode or shrunken otherwise. An actual minimap"). Every tile's own
+- **The minimap**: the world in miniature, an actual map. Every tile's own
   plan picture (the tile as it renders, one pixel per world cell) lies on
   the ground where the tile sits, shrunk to the map by averaging, read a
   little darker so line art survives, and each map dot set back in the inks
@@ -1868,7 +1849,7 @@ prefers-reduced-motion.
   moves in one step, because a pager is a control and controls click.
   `test/motion-tokens.test.js`.
 - **A line longer than its box WALKS** (kit.css `.k-marquee`,
-  `js/kit-marquee.js`). A line that fits stands still. A longer one waits,
+  `primitives/kit/kit-marquee.js`). A line that fits stands still. A longer one waits,
   walks left through its box a cell a step until its end shows (as many steps
   as it has cells over, so the walk is on the grid), waits there, and is back
   at its start in one frame, since close is instant. Every marquee rides the
@@ -1944,23 +1925,7 @@ prefers-reduced-motion.
   `apple-touch-icon.png` is composited onto an opaque tile of the system's
   making, and the dark and tinted modes are re-renders of that same asset
   with no web field to aim a second file at.
-- **The instruments are sprites** (`canvas/instrument-sprites.js`).
-  `/web-instruments` plays three, drawn as themselves: a red
-  Music Man StingRay in brick, a brown soprano ukulele in ochre, a grey
-  keyboard in mute, and a kit in the ochre a cymbal is. Rows of text, one
-  character a cell (`.` nothing, `k` ink, `p` ground, then the accent's
-  initial), set through `pixelSprite` (`canvas/pixel-sprite.js`, the same
-  function that sets Maurice's splat) at `PX` a cell and never scaled.
-  A sprite gets ink, ground and ONE accent, and every filled cell that
-  touches the outside is ink, so the outline is closed by construction.
-  What moves is not in the sprite: the strings, a key's pressed state, the
-  played note and the quaver are live elements laid over it in the SAME
-  cell units, and `STAGE` in that file is the one table the markup and the
-  script both answer to. A ringing string is redrawn as a staircase of
-  whole cells; a struck drum drops one cell and comes back; a note is lit
-  or it is not. The G clef and the sharp are sprites too.
-  `test/instrument-sprites.test.js`
-  holds the palette, the closed outline and the `STAGE` table.
+- **A picture becomes rows of cells.**
   `scripts/img/pixelate.mjs <png> --cells W --palette [accent] [--outline]`
   is the way a picture becomes rows: box down to the cell, nearest of ink,
   ground and one accent (read from canvas-tokens.css, chosen for you when
@@ -1968,7 +1933,7 @@ prefers-reduced-motion.
   It is a first draft on purpose: the parts a drawing is recognised by are
   set by hand on top, because a majority vote cannot draw them.
 - **The pointer is a HAND, and every pixel of it is drawn.** Four hands
-  (`HANDS` in `canvas/presence.js`), three layers each: the colour in the
+  (`HANDS` in `primitives/presence/presence.js`), three layers each: the colour in the
   peer's hue, the black inside it, the border outside that. Nothing is
   derived: a dilation decides the outline for you, and the outline is where
   a pointer reads. The one-cell channels between the fingers are MEANT to
@@ -1996,7 +1961,7 @@ prefers-reduced-motion.
   a collection is the grab hand: over a snap scrollbar's track the root
   offers the grab (`html.grabbable`, the one state that reads what is under
   the pointer, for the I-beam's reason), and a held scrub is a haul
-  (`js/kit-scroll.js` writes both).
+  (`primitives/kit/kit-scroll.js` writes both).
   The PITCH is one px a cell (`ARROW_CELL`), not the chrome's two, and it is
   the one place this drawing leaves the ladder. A pointer is measured against
   the other pointers on the machine, never against the tile beside it. A
@@ -2068,7 +2033,7 @@ prefers-reduced-motion.
   same cursor at the same moment draws the same dust, and a peer's pointer
   (relayed with its hover key over the presence wire,
   `test/presence.test.js`) raises it here exactly as your own does there.
-  It is one module, `canvas/dust.js`, that
+  It is one module, `primitives/dust.js`, that
   the canvas and the door pages both run: a host hands it its clock and says
   when it is off (reduced motion, `?bare`, `?nodust`), and nothing else is
   written twice (`test/dust.test.js`).
@@ -2208,8 +2173,8 @@ reaches production without it.
 | Every px in every stylesheet is 0, a token value, or carries a px-ok reason: no one- or three-pixel line rides through as a hairline                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `test/px-tokens.test.js`                                        | armed                           |
 | Every `@media` width or height in every stylesheet is a density edge `layout.js` owns (a `min-` on it, a `max-` a hair under it), and every `@container` size is a Fibonacci number of modules                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `test/breakpoints.test.js`                                      | armed                           |
 | One focus ring: every focus rule draws the ink ring a cell thick, a cell out or a cell in, and under a forced palette the same ring in `Highlight` or `CanvasText`; no other width, offset or colour                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `test/focus-ring.test.js`                                       | armed                           |
-| Arm, then act: a destructive button acts on its second press, disarms on its own after four seconds, and every page arms it through `js/kit-arm.js`, never a copy of its own                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `test/kit-arm.test.js`                                          | armed                           |
-| One Bayer: no threshold matrix and no Bayer generator in `src/` or `scripts/` outside `js/textmode-settings.js`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `test/one-bayer.test.js`                                        | armed                           |
+| Arm, then act: a destructive button acts on its second press, disarms on its own after four seconds, and every page arms it through `primitives/kit/kit-arm.js`, never a copy of its own                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `test/kit-arm.test.js`                                          | armed                           |
+| One Bayer: no threshold matrix and no Bayer generator in `src/` or `scripts/` outside `primitives/textmode-settings.js`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `test/one-bayer.test.js`                                        | armed                           |
 | Every tile in `TILES` is one of the six shapes, and a tile across slots is as wide as its slots and two, three, five or eight modules tall; so is every card a stack holds                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `test/tile-vocabulary.test.js`                                  | armed                           |
 | Motion is a state machine: every stylesheet times a transition or an animation with a frame token (hold, step, frames), never a curve, `ease`, `linear`, the glide or the spring; nothing moves opacity; a `motion-ok` escape says why                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `test/motion-tokens.test.js`                                    | armed                           |
 | Every `z-index` in a stylesheet reads a `--cv-z-*` layer, and no script writes a raw one                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `test/z-layers.test.js`                                         | armed                           |
@@ -2257,7 +2222,7 @@ reaches production without it.
 | What the room holds is not a tab's: `hero-cycle.js` exports the phrases and nothing else                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `test/room-state.test.js`                                       | armed                           |
 | The page says where the room stands: the boot payload carries the head count beside Maurice and the piles' fronts, the first frame is painted from them (statement, Maurice, tally), and the tally is never told a zero nobody took, through the first load, a dropped socket and a change of room                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `test/first-paint.test.js`                                      | armed                           |
 | Every picture we own is on the cell and the ramp: the photographs at the width they are shown, every raster under img/ whole cells (the OG cards and the plan excepted), a photograph two neighbouring ramp lightnesses to a cell in its own colour, each a Bayer glyph                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `test/pictures.test.js`                                         | armed                           |
-| The wire's shared words are stated once (`canvas/wire.js`): the tab and the room gate moves on one `RATE_MS`, the stale push and the tab's repaint ask one `changedKeys`, and the tab listens for each push by the `SERVER_PUSH` word the server sends                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `test/wire.test.js`                                             | armed                           |
+| The wire's shared words are stated once (`primitives/presence/wire.js`): the tab and the room gate moves on one `RATE_MS`, the stale push and the tab's repaint ask one `changedKeys`, and the tab listens for each push by the `SERVER_PUSH` word the server sends                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `test/wire.test.js`                                             | armed                           |
 | The chrome fits every screen across the viewport matrix: three densities and nothing between them, every control inside the viewport with its gap kept, the bar under a quarter of the viewport height, the opening frame clearing the bar, the about zone's title wholly clear of the bar's band or wholly under it at the opening camera (raw, and rested at each display density) and seated by the drawn title's own measure, and the stylesheet's thresholds mirroring layout.js                                                                                                                                                                                                                                                                                                                                                                                                           | `test/chrome-fit.test.js`                                       | armed                           |
 | The postcard plan is the world and stays deterministic: every footprint sits where the world puts it, one camera and size hash to one drawing, the camera floors at cover, the wrap is completed, and no colour is stated in the module                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `test/postcard.test.js`                                         | armed                           |
 | No shipped image carries metadata: every raster and vector asset is decoded and every chunk that is not pixels is reported, EXIF and GPS and camera identity included, and a format with no reader counts as unproven                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `test/image-metadata.test.js`                                   | armed                           |

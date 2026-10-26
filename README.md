@@ -1,6 +1,6 @@
 # multiplayer-canvas
 
-A personal site on a shared, wrapping canvas. Everyone who has the site open
+A site on a shared, wrapping canvas. Everyone who has the site open
 sees everyone else's cursor. Articles, case studies and experiments stand on
 the ground as tiles, and each one opens as a page over it.
 
@@ -406,16 +406,18 @@ docker compose up -d --build
 docker compose logs site   # the passkey setup code is printed here on first boot
 ```
 
-Put a reverse proxy that terminates TLS in front of it, for example Caddy:
+Put a reverse proxy that terminates TLS in front of it, for example nginx:
 
 ```
-example.com {
-	reverse_proxy 127.0.0.1:3000
+server {
+	server_name example.com;
+	location / { proxy_pass http://127.0.0.1:3000; }
 }
 ```
 
-The proxy must pass WebSocket upgrades on `/ws/cursors` through. Caddy does
-this by default.
+The proxy must pass WebSocket upgrades on `/ws/cursors` through, which
+needs the `Upgrade` and `Connection` headers forwarded (`proxy_http_version 1.1;`
+and `proxy_set_header Upgrade $http_upgrade;`).
 
 ## Possible next steps
 
@@ -424,7 +426,7 @@ this by default.
 
 ## Credits
 
-Built by Axel Stevens, and extracted from his personal site. Third-party
+Built by Axel Stevens. Third-party
 code, fonts and data are listed at `/credits` on a running site, and their
 licences sit next to the vendored files.
 
