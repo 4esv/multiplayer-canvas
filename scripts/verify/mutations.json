@@ -1033,7 +1033,7 @@
   },
   {
     "name": "page-ring.ring-ignores-kind",
-    "wrong": "the ring is every full page again, the #284 bug: an experiment steps into a case study",
+    "wrong": "the ring is every full page again, the old bug: an experiment steps into a case study",
     "edits": [
       {
         "file": "src/static/canvas/app.js",
@@ -2419,7 +2419,7 @@
   },
   {
     "name": "case-study-page.figure-framed",
-    "wrong": "a figure gets its bordered box back, the boxes-in-boxes the author called ass-backwards",
+    "wrong": "a figure gets its bordered box back, boxes inside boxes",
     "edits": [
       {
         "file": "src/static/css/case-study.css",
@@ -2963,7 +2963,7 @@
   },
   {
     "name": "web-instruments.fret-rows",
-    "wrong": "the frets are typed on the five-key rows #312 cut them to",
+    "wrong": "the frets are typed on the five-key rows they were once cut to",
     "edits": [
       {
         "file": "src/static/js/instruments.js",
@@ -3161,7 +3161,7 @@
   },
   {
     "name": "web-instruments.sparks-lost",
-    "wrong": "a struck pad throws no sparks, as on #312 before the audit",
+    "wrong": "a struck pad throws no sparks, as in an earlier version of the page",
     "edits": [
       {
         "file": "src/static/js/instruments.js",
@@ -3172,7 +3172,7 @@
   },
   {
     "name": "web-instruments.quaver-lost",
-    "wrong": "a plucked ukulele lets no quaver go, as on #312 before the audit",
+    "wrong": "a plucked ukulele lets no quaver go, as in an earlier version of the page",
     "edits": [
       {
         "file": "src/static/js/instruments.js",
@@ -8746,6 +8746,61 @@
         "file": "src/lib/import-map.js",
         "find": "export const INLINE_SCRIPTS_CSP = `${sha(IMPORT_MAP)} ${sha(SPECULATION_RULES)}`",
         "replace": "export const INLINE_SCRIPTS_CSP = `${sha(IMPORT_MAP)}`"
+      }
+    ]
+  },
+  {
+    "name": "isolation.issue-ref",
+    "wrong": "a comment cites a tracker issue by number again",
+    "edits": [
+      {
+        "file": "README.md",
+        "find": "Possible next steps",
+        "replace": "Possible next steps (issue #123)"
+      }
+    ]
+  },
+  {
+    "name": "isolation.removed-world",
+    "wrong": "a doc names the private site's reverse proxy again",
+    "edits": [
+      {
+        "file": "README.md",
+        "find": "## Credits",
+        "replace": "## Credits (Caddy)"
+      }
+    ]
+  },
+  {
+    "name": "isolation.the-author",
+    "wrong": "a comment attributes a quote to a person again",
+    "edits": [
+      {
+        "file": "docker-compose.yml",
+        "find": "# One container, bound to loopback:",
+        "replace": "# The author: one container, bound to loopback:"
+      }
+    ]
+  },
+  {
+    "name": "isolation.agent-file",
+    "wrong": "a doc points at an agent notes file again",
+    "edits": [
+      {
+        "file": "README.md",
+        "find": "Possible next steps",
+        "replace": "Possible next steps (see CLAUDE.md)"
+      }
+    ]
+  },
+  {
+    "name": "isolation.dead-path",
+    "wrong": "a doc points at a file that was moved",
+    "edits": [
+      {
+        "file": "README.md",
+        "find": "## Credits",
+        "replace": "## Credits (see primitives/gone/missing.js)"
       }
     ]
   }
