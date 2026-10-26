@@ -120,7 +120,7 @@ describe('immutable is only promised where the URL moves with the content', () =
   // the build, so /img/og/<slug>.png keeps one URL across regenerations: it
   // had been served immutable, which meant og-freshness.test.js could hold a
   // card in sync with its title while every client that had already fetched
-  // it kept the stale one until 2027.
+  // it keeps the stale one for a year.
   let app
 
   before(async () => {

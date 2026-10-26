@@ -678,7 +678,7 @@ describe('web-instruments: no sound until the hand', () => {
 })
 
 describe('web-instruments: the picture is shown on the cell', () => {
-  // The snap (2026-09-27): a watch measured the Rhodes at 0.315 by 0.5, half
+  // The snap: a watch measured the Rhodes at 0.315 by 0.5, half
   // on one axis and squeezed to the column on the other. The scales are the
   // divisors of PX, so a quarter (a css px a cell) is the floor where half
   // is wider than the column, and the scale is the picture's only size.

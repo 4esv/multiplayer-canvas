@@ -5,12 +5,12 @@
 // Outputs: session records, each holding its own presence room; onSessionEnd(fn) is told when one
 //   ends on its own. Node.
 //
-// Sessions (2026-09-25): a room of the owner's own, on the same socket.
+// Sessions: a room of the owner's own, on the same socket.
 //
 // The public room is everyone on the site at once (primitives/presence/presence-room.js
 // presenceRoom). A room of the owner's own is a second room he opens on
 // purpose, for a few people he has invited, and it is one of two KINDS
-// (2026-09-26), each a superset of what comes before it:
+//, each a superset of what comes before it:
 //   follow    one to many. Everybody in it follows the owner, sees what he
 //             sees and hears what he plays; what they play goes nowhere.
 //   session   many to many, for jams, walk-throughs, demos and games:

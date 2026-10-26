@@ -553,7 +553,7 @@ describe('the mould is the lab’s: deterministic, walled in, and it finds its f
     }
     // the cost that motivated the delta: three frames a second of this
     // against a ~2.9 KB keyframe. The mean over a steady-state run is held
-    // under a third of the keyframe (measured 2026-09-17: 250 to 600 cells
+    // under a third of the keyframe (measured: 250 to 600 cells
     // change a frame, 300 to 700 bytes before base64)
     const key = encode(s).g.length
     assert.ok(

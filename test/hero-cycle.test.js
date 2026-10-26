@@ -1,7 +1,6 @@
 // test/hero-cycle.test.js
 // The statement is a pile of phrases the room turns (BIBLE.md section 4), so
-// what is left to hold here is the pile itself. The clock that used to type
-// it, and the tests of that clock, retired with the typer; that the file
+// what is held here is the pile itself. That the file
 // holds nothing but the phrases is test/room-state.test.js's.
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'

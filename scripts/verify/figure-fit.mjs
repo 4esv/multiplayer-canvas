@@ -2,9 +2,8 @@
 // In a real browser: EVERY FIGURE FITS A PHONE. The
 // rule: at 390x844 in mobile emulation every figure
 // must fit its column with no horizontal scroll and no clipped label, and
-// scale down legibly. Measured before the fix: the board and the builder
-// were drawn at 688 and 636 px and scrolled inside their boxes, a 342 px
-// column away from being read.
+// scale down legibly. A figure drawn at 688 px and scrolling inside its box is
+// a 342 px column away from being read.
 //
 // Every case study (content/feed, `type: case-study`) is loaded directly at
 // 390x844, mobile, and at 1440x900, and for every picture in the prose (svg,

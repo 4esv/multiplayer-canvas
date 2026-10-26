@@ -12,9 +12,7 @@
 // tab with the dish on camera is WATCHING and is owed its deltas; the idle
 // floor for a socket that is not watching is held by test/waste.test.js.
 //
-// Measured 2026-09-23, headless Chrome against `npm start`,
-// the same before and after this pass (the zero-height doors row that was
-// deleted had already gone, one node):
+// Measured in headless Chrome against `npm start`:
 //   home  laptop 1440x900   1154 elements
 //   home  phone  390x844    1154 elements
 //

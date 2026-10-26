@@ -9,8 +9,8 @@
    moment it is parsed, and app.js clears it once render() has seated the
    world. Stamped here rather than by the script, because a script that
    fails is exactly the case the class exists to cover.
-   sheet-open: this route SSRs its entry already open. app.js used to add it
-   on boot, which left the watch's one-layer rules unarmed for a direct load
+   sheet-open: this route SSRs its entry already open. Adding it from app.js
+   on boot would leave the watch's one-layer rules unarmed for a direct load
    until a script it does not need decided to run.
    item-open: the open sheet is an entry, the layer above the canvas and its
    collections; the bar is not drawn over it. Stamped here for the
@@ -22,16 +22,13 @@
 {# Pinch-zoom stays allowed (WCAG 1.4.4): the scene owns its gestures via
    touch-action, so zoom never needed banning in the first place. #}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-{# NOTE: no disabled-adaptations tag here, on purpose. It used to opt the
-   watch out of watchOS's adapted layout, because the adapted 320px page
-   broke position:fixed and the modal rendered beside the canvas. The opt-out
-   bought a true device width WIDER than the watch threshold in
-   canvas-home.css, so the watch was served the phone build: bar, menu,
-   booting canvas, fixed layers, everything piled and overflowing. The
-   position:fixed failure it was hired to fix has since been retired by the
-   one-layer block, which leaves nothing on that screen positioned or
-   transformed at all. So the watch gets the adaptation every other site
-   gets, and the page it adapts is an ordinary document. #}
+{# NOTE: no disabled-adaptations tag here, on purpose. Opting the watch out
+   of watchOS's adapted layout buys a true device width WIDER than the watch
+   threshold in canvas-home.css, so the watch is served the phone build: bar,
+   menu, booting canvas, fixed layers, everything piled and overflowing. The
+   one-layer block leaves nothing on that screen positioned or transformed at
+   all, so the adapted page is an ordinary document and the watch gets the
+   adaptation every other site gets. #}
 {% include "partials/meta-head.njk" %}
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -166,7 +163,7 @@
      so wrapping them moves nothing. #}
   <nav>
   <div id="topbar">
-    {# The bar is the field (BIBLE.md section 8, 2026-09-10). The home
+    {# The bar is the field (BIBLE.md section 8). The home
        button and the menu left it: the doors are the sections, the bulb is
        on the ground, home is Esc, /home or a tap on the map. #}
     {# A phone's middle slot is shared: the field comes in from the
@@ -175,7 +172,7 @@
        no use for it. #}
     <button id="findBtn" class="k-btn k-ico" type="button" aria-label="search" aria-controls="searchWrap" hidden><svg viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M2 0h3v1h-3zM1 1h1v1h-1zM5 1h1v1h-1zM0 2h1v3h-1zM6 2h1v3h-1zM1 5h1v1h-1zM5 5h1v1h-1zM2 6h3v1h-3zM6 6h2v1h-2zM7 7h2v1h-2zM8 8h2v1h-2zM9 9h2v2h-2z"/></svg></button>
     <div id="searchWrap">
-      {# the search is a FINDER (2026-09-11): typing takes the camera to the
+      {# the search is a FINDER: typing takes the camera to the
          top result and lights it; the arrows walk the rest, Enter goes in.
          One line over the field says which of how many. #}
       <div id="found" aria-live="polite" hidden></div>
@@ -195,7 +192,7 @@
     <button id="mapBtn" class="k-btn k-ico" type="button" aria-label="map" aria-controls="minimap" aria-pressed="false" hidden><svg viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M0 0h11v1h-11zM0 10h11v1h-11zM0 1h1v9h-1zM10 1h1v9h-1zM3 3h5v1h-5zM3 6h5v1h-5zM3 4h1v2h-1zM7 4h1v2h-1z"/></svg></button>
     <button id="close" class="k-btn k-ico" type="button" aria-label="close" hidden><svg viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h-2zM8 1h2v1h-2zM2 2h2v1h-2zM7 2h2v1h-2zM3 3h2v1h-2zM6 3h2v1h-2zM4 4h3v1h-3zM4 5h3v1h-3zM4 6h3v1h-3zM3 7h2v1h-2zM6 7h2v1h-2zM2 8h2v1h-2zM7 8h2v1h-2zM1 9h2v1h-2zM8 9h2v1h-2z"/></svg></button>
   </div>
-  {# The explore hint and the visitor tally are no longer screen chrome:
+  {# The explore hint and the visitor tally are not screen chrome:
      they live ON the canvas, etched below the hero doors (app.js builds
      #etched into #scene), so they pan and zoom with the world. #}
   {# role=dialog without aria-modal: the topbar (burger x, omni search) stays

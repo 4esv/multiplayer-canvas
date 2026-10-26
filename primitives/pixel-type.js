@@ -13,14 +13,14 @@
 // plays with. A woff2 could only be drawn.
 //
 // The faces (BIBLE.md section 10):
-//   display  up to 8 x 9, a gothic cut (2026-09-11). Caps, digits, e and o
-//            redrawn 2026-10-22; glyphs vary in width (an I is four).
+//   display  up to 8 x 9, a gothic cut. Caps, digits, e and o;
+//            glyphs vary in width (an I is four).
 //            Its A IS the maker's mark: the logo is a glyph of this face
 //            and the face is the logo's alphabet (test/pixel-type.test.js
-//            pins the two identical), which is why the A alone kept its
-//            old drawing. Uppercase and digits only; it sets the doors and
+//            pins the two identical), which is why the A alone keeps its
+//            drawing. Uppercase and digits only; it sets the doors and
 //            the titles of things on the ground. One glyph pixel = one cell
-//            (--cv-px). Since 2026-09-11 the face has a LOWERCASE in the same
+//            (--cv-px). The face has a LOWERCASE in the same
 //            hand, on a 12-row cell: 3 ascender rows, 6 of x-height on the
 //            caps' baseline, 3 of descender. Titles are words now (About,
 //            Work, Contact, Case studies), and a cap-only glyph keeps its 9
@@ -310,7 +310,7 @@ const DISPLAY_GLYPHS = {
     .##....
     ##.....
     #######`),
-  // ---- the lowercase (2026-09-11): the textura hand under the caps. Rows
+  // ---- the lowercase: the textura hand under the caps. Rows
   // 0..2 are the ascender, 3..8 the x-height, 9..11 the descender, so a
   // lowercase word sits on the caps' baseline and a title can be a word.
   // The pen enters every x-height stem on a diagonal and the round letters

@@ -108,7 +108,7 @@ describe('sky: the picture takes the offset', () => {
 
   // mutation: sky.disc-pushable
   it('the sun and the moon never move under a hand: a clear sky ignores the push, byte for byte', () => {
-    // noon and midnight on a real day (2026-09-23, Ithaca's sunrise and
+    // noon and midnight on a real day (23 Sep 2026, Ithaca's sunrise and
     // sunset in the payload), so both discs are well inside the window and
     // any nudge at all would show
     const rise = 1758624000 + 6 * 3600 + 50 * 60

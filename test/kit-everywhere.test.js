@@ -1,6 +1,6 @@
 // test/kit-everywhere.test.js
 // The kit outside the canvas: the doors, the error pages and the
-// owner desk speak kit.css, and the door vocabulary that used to
+// owner desk speak kit.css, and the door vocabulary that would
 // duplicate it (.cv-btn, .cv-chip, .cv-input, .cv-textarea in canvas.css)
 // stays retired. Three text guards over the tree and one over the served
 // pages:

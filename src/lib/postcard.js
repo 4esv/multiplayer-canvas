@@ -77,8 +77,8 @@ const LIVE = TILES
 // settle the same world. The chrome reservation is the one field in flight
 // (a camera fit is replacing the world-space band), and it is read HERE and
 // nowhere else in this file so that change costs one line.
-// NOTE: the bar no longer reserves world space. Clearance is a camera
-// property now (the opening camera fits above the bar), so the plan draws
+// NOTE: the bar does not reserve world space. Clearance is a camera
+// property (the opening camera fits above the bar), so the plan draws
 // the whole world and owes the chrome nothing.
 
 // What a footprint answers to on the plan. Names come off the tile record

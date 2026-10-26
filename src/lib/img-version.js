@@ -3,8 +3,8 @@
 // Images keep their names across re-bakes (the build copies them verbatim),
 // so a bare /img/canvas/web-instruments.png is the same URL before and after the
 // picture changes, and a browser holding the old one keeps it for as long as
-// the cache header lets it. The fix is the one the css/js already have: the
-// URL moves with the content. Here the hash rides a query (`?v=<hash8>`)
+// the cache header lets it. So the URL moves with the content, as the css/js
+// already do. Here the hash rides a query (`?v=<hash8>`)
 // instead of the filename, so nothing on disk is renamed and the static
 // handler serves the file as it is.
 //

@@ -16,23 +16,19 @@
    way the last-5 player is dark because a player is dark. Guest inks
    exist here and nowhere else; chrome never borrows them.
 
-   ONE GROUND (2026-09-15). There is no second theme and no flip. Every
+   ONE GROUND. There is no second theme and no flip. Every
    name below resolves to exactly one value, and that is the whole colour
-   system: the site had two themes, each of them got half the palette
-   right, and keeping both honest was work that bought nothing a visitor
-   ever asked for. What it cost to keep was worse than the feature: every
-   accent needed a light value AND a lifted dark one, every contrast pair
-   had to be measured twice, and a fix in one mode routinely broke the
-   other. Deleting the flip made every accent a single colour again.
-   A guest that is dark is dark because its HOST is dark, which
+   system: a second theme would need every
+   accent in a light value AND a lifted dark one, every contrast pair
+   measured twice, and a fix in one mode would routinely break the
+   other. A guest that is dark is dark because its HOST is dark, which
    is the quotation law doing its job, not a theme surviving in a corner.
    ========================================================= */
 
 /* THE FACE: DotGothic16, a 16px dot-matrix gothic, OFL,
    vendored as the latin subset with its licence beside it
-   (fonts/LICENSE-DotGothic16.txt). It replaced the face before it on
-   2026-09-24 through the one token below: every stylesheet and every measurement reads
-   --cv-font, so the swap was this block and that line. */
+   (fonts/LICENSE-DotGothic16.txt). Every stylesheet and every measurement reads
+   --cv-font, so the face is swapped by this block and that one token. */
 @font-face {
   font-family: 'DotGothic16';
   src: url('/fonts/dotgothic16-regular.woff2') format('woff2');
@@ -52,32 +48,27 @@
 }
 
 :root {
-  /* ---- ONE GROUND (2026-09-15): A REFLECTIVE GREY -----------------------
-     RETUNED: ink #18181b on ground #e4e4e7, the zinc pair. The note
-     below is the history of the first grey: #c8c8be was the WINDOWS CLASSIC
-     face as XP shipped it, the grey you get
-     with Luna turned off, which is the machine this site's author actually
-     ran. Luna's own ButtonFace (#ece9d8) was tried and is too yellow to be a
-     ground; #d4d0c8 is the 95/98/2000 face, one step lighter than this.
+  /* ---- ONE GROUND: A REFLECTIVE GREY -----------------------
+     Ink #18181b on ground #e4e4e7, the zinc pair. Luna's own
+     ButtonFace (#ece9d8) is too yellow to be a ground; #d4d0c8 (the
+     95/98/2000 face) is one step lighter than this.
      There is no second theme and no switch: every accent below has ONE
      value, chosen to sit on this ground, so the fire, Maurice and the guest
      palettes are their own colour rather than a colour adjusted to survive
      two grounds.
 
-     Every accent was retuned for it, because a ground this dark eats
-     contrast. The first pass solved them at 3:1, the graphics threshold, and
-     the contrast guard caught the mistake: several of these carry TEXT (an
-     entry link, an aphorism's strong, a numeric readout), so they owe 4.5:1,
-     not 3. They are darkened along their own hue until they clear it. The recess was re-derived too,
-     because the old one was LIGHTER than this ground and would have drawn a
-     cut that stuck out of the ground instead of into it. Measured, not
-     chosen. ---- */
+     Every accent is tuned for it, because a ground this dark eats
+     contrast. Several of these carry TEXT (an entry link, an aphorism's
+     strong, a numeric readout), so they owe 4.5:1, not the 3:1 graphics
+     threshold. They are darkened along their own hue until they clear it.
+     The recess is darker than this ground, or it would draw a cut that stuck
+     out of the ground instead of into it. Measured, not chosen. ---- */
   /* the UA renders scrollbars and form controls in the active scheme */
   color-scheme: light;
   /* ---- ink ---- */
   --cv-ink: #18181b;
   --cv-ground: #e4e4e7;
-  /* the surface (2026-09-11): a card is one tonal step off the ground, white
+  /* the surface: a card is one tonal step off the ground, white
      on the ground. It had a lifted near-black twin for the night until
      the flip went; one ground, one surface. Depth is the step plus the
      hairline. */
@@ -97,8 +88,8 @@
   --cv-grid: color-mix(in srgb, var(--cv-ink) 6%, transparent);
   --cv-grid-fine: color-mix(in srgb, var(--cv-ink) 4%, transparent);
   --cv-scrim: rgba(24, 24, 27, 0.55);
-  /* NO SHADOW. No box-shadow, no drop-shadow, and the one-cell hard
-     cast is retired (BIBLE.md section 12). A control is a picture of its
+  /* NO SHADOW. No box-shadow, no drop-shadow, and no one-cell hard
+     cast (BIBLE.md section 12). A control is a picture of its
      state, lit from the top left and dithered (the parts under img/kit/,
      baked from their shading functions through the textmode Bayer preset),
      so nothing on the page needs a cast to read as raised.
@@ -109,19 +100,19 @@
      canvas-home.css, whole: never composed per element. */
   --cv-lift-x: calc(-1 * var(--cv-px));
   --cv-lift-y: calc(-1 * var(--cv-px));
-  /* THE RECESS (2026-09-15): the floor of a thing cut INTO the ground, one
+  /* THE RECESS: the floor of a thing cut INTO the ground, one
      tonal step under it. Its walls are tone bands now, not a cast. */
   --cv-recess: #d4d4d7;
   /* the border a figure in a page is framed with: a whole cell of the cut
      tone, never a hairline (BIBLE.md section 12, the hairline pass) */
   --cv-bd: var(--cv-px) solid var(--cv-line);
-  /* THE CUT (2026-09-15): how two blocks of surface are told apart now that
+  /* THE CUT: how two blocks of surface are told apart now that
      nothing on the canvas is outlined. The ground showing through at the
      chrome's half-cell: a colour block, not a hairline. On the ground itself
      the same idea is drawn at the full cell (--cv-px), because a mark on the
      canvas is scaled by the camera and a mark on the chrome is not. */
   --cv-bd-cut: 2px solid var(--cv-ground);
-  /* THE STRONG EDGE, A WHOLE CELL (2026-09-15, up from a half). Almost
+  /* THE STRONG EDGE, A WHOLE CELL (up from a half). Almost
      nothing is edged any more: a tile is a block that meets the ground at a
      change of colour and throws a cast, and that is the whole of it. What is
      left edged is hero furniture and the controls that have to read from
@@ -235,10 +226,8 @@
   --cv-lh-prose: 1.5;
 
   /* ---- control heights: every control in a row reads one of these
-     explicitly, never emergent line-height arithmetic. One height, because
-     the 36px watch variant that used to sit here existed to shrink a bar
-     that never worked on that screen at any size. The watch density carries
-     no chrome at all now (BIBLE.md section 8), so it needs no measure. ---- */
+     explicitly, never emergent line-height arithmetic. One height: the watch density carries
+     no chrome at all (BIBLE.md section 8), so it needs no smaller measure. ---- */
   --cv-ctrl-h: 44px;
   --cv-hero-btn-h: 56px;
 
@@ -261,8 +250,7 @@
   --cv-dur-drift: 600ms;
   /* the one ambient loop, outside the bands: the marquee's cadence (kit.css
      .k-marquee). A line longer than its box waits, walks and waits once a
-     cadence, and the lines of a list start a tenth of it apart. It was 96s
-     for the /work keyword ribbon, which is gone. */
+     cadence, and the lines of a list start a tenth of it apart. */
   --cv-dur-marquee: 12s;
   /* a held pose: nothing between two keyframes, the next pose lands whole
      on the frame, the way a sprite snaps between the poses it holds */

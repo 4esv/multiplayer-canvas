@@ -92,8 +92,7 @@ describe('the carousel joins the page ladder rather than inventing one', () => {
   // different things depending on where the focus sat, which is the one
   // thing a single way out cannot survive.
   //
-  // These used to grep photoset.js for the words it must not say. Now the
-  // script runs against a hand-built page that records what it does, so the
+  // The script runs against a hand-built page that records what it does, so the
   // question is what the carousel DOES with a key, not how it spells it.
   let source
   before(async () => {

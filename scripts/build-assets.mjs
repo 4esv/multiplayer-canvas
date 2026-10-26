@@ -36,12 +36,12 @@ const PKG = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
 
 // Module entrypoints whose imports (absolute /js/... or /canvas/... URLs in
 // dev) get bundled into a single file for production.
-// The owner surfaces joined this list on 2026-09-15, when they started
-// importing the shared move module (primitives/pixel-moves.js). Production hashes
+// The owner surfaces are on this list because they import the shared move
+// module (primitives/pixel-moves.js). Production hashes
 // asset filenames and only TEMPLATES resolve the manifest, so a runtime
 // import of a logical path would 404 on the box; bundling is how every other
-// module entry on this site already solves that. All four were IIFEs with no
-// top-level globals, which is why type="module" was safe to switch them to.
+// module entry on this site solves that. All four are IIFEs with no
+// top-level globals, which is why type="module" is safe for them.
 // textmode.js is here for the older half of the same reason: it imports the
 // vendored library and the shared settings contract, and a bare specifier
 // resolved at runtime does not survive hashing.
@@ -53,11 +53,11 @@ const BUNDLE_ENTRIES = new Set([
   'js/textmode-draw.js',
   // the kit specimen sets its readouts in the pixel type
   'js/kit.js',
-  // web-instruments imports its art from the canvas tree (2026-09-19). It
-  // shipped unbundled for a day: both imports 404'd on the box, the catch
-  // that keeps the sound alive without a picture swallowed it, and the page
-  // served four empty buttons over a blank stage. test/bundle-entries.test.js
-  // now computes this list from the import graph instead of trusting it.
+  // web-instruments imports its art from the canvas tree. Unbundled, both
+  // imports 404 on the box, the catch that keeps the sound alive without a
+  // picture swallows it, and the page serves four empty buttons over a blank
+  // stage. test/bundle-entries.test.js computes this list from the import
+  // graph instead of trusting it.
   'js/instruments.js',
   // the case-study flow imports the vendored pretext
   'canvas/case-study.js',

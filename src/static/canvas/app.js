@@ -42,9 +42,8 @@ scene.style.transformOrigin = '0 0';
 // A sheet's own title and meta line count as such a seam even though the only
 // writer is frontmatter in this repo. The SSR'd sheet renders them through
 // Nunjucks autoescape (templates/canvas/home.njk); the client-side mount of
-// the SAME two fields did not until 2026-08-19, which made two paths that
-// are supposed to be identical by construction differ in the one way that
-// matters. Body HTML is the exception and stays raw on purpose: the sheet
+// the SAME two fields must too, or two paths that are supposed to be
+// identical by construction differ in the one way that matters. Body HTML is the exception and stays raw on purpose: the sheet
 // builders and the markdown renderer produce it already escaped.
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
@@ -55,7 +54,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
 // first tile paints.
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ---- flags, the breaker, the counters (2026-09-12) ------------------------------
+// ---- flags, the breaker, the counters ------------------------------
 // The wrist reported a zoom seizure and a reload loop AFTER the crown fix
 // shipped, so the crown was not the loop, or not the whole of it, and this
 // is the third round of guessing at a device no bench reproduces. So: no
@@ -128,7 +127,7 @@ const logEv = (n) => {
 // cover (outZ, layout.js cameraBounds): the view no larger than the world, so
 // no place is ever on screen twice. Tiles mount all the way there except on a
 // watch, which mounts down to minZ and has the plan paint the world past it. The 360px stage-scale and
-// the TINY hero-split are retired in this mode: zoom is the device adapter.
+// the TINY hero-split do not apply in this mode: zoom is the device adapter.
 let VW = innerWidth, VH = innerHeight;
 let HERO_W = 0, HERO_H = 0, WORLD_W = 0, WORLD_H = 0;
 // the solved world as placeWorld hands it over
@@ -159,7 +158,7 @@ const viewH = () => VH/Z;
 // everywhere while the world reserves nothing anywhere.
 const bandH = () => chromeBand(VW, VH);
 // never under the mount floor: the opening frame is always a mounted one
-// (layout.js cameraBounds fit, which the camera floor no longer implies)
+// (layout.js cameraBounds fit, which the camera floor does not imply)
 const fitZ = () => { const of = openFrame(); return Math.max(minZ, restZ(Math.min(VW / of.w, Math.max(1, VH - bandH()) / of.h), 'down')); };
 function updateZoomBounds(){
   if(!WORLD) return;
@@ -242,7 +241,7 @@ const bootFront = (id, max, fallback) => {
 // squished: a little red, flat on the ground in pixel isometric (a diamond,
 // not a disc: the splat lies on the ground's plane), with the spray it threw
 const SPLAT_ROWS = ['....bb..b.', '.bbbbbbb..', 'bbbbbbbbbb', '.bbbbbbb.b', 'b...bb....'];
-// ---- GLYPHS AS CELL DATA (BIBLE.md section 10, 2026-09-11) --------------------
+// ---- GLYPHS AS CELL DATA (BIBLE.md section 10) --------------------
 // The social marks are vendor drawings on their own 24-cell (or 21-cell)
 // lattices, and they were paths. Rasterised once here, at boot, onto that
 // lattice (a canvas the size of the lattice, one path fill, the alpha read
@@ -259,8 +258,7 @@ const svgAttr = (el, name) => {
   return null;
 };
 // THE ONE RASTERISER (BIBLE.md section 10). Every mark on the canvas is cell
-// data: the identity hand always was, and since 2026-09-15 so is the
-// instrument hand, because a site drawn on a 4px cell cannot also run a
+// data: the identity hand and the instrument hand both are, because a site drawn on a 4px cell cannot also run a
 // second hand of 2.5px strokes without the two reading as a fight. Filled
 // shapes and STROKED ones both land here: the drawing is painted once at its
 // own viewBox resolution, a unit a cell, and a stroke is never drawn under
@@ -334,7 +332,7 @@ function pixelGlyph(key, svgHtml){
 // same module on their titles.
 // ?nodust turns the dust off for a session, to bisect a stutter by hand. It
 // sits beside BARE and REDUCED, which already do the same job for other
-// reasons; delete it once that is settled.
+// reasons.
 const NODUST = new URLSearchParams(location.search).has('nodust');
 const { wire: wireDust, tick: dustTick, under: dustUnder, title: dustTitle, scatter } = createDust({
   now: () => presence.now(),
@@ -375,10 +373,10 @@ let camX = 0, camY = 0, vx = 0, vy = 0, hadCam = false, hadZ = false;
 // The frame the camera was saved against. A restored camera is only honest
 // while it means what it meant: on a materially different viewport (a
 // desktop bookmark opened on a phone) or a changed world (tiles shipped or
-// retired since the visit) the saved point can frame bare ground with the
+// removed since the visit) the saved point can frame bare ground with the
 // hero nowhere in sight, which reads as a broken site, not a remembered
 // one. boot() compares this frame after the world lands and re-opens at
-// home when it no longer holds.
+// home when it does not hold.
 let savedFrame = null;
 try{
   const s = JSON.parse(localStorage.getItem(LSKEY) || '{}');
@@ -433,7 +431,7 @@ function mkTile(t, seat = true){
     const host = t.ext ? new URL(t.ext).hostname.replace(/^www\./,'') : '';
     const kind = t.kind || host || 'article';
     const open = t.ext ? ()=>exit(t.ext) : ()=>openPage(t.slug);
-    // no eyebrow (2026-09-11): the title is the first line, the chips say
+    // no eyebrow: the title is the first line, the chips say
     // the kind, and the date is the page's
     // THE CASE-STUDY CARD IS THE PAGE'S TITLE, SMALLER: the same
     // pixelTitle in the same face the page sets, at half a cell (--tpx on
@@ -467,7 +465,7 @@ function mkTile(t, seat = true){
     if(pre) paint(pre);
     else fetch('/api/page/'+t.slug).then(r=>r.ok?r.json():null).then(pg=>{ if(pg) paint(pg); }).catch(()=>{});
   } else if(t.type==='web'){
-    // an experiment is a THING on the ground (2026-09-11): the baked still,
+    // an experiment is a THING on the ground: the baked still,
     // cut out, and its name under it in the label hand. No card, no kind,
     // no date: these are the fun ones, demos, and a demo wants no masthead.
     // The name is cell data, so the dust rises on it.
@@ -507,7 +505,7 @@ function mkTile(t, seat = true){
     keyable(n, outlookLabel() + ': push the sky', ()=>skyGust(PUSH_IN, 0));
   } else if(t.type==='icon'){
     const s = SOCIALS[t.s], name = t.label || s.name || t.s;
-    // the glyph is CELL DATA (2026-09-11): the vendor drawing rasterised once
+    // the glyph is CELL DATA: the vendor drawing rasterised once
     // onto its own lattice and set as unit squares, so the same buffer the
     // titles run on can be disturbed under a cursor (dust, below)
     const glyph = pixelGlyph(t.s, s.svg);
@@ -522,7 +520,7 @@ function mkTile(t, seat = true){
     // Maurice (BIBLE.md section 5): alive, or a splat for five minutes, for
     // everyone. The instant he is back is the room's (presence.onSquish);
     // the click squishes him here at once and the room's answer wins.
-    // Maurice is a photograph now (2026-09-11): the ladybug picture cut to
+    // Maurice is a photograph now: the ladybug picture cut to
     // its bounds and pixelated to 15 cells across at a quarter cell a
     // pixel, so he keeps his red and his shine and still sits on the
     // lattice; the splat is drawn in the picture's own red (--cv-brick-fixed
@@ -536,7 +534,7 @@ function mkTile(t, seat = true){
     n.addEventListener('click', squish);
     keyable(n, 'Maurice, a ladybug: squish him', squish);
   } else if(t.type==='slime'){
-    // THE SLIME MOULD (BIBLE.md section 5, 2026-09-17): the motion lab's
+    // THE SLIME MOULD (BIBLE.md section 5): the motion lab's
     // physarum in a round dish, drawn on the cell from the frame the server
     // paints (primitives/slime/slime.js is the arithmetic, primitives/slime/slime.js the
     // clock). The dish is a <canvas> at one backing pixel a cell, shown a
@@ -586,13 +584,13 @@ heroN.innerHTML = `<div class="cell"><div id="heroText" class="heroText"></div><
 scene.appendChild(heroN);
 // THE STATEMENT'S WORDS ARE THE DOCUMENT'S H1 once the prelude's has gone
 // (mountHero keeps them). Not inside the hero: a tile off camera is not
-// drawn at all, so a heading in it was gone the moment the camera left
+// drawn at all, so a heading in it would vanish the moment the camera left
 // (/about lands on the zone), and inside the statement's button a screen
 // reader never reads it. First in the canvas, drawn nowhere (.px-vh).
 const heroHead = document.createElement('h1');
 heroHead.className = 'px-vh';
 scene.prepend(heroHead);
-// THE STATEMENT IS ON THE WIRE (2026-09-16). A peer crossing it tears it for
+// THE STATEMENT IS ON THE WIRE. A peer crossing it tears it for
 // everyone, the way crossing an icon or a zone title already did.
 //
 // It works because the hero is ALREADY shared: the phrase is the room's
@@ -705,11 +703,11 @@ function paintFront(id, node, peek){
   f.classList.add('facsimile');
   f.style.transform = 'none';
   host.appendChild(f);
-  // THE PILE TURNS (BIBLE.md section 9). It used to be an innerHTML swap
-  // and nothing else: the pager's dot moved, the card under it changed
-  // between two frames, and the one gesture that says "there is more than
-  // one of these in here" said it by teleporting. A turn is material, so
-  // it moves the way material moves. The card that was showing is gone at
+  // THE PILE TURNS (BIBLE.md section 9). A bare innerHTML swap would move
+  // the pager's dot and change the card between two frames, and the one
+  // gesture that says "there is more than one of these in here" would say it
+  // by teleporting. A turn is material, so it moves the way material moves.
+  // The card that was showing is gone at
   // once (close is instant) and the next one comes UP OUT OF THE PILE,
   // rising the two cells a hand lifts the front card by, resolving through
   // the ordered dither. Frames, never a curve, and never a fade. `node` is
@@ -813,7 +811,7 @@ etchedN.innerHTML = `<span class="lines"><span class="line k-meta">drag, scroll 
   <span class="others" aria-live="polite" hidden><span class="k-flaps k-sm">${'<span class="k-flap" data-d="0"><span class="card">0</span></span>'.repeat(3)}</span><span class="olbl k-meta">others here</span></span>`;
 scene.appendChild(etchedN);
 nodes.etched = {n:etchedN, t:{id:'etched', type:'etched'}, wx:0, wy:0, w:0, h:0, hidden:false};
-// THE MARK LEFT THE GROUND (2026-09-16). The classic A was stamped above the
+// THE MARK LEFT THE GROUND. The classic A was stamped above the
 // hero for as long as the hero was set in the type face, because the statement and
 // the logo were two different hands and the ground needed the logo to say
 // whose ground it was. The statement is now set in the mark's OWN alphabet
@@ -891,16 +889,15 @@ function renderGrid(){
 // same ordered dither the kit's parts wear, so the corner is the world in
 // miniature and still made of cells. Built once per size, per ink and per
 // picture that lands, and blitted each frame; the camera's frame is drawn
-// over it. It used to be grey footprints on the ground, which said where things
-// were and nothing of what they were.
+// over it. The ground is the world in miniature, so it says what things are
+// and not only where.
 // The frame the camera holds, wrapped where it crosses a seam. Screen chrome,
 // drawn on a canvas in the two inks (read off the tokens, never typed). A
 // drag on it moves the camera; the map is a slider for the world.
 //
-// IN CELLS since 2026-09-15 (section 10). It used to be the one instrument
-// left on the screen: translucent ink at 22%, a hairline around the hero and
-// a 2px stroked frame that sat wherever the arithmetic put it, which on a
-// surface built from a 4px cell read as the one soft thing in the corner.
+// IN CELLS (section 10): translucent ink, a hairline or a 2px stroked frame
+// that sat wherever the arithmetic put it would read as the one soft thing in
+// the corner of a surface built from a 4px cell.
 // The map has its own cell now, MAPPX at two CSS px, and the ground is 96 x 54
 // of them: EXACTLY a tenth of the world's 960 x 540, so one map cell is ten
 // world cells and nothing is ever drawn on a fraction. Footprints are solid
@@ -1171,9 +1168,8 @@ function seamLine(seam, at, axis){
 // in canvas-tokens.css (--cv-cast-x/y). There is nothing to compute per
 // card and nothing here to keep in step with the camera.
 //
-// This is where applyCast() used to be: it walked every node each settle
-// and wrote a per-card --cv-cast-x/y pointing away from the hero. Those
-// writes never reached a pixel. var() inside a custom property is
+// Nothing here walks the nodes to write a per-card --cv-cast-x/y: such
+// writes never reach a pixel. var() inside a custom property is
 // substituted where the property is DECLARED, so --cv-shadow resolved the
 // cast at :root and inherited already-substituted; an element-level
 // --cv-cast-x could not change it. See BIBLE.md section 12 and
@@ -1198,7 +1194,7 @@ function setOthers(count){
   etchedN.querySelectorAll('.k-flap').forEach((f, i) => {
     const d = digits[i];
     if(f.dataset.d === d) return;
-    // the TURN (canvas-home.css cv-burn / cv-rise): the old digit goes from
+    // the TURN (canvas-home.css cv-burn / cv-rise): the outgoing digit goes from
     // the bottom up, a row a frame, and the new one rises from below in the
     // same steps. A change mid-turn restarts with the digit that is true now.
     f.dataset.d = d;
@@ -1520,7 +1516,7 @@ presence.onSpectate((spectating)=>{
   o.n.tabIndex = spectating ? -1 : 0;
   o.n.setAttribute('aria-label', spectating ? 'Sisyphus the Slime, watching only' : 'Sisyphus the Slime: feed him');
 });
-// THE ARROW IS FOR OTHER PEOPLE (2026-09-16). The visitor keeps the pointer
+// THE ARROW IS FOR OTHER PEOPLE. The visitor keeps the pointer
 // their own machine gave them; the sprite is only ever drawn for a peer.
 // It was both for a while: app.js painted this tab's own hue onto #scene as a
 // data-URI cursor so you saw yourself the way the room saw you. It went
@@ -1528,13 +1524,9 @@ presence.onSpectate((spectating)=>{
 // touch, and replacing it buys them nothing they can use. #scene's `grab` in
 // canvas-home.css is the whole story again.
 //
-// A theme MutationObserver went with it: repainting the cursor whenever the
-// root element's class list changed made sense while the ink could flip, and
-// since 2026-09-15 it has been watching for a class nothing writes.
-// THE VISITOR'S OWN HAND, back on 2026-09-16 and doing a different job from
-// the one it did before. It used to be the same arrow the room drew of you,
-// in your hue, which was a mirror and not much else. Now it is the two hands
-// that never travel: OPEN on the ground, CLOSED while you drag it. The room
+// There is no theme MutationObserver: the ink never flips, so nothing writes
+// a class on the root element that would need the cursor repainted.
+// THE VISITOR'S OWN HAND is the two hands that never travel: OPEN on the ground, CLOSED while you drag it. The room
 // draws you pointing and clicking; what your hand does while you haul the
 // canvas around is yours, and there is no frame that could carry it anyway.
 //
@@ -1723,11 +1715,9 @@ function render(){
     if(!xs.length || !ys.length){ o.n.style.display='none'; o.hidden=true; mirror.sync(o.n, []); }
     else {
       // A tile crossing the frame edge while the CAMERA moves is not
-      // arriving, the viewer is: it just shows. This used to need a timed
-      // window (entranceUntil) to hold the per-tile entrance off during a
-      // pan; with the dither retired there is no per-tile entrance left to
-      // hold off, and the boot sweep defrags once from its own call site
-      // rather than through a flag every wrap-in has to consult.
+      // arriving, the viewer is: it just shows. There is no per-tile entrance
+      // to hold off during a pan, and the boot sweep defrags once from its own
+      // call site rather than through a flag every wrap-in has to consult.
       if(o.hidden) o.hidden=false;
       o.n.style.display=''; o.n.style.transform=`translate(${xs[0]}px,${ys[0]}px)`; vis++;
       // the node stands at its own spot; a cut tile's other parts are copies
@@ -1754,7 +1744,7 @@ addEventListener('pointerdown', e=>{ if(e.target.closest('.el')) beginPan(e); })
 addEventListener('pointermove', e=>{
   if(pinch) return; // two fingers own the camera
   if(!pending && !dragging) return;
-  // THE STUCK GRAB (2026-09-12): a press whose release never arrived (the
+  // THE STUCK GRAB: a press whose release never arrived (the
   // window lost focus mid-click, a context menu, a tab switch) left
   // `pending` armed, and the next mouse move started a drag that only a
   // click could end, so the whole page followed the cursor until the
@@ -1826,7 +1816,7 @@ addEventListener('pointerup', endPinch); addEventListener('pointercancel', endPi
 addEventListener('wheel', e=>{ DIAG.wheel++; logEv('wheel ' + Math.round(e.deltaY)); follow.input(); if(modalOpen() || curFan) return; e.preventDefault(); homeTween=null;
   // A watch has no trackpad, so ctrl-wheel never arrives and a plain wheel is
   // the Digital Crown or nothing. It reaches the zoom only behind ?crown
-  // now (2026-09-12): on the wrist, zoom is the thing that seized.
+  // now: on the wrist, zoom is the thing that seized.
   if(noChrome() && !CROWN_ON) return;
   if(SAFE && (e.ctrlKey || e.metaKey)) return;
   if(e.ctrlKey || e.metaKey || noChrome()){ zoomAt(Z * Math.exp(-e.deltaY * 0.01), e.clientX || VW/2, e.clientY || VH/2); }
@@ -1852,7 +1842,7 @@ addEventListener('wheel', e=>{ DIAG.wheel++; logEv('wheel ' + Math.round(e.delta
 // collide: crown scrolling is not a wheel event, and the wheel handler's
 // preventDefault does not suppress it.
 //
-// THE JITTER (2026-09-12). The first version of this made #scene itself the
+// THE JITTER. The first version of this made #scene itself the
 // sticky element and wrote the scroller back to its middle after EVERY
 // event, and on the wrist it sat in a permanent shiver. Two facts, both
 // reproduced on a desktop bench once the bench was made to behave like the
@@ -1882,9 +1872,9 @@ addEventListener('wheel', e=>{ DIAG.wheel++; logEv('wheel ' + Math.round(e.delta
 // Still not validated on the device: synthetic dispatch does not reach page
 // listeners through the automation context, and real wheel input is eaten
 // by the canvas's own wheel handler before #stage can scroll. What the bench
-// proves is that the mechanism that shivered no longer can. If sticky does
+// proves is that the mechanism that could shiver cannot. If sticky does
 // not hold under the adapted layout the canvas scrolls off screen and the
-// page reads blank; that risk stands, named, one deploy from gone.
+// page reads blank; that risk stands, named.
 function initCrown(){
   if(!noChrome() || !CROWN_ON) return;
   document.documentElement.classList.add('crown');
@@ -1965,7 +1955,7 @@ addEventListener('keydown', e=>{
   // / or a ? (Windows reports it as Ctrl and Alt together): that is typing,
   // not a chord
   if((e.ctrlKey || e.metaKey || e.altKey) && !e.getModifierState('AltGraph')) return;
-  // a key of your own is NOT a wish to stop following (2026-09-26): a
+  // a key of your own is NOT a wish to stop following: a
   // follower plays along on the instrument the one followed opened, and
   // only steering, the hand walking off or Escape lets go (follow.js)
   // "/" opens the omni search from anywhere: fly through the site by name
@@ -1991,9 +1981,7 @@ addEventListener('keydown', e=>{
 // runs free in tick, a screen-speed glide the ladder does not fight)
 addEventListener('keyup', e=>{ if(keys.delete(e.key) && !keys.size){ restCam(); renderDirty = true; } });
 // ---- a zoom comes to rest ---------------------------------------------------
-// When a gesture rests, the camera lands on the pixel ladder. The doors row
-// used to be cleared from under the bar here too; the row emptied on
-// 2026-09-16 and that flight went with it.
+// When a gesture rests, the camera lands on the pixel ladder.
 let zoomSettleT = 0;
 function settleZoom(){
   if(modalOpen() || dragging || pinch || homeTween) return;
@@ -2115,16 +2103,15 @@ function tick(){
   requestAnimationFrame(tick);
 }
 
-// ---- THE HERO IS THE LOGO, SET LARGE (2026-09-16) --------------------------
+// ---- THE HERO IS THE LOGO, SET LARGE --------------------------
 // The statement is drawn in the DISPLAY face: the mark's own alphabet, the
 // same pixels the logo is a glyph of (pixel-type.js). That is the point of
 // the change rather than a side effect of it: the logo and the statement
 // were two hands on the most looked-at thing on the site, and setting it in
 // the mark's alphabet makes them one thing.
 //
-// It is CYCLED BY HAND, like a pile. There is no clock: the schedule that
-// typed this on a shared wall-clock function is gone with the typing, and
-// what turns the statement now is somebody turning it. That makes it shared
+// It is CYCLED BY HAND, like a pile. There is no clock: what turns the
+// statement is somebody turning it. That makes it shared
 // for free and with no new wire vocabulary, because a pile's front already
 // travels (`{type:'front', stack, i}`) and takes any stack id: the hero is a
 // pile of nine phrases and 'hero' is its name. Whoever turns it turns it for
@@ -2137,9 +2124,8 @@ function tick(){
 // a no-JS reader gets. That is a document heading and should read like one.
 let HERO_FS = 48, HERO_LH = 62;
 // ONE px a cell, the face's own pitch and the mark's: the logo IS a glyph of
-// this face at this size, and so are the zone titles. Setting the statement
-// larger was tried and is the wrong instinct, because the point of the change
-// is that the statement and the mark are one hand, and a hand that changes
+// this face at this size, and so are the zone titles. The statement is not
+// set larger, because the point is that the statement and the mark are one hand, and a hand that changes
 // size between two words is two hands.
 const HERO_SCALE = 1;
 const HERO_PX = FACES.display.px * HERO_SCALE;      // world px per glyph pixel
@@ -2181,7 +2167,7 @@ function mountHero(phrase){
   heroText.setAttribute('aria-label', phrase);
 }
 
-// THE CYCLE: the old statement is blown apart and does not come back, then
+// THE CYCLE: the outgoing statement is blown apart and does not come back, then
 // the new one arrives already scattered and settles into itself. One
 // mechanism read in both directions, which is what makes the two halves feel
 // like one move rather than an exit and an entrance.
@@ -2218,11 +2204,10 @@ const turnHero = (by) => {
 // be: the cell clips, so anything above the first line would be cut off. The
 // monogram had the same problem and the same answer, and this now sits
 // exactly where it sat (layout.js AIR keeps every tile clear of that strip).
-// INSIDE the hero's cell, as the flex sibling under the statement. It was a
-// seated node of its own for about ten minutes, in the seat the maker's mark
-// used to hold, and that put it 11px above the hero's BOX: the cell centres
-// its contents, so the box top is some 230px above the words and the dots
-// read as furniture floating on the ground rather than as the statement's own
+// INSIDE the hero's cell, as the flex sibling under the statement, not a
+// seated node of its own: the cell centres its contents, so the box top is
+// some 230px above the words and a separately seated dots row would read as
+// furniture floating on the ground rather than as the statement's own
 // control. In the flow the cell does the work, "above the statement" stays
 // true when a phrase wraps to a different number of lines, and nothing here
 // has to know the flex arithmetic.
@@ -2277,7 +2262,7 @@ presence.onFront((id, i) => {
 });
 
 // ---- the ground ------------------------------------------------------------
-// ONE GROUND (2026-09-15): eigengrau, the grey the eye reports when no light
+// ONE GROUND: eigengrau, the grey the eye reports when no light
 // reaches it. There is no flip, no bulb, no stored preference and no OS
 // listener, because there is nothing to choose between. The browser and PWA
 // chrome are pinned to the ground in the template rather than rewritten here.
@@ -2389,7 +2374,7 @@ function memberHay(def){
   return bits.join(' ').toLowerCase();
 }
 const memberName = def => (def.label || '').toLowerCase();
-// The lens is ONE list (2026-09-11): a stack's members and the loose tiles
+// The lens is ONE list: a stack's members and the loose tiles
 // alike. A world tile the query reaches joins the layer as a card of its
 // own, built by the same builder as the tile and flying out of the tile's
 // own seat on the ground; a collection door is that list with the filter
@@ -2450,13 +2435,13 @@ function layoutFan(from){
   // stacks taller than the band (a phone's or a watch's two lines), so a
   // card scrolled up is cut there rather than drawn across the collection's
   // name, which on the watch was the whole head as soon as /work was
-  // scrolled (2026-09-27). Slots are screen rects, so the cards are placed
+  // scrolled. Slots are screen rects, so the cards are placed
   // that much higher in the box.
   fanTop = L.scrolls ? Math.max(FAN.head, Math.ceil(fanN.querySelector('.fanhead').getBoundingClientRect().bottom)) : 0;
   fanGrid.style.top = fanTop ? fanTop + 'px' : '';
   // a grid that scrolls ends where its last row does, which on a phone is
   // under the bar: the grid's ::after stands one margin past the bar so the
-  // last card can be scrolled clear of it (2026-09-12)
+  // last card can be scrolled clear of it
   fanGrid.style.setProperty('--cv-fan-end', Math.round(L.y0 + L.h + bandH() + FAN.margin - fanTop) + 'px');
   // and the lane's own end, which is how far the row runs: the cards are
   // transformed into place, so the scroller has no content to measure and
@@ -2532,10 +2517,9 @@ function showFanSet(kind, label, count, set, from){
   // THE COLLECTION OPENS ON ZOOM RECTS (BIBLE.md section 9). The cards are
   // seated straight away and held invisible while dotted outlines march out
   // of the pile to the frame they will occupy; when the outlines land, the
-  // collection is there. This replaced a FLIP where every card flew from the
-  // pile to its own slot and dithered in on the way: pretty, and it said the
-  // same thing eight times at once. One set of outlines says which thing
-  // became which, the way it has since System 1.
+  // collection is there. One set of outlines says which thing became which,
+  // where a card flying from the pile to its own slot would say the same
+  // thing eight times at once.
   // the cards FLY out of the pile to their seats (layoutFan's FLIP), and the
   // marquee frames the move rather than standing in for it
   layoutFan(from);
@@ -2701,7 +2685,7 @@ function cycleTo(to){
   const sheet = $('#sheet');
   if(REDUCED){ openPage(next.slug); return; }
   cycling = true;
-  // No lateral move (the rule, 2026-09-15): the page goes back into the
+  // No lateral move (the rule): the page goes back into the
   // collection on its own outlines, and the next one comes out on its. You
   // see where you were and where you are going, which a sideways slide
   // cannot say.
@@ -2722,11 +2706,9 @@ fanNav.addEventListener('click', e => e.stopPropagation());
 fanNav.addEventListener('pointerdown', e => e.stopPropagation());
 // SWIPE: sideways walks the siblings, down from the top closes the card.
 //
-// It walks them from inside a FULL PAGE too since 2026-09-16. The gesture was
-// gated on the preview nav being up, which meant it worked on a collection's
-// card and died the moment you opened one to read it: the place a reader is
-// most likely to want the next thing is the one place the swipe was not
-// listening. A full page steps through pageRing(), the same collection the
+// It walks them from inside a FULL PAGE too: the place a reader is most
+// likely to want the next thing is the one place a swipe gated on the preview
+// nav would not listen. A full page steps through pageRing(), the same collection the
 // nav's `next` button walks, so the button and the thumb agree.
 let swipe = null;
 const scrollsSideways = (t) => {
@@ -2769,11 +2751,11 @@ $('#sheet').addEventListener('pointerup', e=>{
 let curLand = null;
 // the zoom a zone lands at: true scale, or what fits ONE SLOT of it in the
 // frame with a gutter each side (a phone holds a 432px slot at 0.75, not
-// edge to edge). A zone wider than a slot (about spans two, 2026-09-12)
+// edge to edge). A zone wider than a slot (about spans two)
 // lands on its first slot at that scale; the rest is a pan to the right.
 // Fitting the whole zone would land a phone at a third scale on type it
 // cannot read.
-// THE FRAME (2026-09-15): arriving means holding the thing WHOLE. The
+// THE FRAME: arriving means holding the thing WHOLE. The
 // camera lands at true scale when the frame has room for it and pulls back
 // when it does not, bounded by one SLOT on each axis: everything seated on
 // the ring is at most a slot, so for a tile this reads as "true scale, or
@@ -2814,24 +2796,18 @@ function goZone(id, push = true){
 // only, the open collection setting the order), each a real link, the page
 // you are on the lit tab in one piece with the sheet, and the close box on
 // that tab and no other. The way back to the top is not in it: it is the
-// page's foot (footTop, below). It replaced three
-// things that each did a third of this somewhere else: the corner nav an
-// experiment wore (`‹ canvas` and `next ›` boxes pinned over the page), the
-// foot dock a case study ended in (four truncated titles in a row, "a
-// packed limbo UI at the bottom") and the foot's old way back to the top.
+// page's foot (footTop, below). It is one bar for every full page: no corner
+// nav pinned over an experiment, no foot dock of truncated titles on a case
+// study.
 // The intuition someone builds using one side of the site should work on
 // the other, and the same scrollbar turns the piles on
 // the ground. The markup is primitives/kit/kit-scroll.js pageBarMarkup, which the server
 // SSRs on a direct load (canvas-sheets.js), so the two paths are one string.
-// THE RING A PAGE WALKS IS ITS OWN KIND (2026-09-16, closed 2026-09-18).
-// `next` used to be the next entry in PAGES, which is every full page there
-// is, so stepping on from a case study could land on an experiment: two
-// things that share a template and nothing else. The first fix walked the
-// open collection and still fell back to every full page when there was
-// none, so an experiment opened straight off the ground swiped into a case
-// study, and a case study opened the same way swiped into an experiment.
-//
-// The rule now has no fallback to leak through: experiments and case studies
+// THE RING A PAGE WALKS IS ITS OWN KIND.
+// `next` is not the next entry in PAGES, which is every full page there is:
+// stepping on from a case study could land on an experiment, two things that
+// share a template and nothing else. Nor does it fall back to every full page
+// when no collection is open. There is no fallback to leak through: experiments and case studies
 // never link to each other, by any gesture or button. The ring is the full
 // pages of the slug's own kind (the boot index ships entry-kind.js's kindOf),
 // whether or not a collection is open. An open collection only sets the
@@ -2849,7 +2825,7 @@ function pageRing(slug){
   }
   return Object.keys(PAGES).filter(mine);
 }
-// A COURTESY, AND ONLY ON THE LANE (2026-09-16). When a reader opens a study
+// A COURTESY, AND ONLY ON THE LANE. When a reader opens a study
 // and swipes on through the collection, the shelf behind them is still parked
 // where they left it, so closing the sheet drops them somewhere they have not
 // been for four articles. This walks the lane to the card they are actually
@@ -2858,8 +2834,8 @@ function pageRing(slug){
 //
 // The lane only, which is the phone: a fitted grid has every card on screen
 // already and nothing to scroll, so there is nothing courteous to do.
-// It runs as the page closes (paintSheet), no longer on every tab switch
-// (2026-09-25): switching tabs is not a trip to the collection. There it is
+// It runs as the page closes (paintSheet), not on every tab switch:
+// switching tabs is not a trip to the collection. There it is
 // `now`, at once and under the page, so the page shrinks into the card
 // where the card really is; anywhere else it is smooth, because a shelf
 // that teleports in view is a shelf that lost your place.
@@ -3033,10 +3009,8 @@ function footTop(){
 }
 
 // A FULL PAGE stands on its own (BIBLE.md section 9), and it STILL comes out
-// of the card you clicked. It used to be covered by an iris instead: the
-// frame shut, the page changed behind the doors, and the iris opened on it.
-// That was a second transition vocabulary for one site, and the argument for
-// it ("a destination did not come out of a card") is a thing the visitor
+// of the card you clicked. A second transition vocabulary (an iris) would
+// argue that "a destination did not come out of a card", which the visitor
 // cannot see, because they watched themselves click the card. What they can
 // see is which thing became which, and one move that says it everywhere is
 // worth more than a second one that says it beautifully in one place. So a
@@ -3044,11 +3018,9 @@ function footTop(){
 // it, on the same rects and the same slide token as a preview card.
 const isFull = slug => !!(slug && PAGES[slug] && PAGES[slug].full);
 function openPage(slug){
-  // the work door lands on the WORK zone, the section beside the case
-  // studies (2026-09-11); the pile itself opens as /case-studies
-  // /work IS the case studies now (2026-09-16): the WORK zone it used to
-  // land on was dropped into the about triptych, and a door pointing at a
-  // place that no longer exists left the visitor parked on empty ground.
+  // /work IS the case studies: there is no WORK zone to land on, and a door
+  // pointing at a place that does not exist would park the visitor on empty
+  // ground.
   if(slug === 'work'){ openStack('work'); return; }
   // the about door lands the camera on the about zone
   if(slug === 'about'){ goZone(slug); return; }
@@ -3095,8 +3067,8 @@ addEventListener('popstate', ()=>{
   if(curSheet && slugForPath(location.pathname) === curSheet) return;
   paintRoute(location.pathname);
 });
-// legacy #/slug links from the prototype: a fresh load redirects in boot();
-// a same-document fragment navigation (an old link clicked mid-session)
+// #/slug fragment links: a fresh load redirects in boot();
+// a same-document fragment navigation (a link clicked mid-session)
 // redirects here, so the hash never survives either way
 function legacySlug(){
   const m = location.hash.match(/^#\/([a-z0-9-]+)\/?$/);
@@ -3118,7 +3090,7 @@ const adoptedCss = new Set(
   [...document.querySelectorAll('link[data-sheet-css]')].map(l=>l.getAttribute('href')));
 // Pages a fan can open are fetched the moment the fan is up (warmPages, from
 // showFan), so the click that opens one paints from memory and the network
-// is off the path it was reported slow on (2026-09-12). One promise per
+// is off the path it was reported slow on. One promise per
 // embed, shared by the warm-up and the open; a failed warm-up is dropped so
 // the open fetches again itself.
 const pageFetches = new Map();
@@ -3168,7 +3140,7 @@ async function mountEmbed(p, slug){
     // door, articles through feed, experiments live on the canvas itself,
     // so theirs names the canvas. Every sheet gets one: a small touch screen
     // reaches none of the other closes (Escape, backdrop, gap).
-    // ONE WAY BACK PER PAGE (2026-09-16). A full page carries its own in its
+    // ONE WAY BACK PER PAGE. A full page carries its own in its
     // bar (paintPageBar), so the prose backlink would be a second one
     // pointing somewhere else, and two back buttons on one page is a question
     // rather than an exit. A sheet still gets the prose link, because a sheet
@@ -3208,7 +3180,7 @@ async function mountEmbed(p, slug){
 
 // THE READER'S SETTINGS (js/page-reader.js): Dark Mode, Plain Type and
 // Listen, on a page that is read. One reader at a time: a page that closes
-// or switches stops the voice, so nothing reads a page no longer there.
+// or switches stops the voice, so nothing reads a page that is not there.
 const isReading = slug => !!(slug && PAGES[slug] && PAGES[slug].kind === 'case-study');
 let reader = null;
 function wirePageReader(slug){
@@ -3220,8 +3192,8 @@ function wirePageReader(slug){
 }
 // A full page covers the collection and the map: they are painted under it
 // but nobody can reach them, so they leave the keyboard's and the screen
-// reader's way too (axe, 2026-09-25: the fan's head and the map were read
-// as content outside any landmark, under a page that hid them).
+// reader's way too (else the fan's head and the map are read as content
+// outside any landmark, under a page that hid them).
 function coverUnder(full){
   fanN.inert = full;
   minimap.inert = full;
@@ -3258,7 +3230,7 @@ function openChrome(label, fromRect){
   if(!wasOpen) slideUp();
   $('#sheet').focus({preventScroll:true});
 }
-// The bottom sheet's SLIDE, made to actually happen (2026-09-15). #modal is
+// The bottom sheet's SLIDE, made to actually happen. #modal is
 // display:none until .open, so adding the class moved #mscroll from
 // translateY(100%) to 0 inside one style recalculation: the transition had no
 // rendered frame to leave from and the page simply APPEARED at rest. The
@@ -3283,7 +3255,7 @@ function slideUp(){
 }
 // ...and back down the way it came. Removing .open puts the modal straight
 // back to display:none, so the class's own return to translateY(100%) never
-// rendered either: the page VANISHED where it should have gone back down.
+// rendered either, so the page would VANISH instead of going back down.
 // The scroller carries the move and the state comes off at the end of it.
 function slideDown(done){
   if(REDUCED || !slides()){ done(); return; }
@@ -3299,11 +3271,9 @@ const sheetEl = $('#sheet');
 // (BIBLE.md section 9). The outlines march from the card to the page and the
 // page is simply THERE when they land; closing runs them backwards.
 //
-// This replaced a scale: the sheet used to start at the card's rect and grow
-// to its own in eight frames. That was correct and nearly invisible, because
-// a ground-coloured card scaling up on the ground has almost nothing to see. The
-// outlines have two inks and read on any backdrop, which is the whole reason
-// the era drew them.
+// It is not a scale: a ground-coloured card scaling up on the ground has
+// almost nothing to see. The outlines have two inks and read on any backdrop,
+// which is the whole reason they are drawn.
 function growFrom(rect){
   sheetEl.style.transition = 'none';
   sheetEl.style.transform = '';
@@ -3628,7 +3598,7 @@ const follow = createFollow(id => {
 // of being there, letting go is leaving the room (leaveRoom, below)
 followTag.querySelector('.letgo').addEventListener('click', e => { e.stopPropagation(); if(follow.held) leaveRoom(); else follow.release(); });
 followTag.addEventListener('pointerdown', e => e.stopPropagation());
-// WHERE THE HAND WAS (2026-09-26): a click-follow ends when the follower's
+// WHERE THE HAND WAS: a click-follow ends when the follower's
 // own hand walks off (follow.js FOLLOW_SLACK), measured from where it was
 // when the follow began, so every pick says where the hand is now
 let ownPtr = null;
@@ -3718,7 +3688,7 @@ whoEl.addEventListener('click', e => {
 });
 etchedN.querySelector('.others').addEventListener('click', e => { e.stopPropagation(); if(whoEl.hidden) openWho(); else closeWho(); });
 
-// ---- rooms of the owner's own: follow and session (2026-09-25) --------------
+// ---- rooms of the owner's own: follow and session --------------
 // THREE MODES, each a superset of the one before (BIBLE.md section 2):
 //   the public room   everybody, always: the hands, the light things shared
 //                     (the bug, the piles, the dish), and anybody may
@@ -4008,10 +3978,10 @@ function flyTo(id, then){ flyToBox(nodes[id], then); }
 // with no node of its own, and /contact has to be able to aim at it
 function flyToBox(o, then){
   if(!o) return;
-  // Arriving FRAMES the thing (2026-09-15). It used to land at true scale
-  // flat, which delivered the about zone (two slots wide) hanging off both
-  // edges of the screen with its halo somewhere past them: the finder had
-  // found something you could not see. Now the camera holds a slot of it,
+  // Arriving FRAMES the thing. Landing at true scale flat would deliver a
+  // zone two slots wide hanging off both edges of the screen with its halo
+  // somewhere past them: the finder would have found something you could not
+  // see. So the camera holds a slot of it,
   // pulling back when true scale will not fit and keeping a deeper hand
   // where it still does. The aim carries the chrome band's half so the
   // thing is centred in the FREE frame, not under the bar.
@@ -4022,15 +3992,15 @@ function flyToBox(o, then){
 // Keyboard focus discipline: tiles wrap toroidally, so a tile Tab lands on
 // may currently be off-screen entirely, and an off-camera tile is
 // display:none. Without this, Tab walks the keyboard into things nobody can
-// see. So the camera follows focus, but ONLY when it has to (2026-09-16):
+// see. So the camera follows focus, but ONLY when it has to:
 // a tile already in the frame is flown to by nobody, because there is
-// nothing to go and look at. It used to fly on every focus, which meant the
-// world lurched under a keyboard user reading down a row of tiles they could
-// already see, and lurched again on the way back.
-// "In the frame" is the FOCUSED THING, whole, above the bar's band. It was
-// any corner of its tile, so a pile cut by the frame's foot took the focus
-// (and its scrollbar's three stops after it) under the bar or off the screen
-// and the camera never moved (2026-09-27: eight stops on /, four on /about).
+// nothing to go and look at. Flying on every focus would lurch the world
+// under a keyboard user reading down a row of tiles they could already see,
+// and lurch again on the way back.
+// "In the frame" is the FOCUSED THING, whole, above the bar's band. Any corner
+// of its tile would let a pile cut by the frame's foot take the focus (and its
+// scrollbar's three stops after it) under the bar or off the screen with the
+// camera never moving.
 const inFrame = el => {
   const r = el.getBoundingClientRect();
   return r.width > 0 && r.left >= 0 && r.top >= 0 && r.right <= VW && r.bottom <= VH - bandH();
@@ -4055,22 +4025,17 @@ addEventListener('focusin', e=>{
     break;
   }
 });
-// ---- A PRESS ACTS. THAT IS ALL IT DOES (2026-09-16) -------------------------
-// Two camera moves used to hang off the mouse and both are gone.
+// ---- A PRESS ACTS. THAT IS ALL IT DOES -------------------------
+// No camera move hangs off the mouse.
 //
-// The APPROACH: below a derived zoom (8/13, where the smallest type sinks
-// under the grid) the canvas was held to be a survey rather than a surface,
-// so a click on a tile flew the camera to it instead of opening it, on the
-// theory that you cannot mean "open" a thing you cannot read. Map semantics:
-// survey, dive, act. The theory was sound and the experience was not, for a
-// reason arithmetic could have caught: the home camera sits at 0.5 on a
-// laptop and the gate was 0.615, so at the framing every visitor arrives in,
-// EVERY click on EVERY tile was an approach. The considered-press rule had
-// made the whole world un-openable by default, and the site read as one that
-// would not let you in.
+// There is no APPROACH: a click on a tile opens it at any zoom. A gate below
+// a derived zoom (where the smallest type sinks under the grid) would make
+// the framing every visitor arrives in (home sits at 0.5 on a laptop) a
+// survey where EVERY click on EVERY tile was a fly-to, and the site would
+// read as one that would not let you in.
 //
-// The DOUBLE-PRESS zoom on bare ground (the mouse's answer to a pinch) went
-// with it. On a canvas you pan by dragging, a double click is something you
+// There is no DOUBLE-PRESS zoom on bare ground (the mouse's answer to a
+// pinch). On a canvas you pan by dragging, a double click is something you
 // do by accident while grabbing, and being thrown a zoom step for it is a
 // move you did not ask for and then have to undo.
 //
@@ -4082,7 +4047,7 @@ addEventListener('focusin', e=>{
 // Non-matching tiles vanish (and dither back when released) and the camera
 // glides to hold the group that remains: no dropdown, no result text, the
 // world simply shrinks to what you asked for. Matching rides the same
-// haystacks the old list used (labels, live data, hosts), substring first,
+// haystacks of the tiles (labels, live data, hosts), substring first,
 // fuzzy subsequence as the net, so "wthr" still finds the weather.
 function buildIndex(){
   const ix = [];
@@ -4132,7 +4097,7 @@ function fuzzy(hay, q){
   }
   return false;
 }
-// ---- THE FINDER (BIBLE.md section 8, 2026-09-11) ------------------------------
+// ---- THE FINDER (BIBLE.md section 8) ------------------------------
 // Typing finds WHERE things are and takes you there: the top result under
 // the camera at true scale, lit by an aura, and the arrows walk the rest.
 // A result on the ground (a tile, a pile, a section) is flown to and lit; a
@@ -4163,7 +4128,7 @@ function findAll(q){
   }
   return out.sort((a, b) => a.s - b.s || a.name.localeCompare(b.name));
 }
-// the line is also the cycler (2026-09-12): a phone has no arrow keys, so
+// the line is also the cycler: a phone has no arrow keys, so
 // two steppers flank the count when there is more than one find. They
 // take the pointer without taking the keyboard's focus from the field.
 // The kit's dock: the steppers are its icon buttons wearing its
@@ -4230,8 +4195,7 @@ function goFound(){
 // kit's .k-sel, set inside the thing's own box so it goes wherever the
 // node goes and scales with the camera like every other line on the ground:
 // a one-cell ink outline a cell off the box, a solid handle on each corner.
-// It used to be a frame painted in ochre "gold" on a canvas, lit from the
-// north-west: an old accent standing in for a selection, and a glow. A pick
+// It is not an accent-coloured frame or a glow. A pick
 // is ink, the way every other chosen thing on the site is ink, and it is
 // on or off in one step. The name stays `aura` in the code: the finder and
 // the fan call it by that name.
@@ -4250,12 +4214,12 @@ function aura(node){
 // still talks), and typing past the slash filters it down, the names that
 // start so first. Everything else stays the lens.
 //
-// THE BAR IS A COMMAND LINE (2026-09-26). , "do
+// THE BAR IS A COMMAND LINE. , "do
 // add params and flags". What a command is, the grammar a line is read
 // with and who is shown what all live in canvas/commands.js, pure and
 // tested; this is only what each one DOES. A runner gets the parsed line
 // ({ args, flags }) and answers one of three ways: nothing, when it has
-// gone somewhere (the bar clears and lets go, the way a picked command
+// left for somewhere (the bar clears and lets go, the way a picked command
 // always has); `{ say }`, one line in the roster's seat (an error, a
 // hook's answer), with the field kept so the line can be fixed; or
 // `{ rows }`, a list in the roster (/help, /rooms) whose rows are picked
@@ -4281,7 +4245,7 @@ if(hasOwnerHint(document.cookie)){
     .then(on => { if(on) setOwner(true); else if(on === false) clearHint(); },
           ()=>{ /* no answer: a guest's bar until the next load asks again */ });
 }
-// ONE GROUND, so the three theme commands went with the bulb (2026-09-15).
+// ONE GROUND, so the three theme commands went with the bulb.
 // The four navigational ones went with them for a different reason: /work,
 // /case studies, /feed and /about all named a thing the LENS already finds by
 // typing its name, so they were a second way to do the same thing that had to
@@ -4296,14 +4260,13 @@ const RUN = {
   map: ()=>{ closePage();
       flightTo(aimX(nodes.hero.wx + nodes.hero.w/2),
                aimY(nodes.hero.wy + nodes.hero.h/2), minZ); },
-  // /contact LANDS ON THE GLYPHS (2026-09-16). It used to open a mail client
-  // outright, which answers a question the visitor did not ask: there are
-  // eight ways to reach him on the ground (github, the key, the address, the
-  // rest) and the command picked one of them and launched an application for
-  // it. The dock is where they all are, so the command goes there and the
+  // /contact LANDS ON THE GLYPHS. Opening a mail client outright would
+  // answer a question the visitor did not ask: there are eight ways to reach
+  // him on the ground (github, the key, the address, the rest) and the
+  // command would pick one of them. The dock is where they all are, so the command goes there and the
   // visitor picks. The envelope is still one press away and still a mailto.
   contact: ()=>{ closePage(); flyToBox(dockBoxOf()); },
-  // /poof (2026-09-16): the world bursts into its own cells and defrags back.
+  // /poof: the world bursts into its own cells and defrags back.
   // It changes nothing and it is not hiding a load, which is exactly why it
   // is allowed to exist: it is the one command that is only for fun, and the
   // register says a thing like that is rare and pixelated (BIBLE.md section
@@ -4463,15 +4426,14 @@ function dockBoxOf(){
   const x1 = Math.max(...ics.map(o => o.wx + o.w)), y1 = Math.max(...ics.map(o => o.wy + o.h));
   return { wx: x0, wy: y0, w: x1 - x0, h: y1 - y0 };
 }
-// THE WORLD POOFS AND COMES BACK, and it TAKES ITS TIME (2026-09-16). Every
+// THE WORLD POOFS AND COMES BACK, and it TAKES ITS TIME. Every
 // tile in the frame bursts into its own cells (the Finder's gesture for "this
 // is gone"), the debris falls the whole height of the screen, the ground sits
 // genuinely empty for a while, and then each tile is rebuilt by the
 // defragmenter and handed back.
 //
-// The first cut ran the whole thing in about a second and a half, which is
-// the right length for a row being deleted and the wrong one for this. A
-// poof that is over before you have finished reading the command is a
+// A second and a half is the right length for a row being deleted and the
+// wrong one for this. A poof that is over before you have finished reading the command is a
 // glitch; the point of this one is the ten seconds, and the emptiest part is
 // the part that is working. So the three phases are long enough to watch: the
 // fall, the empty ground, the rebuild.
@@ -4501,7 +4463,7 @@ const POOF_BANG = 22;
 let poofing = false;
 function poofWorld(){
   if(poofing || modalOpen()) return;
-  // THE WHOLE WORLD, NOT THE VISIBLE SLICE (2026-09-16).
+  // THE WHOLE WORLD, NOT THE VISIBLE SLICE.
   //
   // The first cut collected only what was in frame, which is the obvious
   // reading and is wrong on a torus. Pan during the collapse and the ground was
@@ -4526,9 +4488,9 @@ function poofWorld(){
   const boxes = els.map(el => el.getBoundingClientRect());
   for(const el of els) el.style.visibility = 'hidden';
   // THE WORLD FALLS INTO THE POINT, and the point is what the bang comes back
-  // out of. It used to burst into cells that fell out of the bottom of the
-  // frame, which is the Finder's gesture for "this is gone" (poof, still the
-  // move every DESTRUCTION on this origin plays) and it was the wrong one
+  // out of. It does not burst into cells that fall out of the bottom of the
+  // frame, which is the Finder's gesture for "this is gone" (poof, the
+  // move every DESTRUCTION on this origin plays) and it is the wrong one
   // here, because nothing is being destroyed: the same material comes back.
   // Falling down said the world went away; falling IN says where it went.
   implode(()=>boxes, {
@@ -4537,7 +4499,7 @@ function poofWorld(){
     done: ()=>reassemble(live, ()=>{ poofing = false; }),
   });
 }
-// THE BIG BANG (2026-09-16). The world does not come back built, and it does
+// THE BIG BANG. The world does not come back built, and it does
 // not come back by growing: it comes back OUT OF THE DUST IT WAS BLOWN INTO.
 //
 // Nothing is assembled at the start. Every cell of every tile's box is thrown
@@ -4547,8 +4509,8 @@ function poofWorld(){
 // dust does the entire job and the real world is swapped in underneath it in
 // a single frame at the end, when the two are already the same picture.
 //
-// Revealing each tile as its own dust landed was the version before this and
-// it was wrong for the reason the whole move exists: finished tiles standing
+// Revealing each tile as its own dust landed would be wrong for the reason
+// the whole move exists: finished tiles standing
 // at full detail beside clouds that have not resolved says the world was
 // there the whole time and the dust was a screensaver over it.
 //
@@ -4771,19 +4733,11 @@ function sizeHero(){
 // then every tile visible on load dithers in, satellites sweeping the ring
 // clockwise from north, then moons by distance, so the world materializes
 // outward from the hero.
-// The hero used to be excluded here, because the SSR prelude was painted
-// underneath and covering the gap. The prelude is no longer painted (it
-// resized when sizeHero landed), so the hero has to arrive under its own
-// power, and dithering in is how everything else arrives.
 // Must run AFTER a render() has established real display:none/'' state, or
 // every node (nothing positioned off-canvas yet) would read as "visible".
-// NOTHING ARRIVES AT BOOT (2026-09-15). This used to walk every node,
-// ordered by bearing from the hero for the icons and by distance for
-// everything else, and play an entrance on each one: first an ordered
-// dither, then a brick bar that became the maker's mark followed by a
-// per-tile defrag sweep. Both came out the same afternoon they went in.
-//
-// Two reasons, and the second is the one that matters. A staggered entrance
+// NOTHING ARRIVES AT BOOT. Walking every node and playing an entrance on
+// each one (an ordered dither, a defrag sweep) is refused, for two reasons,
+// and the second is the one that matters. A staggered entrance
 // across twenty tiles reads as a random performance rather than as a place
 // being built: there is no story in the order, so it is just motion. And the
 // sweep is drawn in SCREEN space while the world it decorates pans and zooms
@@ -4794,13 +4748,10 @@ function sizeHero(){
 // it is the one arrival that never needs explaining.
 function initialReveal(){}
 async function boot(){
-  // THE STATEMENT NEEDS NO FONT (2026-09-16). It used to be the reason boot
-  // waited: the webfont had to land before the hero could be measured, so a caret
-  // stood in as the loading state and the first line typed itself in behind
-  // the wait. The statement is drawn in the mark's own pixels now, which are
+  // THE STATEMENT NEEDS NO FONT. The statement is drawn in the mark's own pixels now, which are
   // path data in a module that has already parsed by the time this runs, so
-  // it is simply there. The font wait below survives for everything else
-  // that reads in the webfont; the hero no longer has a stake in it.
+  // it is simply there. The font wait below is for everything else
+  // that reads in the webfont; the hero has no stake in it.
   sizeHero();
   // whatever the room is showing, or the first phrase in an empty room. The
   // statement is not typed and not on a clock any more, so there is nothing
@@ -4856,7 +4807,7 @@ async function boot(){
     layout();
     render();
   }
-  // legacy #/slug deep links from the prototype become real paths
+  // #/slug fragment deep links become real paths
   const legacy = legacySlug();
   if(legacy) history.replaceState(null, '', roomed(pathForSlug(legacy)));
   const slug = slugForPath(location.pathname);
@@ -4884,7 +4835,7 @@ async function boot(){
   initDiag();
   requestAnimationFrame(tick);
 }
-// the numbers on the screen (2026-09-12): what the wrist can photograph.
+// the numbers on the screen: what the wrist can photograph.
 // The line is also written to storage every tick, so a run the browser
 // killed leaves its last numbers for the next boot to show as "prev".
 function initDiag(){

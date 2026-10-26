@@ -217,23 +217,21 @@ export function poof(target, { done, color, beats = 1 } = {}) {
   const mute = ink('mute') || c
   const dur = ms('drift') * beats
   const frames = Math.max(1, Math.round(dur / 24))
-  // THE PHYSICS IS DERIVED FROM THE RUN, NOT PICKED (2026-09-16).
+  // THE PHYSICS IS DERIVED FROM THE RUN, NOT PICKED.
   //
-  // The constants here used to be literals tuned by eye against a 600ms
-  // drift: 0.16 of gravity a frame, a burst speed of half a cell to two, a
-  // drag of 0.96. Every one of them is a per-FRAME number, so they only mean
-  // what they were tuned to mean at one length. Asked for a ten-second poof
-  // they did not slow down, they overshot: at 0.16 a frame a particle falls
-  // eighteen hundred cells in the first three seconds, so the cloud left the
-  // screen almost immediately and the rest of the move was empty ground
-  // pretending to be a poof.
+  // Literal per-FRAME constants (gravity 0.16 a frame, a burst speed of half
+  // a cell to two, a drag of 0.96) only mean what they mean at one length.
+  // Asked for a ten-second poof they would not slow down, they would
+  // overshoot: at 0.16 a frame a particle falls eighteen hundred cells in the
+  // first three seconds, so the cloud leaves the screen almost immediately
+  // and the rest of the move is empty ground pretending to be a poof.
   //
-  // So the three of them are solved for instead. Gravity is whatever lands a
+  // So the three are solved for. Gravity is whatever lands a
   // particle a frame-and-a-bit below the bottom ON THE LAST FRAME, the burst
   // speed is whatever opens the cloud about a sixth of the frame over the
   // same run, and the drag is the root that decays a particle's sideways
   // travel to a twentieth of it by the end however many frames there are.
-  // The move now reads the same at any length: it is the same fall, watched
+  // The move reads the same at any length: it is the same fall, watched
   // for longer.
   const fall = FRAME_H * 1.25
   const g = (2 * fall) / (frames * frames)
@@ -382,11 +380,11 @@ export function bigBang(boxesAt, { beats = 1, originAt, done } = {}) {
           fy: y / b.h,
           cos: Math.cos(a),
           sin: Math.sin(a),
-          // THE CLOUD IS A DISC, NOT A SHELL. The speeds used to start at a
-          // quarter, which punched a hole of exactly that radius through the
-          // middle: every particle was past it by the same moment and the
-          // eruption read as a smoke ring. Two things fill it in. The speed
-          // now runs all the way down to nothing, weighted so that an even
+          // THE CLOUD IS A DISC, NOT A SHELL. Speeds that start at a
+          // quarter punch a hole of exactly that radius through the
+          // middle: every particle is past it by the same moment and the
+          // eruption reads as a smoke ring. Two things fill it in. The speed
+          // runs all the way down to nothing, weighted so that an even
           // spread of particles covers an even spread of AREA rather than of
           // radius (a uniform speed puts most of the cloud near the rim,
           // because a ring's area grows with r). And each grain leaves on its
@@ -540,21 +538,17 @@ export function implode(boxesAt, { beats = 1, originAt, done } = {}) {
   )
 }
 
-// ---- ONE MOVE, EVERYWHERE (2026-09-16) -------------------------------------
-// There was an IRIS here: a pair of doors that shut over the frame, let a
-// full page swap behind them and opened again, on the argument that a
-// destination does not grow out of a card because it did not come out of
-// one. It is gone, and so is the argument.
-//
-// The visitor watched themselves click the card. Telling them the page came
-// from nowhere is telling them something they know to be untrue, and it cost
-// the site a second transition vocabulary to say it: two ways of changing
-// what is on the screen, one for pages that stand on their own and one for
-// everything else, with no rule a visitor could learn that says which they
-// are about to get. The rects say which thing became which on any backdrop
+// ---- ONE MOVE, EVERYWHERE -------------------------------------
+// There is no iris: no pair of doors that shut over the frame and let a full
+// page swap behind them. The visitor watched themselves click the card, and
+// telling them the page came from nowhere tells them something they know to
+// be untrue. It would also cost a second transition vocabulary: two ways of
+// changing what is on the screen, one for pages that stand on their own and
+// one for everything else, with no rule a visitor could learn that says which
+// they are about to get. The rects say which thing became which on any backdrop
 // and at any size, which is the whole job, so they do it for the full page
-// too (app.js growFrom / shrinkTo). Consistency was worth more than the
-// second effect, and the second effect was the better-looking one.
+// too (app.js growFrom / shrinkTo). Consistency is worth more than a
+// second effect, even a better-looking one.
 //
 // The cover itself is not missed: anything that needs one is hiding a swap,
 // and nothing on this site swaps a page it cannot show arriving.

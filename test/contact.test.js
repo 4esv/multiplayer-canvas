@@ -1,4 +1,4 @@
-// /contact was a place on the ground and is nothing now (2026-09-11): the
+// /contact was a place on the ground and is nothing now: the
 // address is the envelope in the icon ring, a mailto and nothing behind it.
 // Renames and retirements are clean breaks here, so the path 404s rather
 // than redirecting, and the endpoint the form once posted to stays gone.

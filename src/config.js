@@ -20,9 +20,9 @@ export default Object.freeze({
   // Which peers may speak for the client through X-Forwarded-*. Production
   // sits behind a reverse proxy on Docker's private network, so `uniquelocal` (the
   // RFC 1918 ranges) is the proxy and nothing else: a hop count is not an
-  // option, Fastify 5 fails a number closed because a count cannot tell the
-  // proxy from a direct client that supplied enough hops (the first version
-  // of this line was `1` and request.ip stayed the Docker peer in prod).
+  // option: Fastify 5 fails a number closed because a count cannot tell the
+  // proxy from a direct client that supplied enough hops (request.ip would
+  // stay the Docker peer in prod).
   // Off outside production: a dev server is hit directly, and the loopback
   // check on /api/auth/dev-session must read the real peer, not a header
   // anyone on the LAN can write. Any proxy-addr spec works in the env.

@@ -232,8 +232,8 @@ export function buildWorkSheet(text, caseStudies, paths = {}) {
       if (more) out.push(more)
     } else if (sec.title === 'keywords') {
       // one still list, no heading: the words say what they are, and they
-      // are tags (the kit's, in the code face). It used to ride a ribbon that
-      // scrolled forever; a list read at rest reads.
+      // are tags (the kit's, in the code face). A list read at rest reads; a
+      // scrolling ribbon does not.
       const terms = sec.body
         .split('·')
         .map((t) => t.trim())
@@ -348,7 +348,7 @@ export function buildFeedSheet(entries) {
 // /api/page and the SSR'd entry sheets so the two can never drift.
 export function entryCssChain(entry) {
   // the kit draws a case study's foot (the dock); an experiment still wears
-  // its own controls, some under the retired kit's k- names, so it is not
+  // its own controls, some under their own k- names, so it is not
   // handed the kit until it is moved onto it
   return [
     '/css/highlight.css',
@@ -406,8 +406,8 @@ function pageBar(entry, ring) {
 export function buildEntrySheet(entry, assetUrl, ring = null) {
   const full = isFullPage(entry)
   // The way back names its collection; root-mounted kinds live on the canvas,
-  // so theirs names the canvas itself. It used to be omitted for them, which
-  // left a watch-sized touch screen with no reachable close at all. A full
+  // so theirs names the canvas itself. It is never omitted: a watch-sized
+  // touch screen would have no reachable close at all. A full
   // page's way back is its bar's close box instead (one way back per page).
   const backTo = backToFor(entry)
   const back = full

@@ -126,7 +126,7 @@ function moveOf(m) {
   // world's. Malformed drops to null like a bad key: a peer reading a page
   // does not vanish because its anchor was junk, it shows on the canvas
   // where its last world position was.
-  // `f` (the conga, 2026-09-25) is who the sender follows: a peer id, or 0
+  // `f` (the conga) is who the sender follows: a peer id, or 0
   // for nobody. It is the one field on the move that names somebody else,
   // and it names them without reaching them: nothing on the followed tab
   // changes because of it, and the view a follower keeps is still its own
@@ -147,11 +147,11 @@ function moveOf(m) {
 // seam: test/presence.test.js
 export const isPeerId = (v) => typeof v === 'number' && Number.isInteger(v) && v > 0 && v < 2 ** 31
 
-// The squish (2026-09-11): Maurice, the ladybug on the ground, squished for
+// The squish: Maurice, the ladybug on the ground, squished for
 // everyone by whoever clicks him. The frame carries NOTHING: no id, no time,
 // no who; the room decides how long (presence-room.js SQUISH_MS) and tells
 // every tab when he is back.
-// The front (2026-09-11): a pile turned to one of its members, for
+// The front: a pile turned to one of its members, for
 // everyone. The frame names the pile and the member; the room keeps one
 // index per pile and tells every tab. The stack id is a short slug, the
 // index a small whole number, and anything else is dropped whole.
@@ -179,7 +179,7 @@ function frontOf(m) {
   if (typeof i !== 'number' || !Number.isInteger(i) || i < 0 || i >= FRONT_MAX) return null
   return { stack, i }
 }
-// The play (2026-10-03): a game's replay running, the room's like its front.
+// The play: a game's replay running, the room's like its front.
 // `n` is the game's last ply, so the room knows where the tick stops.
 /**
  * Parse one inbound play.
@@ -211,7 +211,7 @@ export function parseSquish(raw) {
   return {}
 }
 
-// The feed (2026-09-17): food dropped in the slime mould's dish, for
+// The feed: food dropped in the slime mould's dish, for
 // everyone, since the dish is one dish. The frame names a cell, two whole
 // numbers inside the dish's square (primitives/slime/slime.js DISH); whether the cell
 // is inside the circle is the arithmetic's call on the other side, and a
@@ -280,14 +280,14 @@ function pushOf(m) {
   return { dx, dy }
 }
 
-// THE ACTS (sessions, 2026-09-25). A session is a room of its own that the
+// THE ACTS (sessions). A session is a room of its own that the
 // owner opened (primitives/rooms/sessions.js), and in it a tab may say one more kind of
 // thing: what it just DID, on a named channel, so the other tabs in the room
 // can do it too (a note played, a knob turned). A
 // selection on a page is not an act: it is everyone's, in every room, as the
 // `sel` frame below.
 //
-// A FOLLOW IS A SESSION TOO (2026-09-25), in one direction: in the public
+// A FOLLOW IS A SESSION TOO, in one direction: in the public
 // room an act goes to the tabs following its sender and to nobody else
 // (presence-room.js act). The follower chose to go where the other goes,
 // so it hears what they play; the one followed never chose to hear a
@@ -302,7 +302,7 @@ function pushOf(m) {
 // list of numbers. No nesting, no markup, no unbounded anything. What the
 // values mean is checked by the page script that receives them.
 //
-// THE VIEW (2026-09-26) is the fifth channel: what the sender is looking at
+// THE VIEW is the fifth channel: what the sender is looking at
 // on a page (a video's playback, the instrument up, a photograph, the
 // sentence read aloud) or on the ground (the fan spread),
 // its kind in a `what` key. It is an act like the others, so the room's

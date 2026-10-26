@@ -6,7 +6,7 @@
 //      "Durations and easings are tokens. Component CSS never hardcodes
 //      either", and nothing was checking, so a rule could quietly pick its
 //      own 300ms and its own curve.
-//   2. A move gets DROPPED. The pixel pass of 2026-09-15 made every surface
+//   2. A move gets DROPPED. A pixel pass that makes every surface
 //      consistent and left three fades and one teleport behind it: the pile
 //      turned by swapping innerHTML with no motion at all, the finder's
 //      frame popped in and out, and the collection (the most-used move on
@@ -315,7 +315,7 @@ const MOVES = [
       // There were two vocabularies: rects for items, an iris for pages that
       // stand on their own. A visitor cannot tell which they are about to
       // get, and they watched themselves click the card either way, so the
-      // cover is gone (2026-09-16) and growFrom accepts a full page.
+      // cover is gone and growFrom accepts a full page.
       // the names, not the word: both files explain in prose why the iris
       // went, and a guard that cannot tell a call from an epitaph would make
       // the explanation unwritable

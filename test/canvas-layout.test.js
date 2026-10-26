@@ -282,9 +282,7 @@ describe('the shipped world (tiered shells)', () => {
   })
 
   it('reserves NOTHING in the world for the screen chrome', () => {
-    // This replaced "keeps the bottom chrome band clear of tiles at the home
-    // camera", which asserted a world-space reservation the solver no longer
-    // makes. That reservation could only ever be right at one zoom (it was
+    // A world-space chrome reservation could only ever be right at one zoom (it would be
     // solved once against DESIGN_VIEW and measured 2.6x too small on a watch
     // and too large on a laptop), so it is a camera property now and the
     // clearance guarantee lives in test/chrome-fit.test.js, across the
@@ -344,13 +342,10 @@ describe('the shipped world (tiered shells)', () => {
   })
 
   it('keeps the work bearing to its quarter turn', () => {
-    // the six case studies used to be the largest group the compass carried;
-    // they ride one stack now (BIBLE.md section 5), which still has to sit
-    // inside its +-45deg wedge like everything else. The WORK ZONE that used
-    // to share the bearing was dropped on 2026-09-16: a door landing on a
-    // paragraph beside the studies said what the studies say, so its copy
-    // became the about triptych's middle panel and the bearing is the
-    // stack's alone.
+    // the six case studies ride one stack (BIBLE.md section 5), which has to
+    // sit inside its +-45deg wedge like everything else. No zone shares the
+    // bearing: a door landing on a paragraph beside the studies would say what
+    // the studies say, so the bearing is the stack's alone.
     const work = TILES.filter((t) => (t.tags || []).join() === 'work')
     assert.deepEqual(
       work.map((t) => t.id).sort(),
@@ -380,7 +375,7 @@ describe('the shipped world (tiered shells)', () => {
       T = 0,
       B = 0
     // Area is SPLIT where a tile straddles the axis rather than being handed
-    // wholly to the side its centre falls on (2026-09-16). The about triptych
+    // wholly to the side its centre falls on. The about triptych
     // spans three slots and sits centred under the hero: attributing all of
     // it to one side made the ring read as 69% right-heavy when what is
     // actually there is a balanced ring with a wide tile down the middle.

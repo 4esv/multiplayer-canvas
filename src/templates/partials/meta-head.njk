@@ -9,12 +9,11 @@
    template where a color literal is mandatory. It mirrors --cv-ground on both
    sides: the browser paints its chrome with these before a line of our CSS
    parses, and app.js re-pins both to the active ground when the ink flips by
-   hand. palette.test.js asserts each against the resolved token now. It used
-   to drop the line instead, which is how the retired two-ink pair survived
-   two skins and painted the dark chrome a different near-black than the
+   hand. palette.test.js asserts each against the resolved token. Dropping the
+   line instead would let the chrome paint a different colour than the
    page. #}
 {# One ground, so one theme-color: eigengrau, the same value --cv-ground
-   carries. There is nothing for the OS to choose between any more. #}
+   carries. There is nothing for the OS to choose between. #}
 <meta name="theme-color" content="#e4e4e7">
 {# Defaults fall through only to the home page; every other route declares its
    own meta. Hoisted so <title>, og:, and twitter: can never drift apart. #}

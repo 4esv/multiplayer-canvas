@@ -22,8 +22,8 @@ import { PX } from '../grid.js'
 
 // The dish is the circle that circumscribes a 5x5 square, on the cell:
 // 240 * sqrt2 = 339.4px, so 86 cells (344px) is the smallest even cell
-// count that holds it, and it sits inside the 8x8 tile (the snap,
-// 2026-09-27; it was 102 cells round a 6x6 in a 9x9). Even, so the dish's
+// count that holds it, and it sits inside the 8x8 tile (the snap).
+// Even, so the dish's
 // centre is a cell corner and the picture is mirror-symmetric on the lattice.
 export const DISH = 86
 // seam: test/slime.test.js
@@ -47,7 +47,7 @@ export const LINE_GAP = PX / 2
 // moves2.js: smell three cells at SA either side and SD ahead, turn 0.5
 // toward the strongest, jitter 0.9 on a tie, step one cell, drop 1.4, and
 // each tick the trail is the 3x3 mean times 0.92, with 900 agents on a
-// card. Ported and measured (2026-09-17, headless, the lab's own page): the
+// card. Ported and measured (headless, the lab's own page): the
 // lab's colony is roads for its first hundred ticks and ONE slab by tick
 // two hundred, and the lab hides that by restarting every three hundred. A
 // dish that runs for days cannot restart, so two numbers moved, chosen by a
@@ -57,10 +57,10 @@ export const LINE_GAP = PX / 2
 // the colony is thinner (8.6% of the cells, against the lab's 12%). With
 // those two, the veins stay veins and connect the food; with the lab's,
 // they merge into a band whatever the food does. The share is the number,
-// not the count: 700 agents in the 102-cell dish, 500 in the 86 (the snap,
-// 2026-09-27; kept at 700 the smaller dish ran at 12% and measured thicker,
-// the same metric over the mute and ink cells at tick 2000, five seeds,
-// 0.407 against the old dish's 0.441, and at 500 it is 0.437).
+// not the count: 700 agents in the 102-cell dish, 500 in the 86 (the snap;
+// kept at 700 the smaller dish ran at 12% and measured thicker, the same
+// metric over the mute and ink cells at tick 2000, five seeds, 0.407 against
+// 0.441 in the 102-cell dish, and at 500 it is 0.437).
 export const PARAMS = Object.freeze({
   agents: 500,
   sensorAngle: 0.5, // SA
@@ -81,8 +81,8 @@ export const PARAMS = Object.freeze({
   // pellet across the dish is found within a few hundred ticks and lasts
   // several hundred more: a meal, not a monument (test/slime.test.js
   // measures both ends).
-  // a pellet is a 3x3 crumb (2026-09-17, was a 21-cell blob: too big a
-  // mark on a 102-cell dish). Fewer cells means less smell and fewer
+  // a pellet is a 3x3 crumb (a bigger blob is too big a
+  // mark on the dish). Fewer cells means less smell and fewer
   // mouths on it, so the mass per cell and the smell per cell both rose;
   // swept against the meal's length and the network's thinness together
   // (a minute, 0.65)
@@ -107,7 +107,7 @@ export function inside(cx, cy) {
   const y = Math.abs(cy + 0.5 - R) / R
   return x ** SHAPE_N + y ** SHAPE_N <= 1
 }
-// THE RIM IS CELL DATA (2026-09-17): the inside cells with a four-neighbour
+// THE RIM IS CELL DATA: the inside cells with a four-neighbour
 // outside, as a boolean grid, the same shape gridOf() hands the label hand.
 // app.js draws it with pathFromGrid and wires it to the dust like a label,
 // so a cursor entering the dish breaks the rim the way it breaks a name.
@@ -501,7 +501,7 @@ export function applyDelta(tn, d) {
 // ---- the paint ------------------------------------------------------
 // One backing pixel a cell. A keyframe (no `prev`) clears and paints every
 // lit cell; a delta paints only the cells whose tone moved, plus the cells
-// the old food covered when the food moved, and the food on top. At steady
+// the food covered before it moved, and the food on top. At steady
 // state that is ~430 calls where the full paint was ~1750, and the picture
 // is the same pixel for pixel (test/waste.test.js paints both and compares).
 // Pure over a 2D context, so node can count and check it.

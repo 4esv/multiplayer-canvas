@@ -7,9 +7,9 @@
 // third-party constraint). A media or container query is not a size, it is a
 // density or a module count, and test/breakpoints.test.js holds those.
 //
-// THE HAIRLINE PASS IS RETIRED (the snap, BIBLE.md section 12). This used to
-// wave 1px and 3px through beside the cell, so a one-pixel rule and a
-// three-pixel focus ring were legal everywhere the camera made them fuzz. A
+// NO HAIRLINE PASS (BIBLE.md section 12). Waving 1px and 3px through beside
+// the cell would make a one-pixel rule and a three-pixel focus ring legal
+// everywhere the camera makes them fuzz. A
 // line is a whole cell (--cv-px) or nothing, and the ground cut (--cv-bd-cut,
 // the sp-hair 2px) is the one named half, which the token scale already
 // carries. It covered two stylesheets; it covers all of them.
@@ -40,7 +40,7 @@ const tokens = resolveTokens(readFileSync(join(ROOT, TOKENS), 'utf8'))
 const ALLOWED = new Set([0])
 // The resolver still hands back a light map and a dark one. They are
 // IDENTICAL today and test/one-ground.test.js proves it rather than
-// assuming it: there is one ground (2026-09-15) and nothing shipped
+// assuming it: there is one ground and nothing shipped
 // declares a dark context. Reading both is kept anyway, because it
 // costs nothing and is the correct reading the day that changes; what
 // is NOT kept is describing it as two-theme coverage, which is a claim

@@ -1,6 +1,5 @@
-// / : the home page. Modern browsers get the V2 infinite canvas
-// (templates/canvas/home.njk, promoted from sandbox/canvas-lab; the design
-// contract is BIBLE.md). Terminal and retro clients keep the plain-text and
+// / : the home page. Modern browsers get the infinite canvas
+// (templates/canvas/home.njk; the design contract is BIBLE.md). Terminal and retro clients keep the plain-text and
 // HTML 3.2 variants in pages/home.njk, which still carry the combined /feed
 // index plus the live last-played / activity / weather lines.
 
@@ -21,10 +20,10 @@ const byNewest = (a, b) => (b.date || '').localeCompare(a.date || '')
 const href = (e) => e.externalUrl || pathFor(e)
 
 // The home document's crawlable body. `/` is the only canvas route with no
-// SSR'd sheet, so before this it shipped one h1 and three nav links: every
+// SSR'd sheet, so without this it would ship one h1 and three nav links: every
 // crawler that does not run JS (GPTBot, ClaudeBot, PerplexityBot, and Google
-// before its render pass) saw eighteen words on the page an assistant fetches
-// first. /work, /feed and /about were never affected - they SSR their sheet.
+// before its render pass) would see eighteen words on the page an assistant
+// fetches first. /work, /feed and /about SSR their sheet.
 //
 // This is the same index the canvas paints as tiles and the same one the
 // terminal variant prints, so it is a fallback, not a second story: it lives
@@ -66,8 +65,8 @@ export async function registerHomeRoutes(fastify) {
       })
     }
     // The canvas shell reads the same meta-head partial as base.njk; these
-    // are the values the template used to hardcode. og:title now follows the
-    // page title (the partial keeps them from drifting apart).
+    // are the values the template would otherwise hardcode. og:title follows
+    // the page title (the partial keeps them from drifting apart).
     return renderPage(fastify, request, reply, 'canvas/home.njk', {
       // The background-refreshed canvas data (snapshot until the first
       // refresh lands) plus the routed-pages index; never blocks on an upstream.

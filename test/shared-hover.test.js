@@ -83,7 +83,7 @@ describe('the shared set is closed, and mutation is not in it', () => {
   // skips `[data-hk="..."]`, which READS a key back out of the DOM rather
   // than granting one.
   //
-  // TWO WAYS TO GRANT ONE, AND BOTH ARE COUNTED (2026-09-16). This scanned
+  // TWO WAYS TO GRANT ONE, AND BOTH ARE COUNTED. This scanned
   // markup attributes only, so a key handed over as `el.dataset.hk = '...'`
   // walked straight past the boundary below without anyone deciding
   // anything. That is not hypothetical: the maker's mark was put on the wire
@@ -125,11 +125,10 @@ describe('the shared set is closed, and mutation is not in it', () => {
     // Not a style rule: this list is the boundary. Anything new here has to be
     // something a stranger may light on your screen, and that is a call worth
     // making on purpose rather than by adding an attribute.
-    // The two hero doors carried keys until 2026-09-16, when they were
-    // removed: they were shortcuts past a layout that could not be read on
-    // its own, and the layout reads now. Their keys went with them.
+    // The two hero doors carry no keys: a shortcut past a layout is a
+    // symptom of a layout that cannot be read on its own.
     assert.deepEqual(literals.sort(), [
-      // THE STATEMENT (2026-09-16). The biggest thing on the ground and the
+      // THE STATEMENT. The biggest thing on the ground and the
       // one a stranger disturbing is most worth seeing. It can be shared
       // because it is already shared: the phrase is the room's and the wrap
       // is a world constant, so a relayed point lands on the same glyph cell
@@ -146,7 +145,7 @@ describe('the shared set is closed, and mutation is not in it', () => {
     // nearby has one" is not the test. Each of these is checked where it is
     // built: the markup that makes the control must not name it.
     // The theme switch used to head this list and went with the second
-    // theme (2026-09-15); the full page's bar took its place (drawn
+    // theme; the full page's bar took its place (drawn
     // in kit-scroll.js), and it is the same kind of thing: a control
     // that moves YOU, which nobody else in the room should be dragged along
     // by.
@@ -168,13 +167,13 @@ describe('the shared set is closed, and mutation is not in it', () => {
   // mutation: shared-hover.move-leaks-zoom
   it('the client sends where it is and what it is doing, a squish, a front, a feed, or a watch, and nothing else', () => {
     // The outbound mirror of parseFrame: five sends, five shapes. The feed
-    // (2026-09-17) is the slime mould's food, a cell of the dish; like the
+    // is the slime mould's food, a cell of the dish; like the
     // squish and the front it names a thing ON THE GROUND and nothing about
     // another visitor's view.
-    // The play (2026-10-03) is a replay started or stopped, a shared
+    // The play is a replay started or stopped, a shared
     // mutation of a game on the ground like the front: a slug, a bool and the
     // game's last ply, nothing about anybody.
-    // The move grew `d` on 2026-09-16 (whether this tab's button is down,
+    // The move carries `d` (whether this tab's button is down,
     // which picks which of the two hands the room draws for it). That is a
     // third fact about the SENDER, next to where it is and what it is over,
     // and not a fourth thing it may ask the room to do; test/presence.test.js
@@ -194,7 +193,7 @@ describe('the shared set is closed, and mutation is not in it', () => {
     // a few characters of quote, so the readers of that page can draw them.
     // Nothing about anybody else, and nothing anybody else's page does.
     //
-    // `f` (2026-09-25) is whom the sender follows, a fact about the sender
+    // `f` is whom the sender follows, a fact about the sender
     // like the rest, so the room can draw it in line behind that peer. The
     // act is a SESSION's (presence.js act sends it only inside one, and the
     // public room's parser has no kind for it, test/sessions.test.js): a

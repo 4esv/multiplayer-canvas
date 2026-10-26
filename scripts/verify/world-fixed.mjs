@@ -5,7 +5,7 @@
 // world's arithmetic, `world-seat.test.js` proves the stylesheet does not
 // re-seat a node, `px-tokens`/`bible-sync` read text. Between them sits a seam
 // nothing could see: the plan is right, the CSS parses, and the browser still
-// paints the node somewhere else. That is not hypothetical. A single
+// paints the node somewhere else. A single
 // `position: relative` at equal specificity dropped the whole icon ring out of
 // its transform and into the flow of #scene, whose box is rewritten on every
 // zoom; `layout.js` went on reporting the correct coordinates the entire time
@@ -178,10 +178,10 @@ const CAMERAS = [
   // world and nothing mounts, which the all-the-way-out probe below holds
   ['mount floor', '__lab.setZoom(__lab.zoom.mount)'],
   // a quarter across and three quarters down: an UNSTEERED camera deep in
-  // the world that still lands on the ring. A quarter down used to work and
-  // stopped on 2026-09-15, when the 16:9 ground made the hero's hole wide
-  // enough that (0.25, 0.25) is bare ground on a watch: the camera proved
-  // nothing and the run said so, which is the floor below doing its job.
+  // the world that still lands on the ring. A quarter down is bare ground
+  // on a watch (the 16:9 ground makes the hero's hole wide enough that
+  // (0.25, 0.25) misses the ring): that camera would prove nothing and the
+  // run says so, which is the floor below doing its job.
   ['panned +quarter', '__lab.setCam(__lab.world.w * 0.25, __lab.world.h * 0.75)'],
   ['panned -third', '__lab.setCam(-__lab.world.w / 3, -__lab.world.h / 3)'],
   ['across the seam', '__lab.setCam(__lab.world.w * 0.95, __lab.world.h * 0.95)'],
@@ -199,7 +199,7 @@ const VIEWPORTS = [
   ['watch', 320, 392, true, 2],
 ]
 
-// ---- the crown does not shiver (2026-09-12) --------------------------------
+// ---- the crown does not shiver --------------------------------
 // At the watch density #stage is the Digital Crown's scroller (app.js
 // initCrown). watchOS paints the 320px page on a 205pt screen, so a written
 // scrollTop reads back on the nearest device pixel, and the first crown
@@ -207,7 +207,7 @@ const VIEWPORTS = [
 // another fraction, and shivered until the page was killed. Chrome reads back
 // exactly, so this quantises the readback itself, then turns the crown one
 // notch each way. A notch must zoom once and stop, and the scroller's height
-// must not move with the zoom (it used to: the scene sat in its flow).
+// must not move with the zoom (the scene must not sit in its flow).
 const CROWN = `(async () => {
   const st = document.getElementById('stage')
   if (!document.documentElement.classList.contains('crown')) return { crown: false }
@@ -427,7 +427,7 @@ for (const [vpName, w, h, mobile, dpr] of VIEWPORTS) {
     enabled: true,
     maxTouchPoints: mobile ? 5 : 1,
   })
-  // the crown is opt-in (2026-09-12); the watch viewport asks for it so the
+  // the crown is opt-in; the watch viewport asks for it so the
   // check below still exercises the scroller
   await send('Page.navigate', { url: BASE + '/' + (vpName === 'watch' ? '?crown' : '') })
   await sleep(3500)

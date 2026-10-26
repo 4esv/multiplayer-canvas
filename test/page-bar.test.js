@@ -383,7 +383,7 @@ describe('the page bar: one navigation for every full page', () => {
 
   // mutation: page-bar.tab-floor-unreadable, page-bar.tabs-shrink-on-phone, page-bar.strip-clips
   it('a tab never shrinks under a readable title: a strip that does not fit scrolls', () => {
-    // six tabs at 390 used to read "D..", "R..": a far tab shrank to a
+    // six tabs at 390 must not read "D..", "R..": a far tab shrinking to a
     // sliver so the strip would never scroll. Now every tab keeps a floor
     // of sixteen characters of its title (a character of the face is two
     // cells at the body size, and the face has a two-cell rim each side)

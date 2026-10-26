@@ -114,12 +114,12 @@ export async function build(opts = {}) {
   registerGridMiddleware(fastify)
   // Before any route: fastify binds a route to the error handler its
   // context had when the route was added, so a handler set after them all
-  // (as this once was) reached only routes added later still, and a
-  // JSON body the parser refused came back in fastify's own shape.
+  // reaches only routes added later still, and a JSON body the parser
+  // refused comes back in fastify's own shape.
   registerErrorHandler(fastify)
 
-  // One URL per page. `/work/` used to 404 while `/work` served, so every
-  // hand-typed or hand-written trailing slash became a dead link and a
+  // One URL per page. A `/work/` that 404s while `/work` serves turns every
+  // hand-typed or hand-written trailing slash into a dead link and a
   // "Not found (404)" row in Search Console. Redirect instead of routing
   // both: two live URLs for one page would split the signal, which is the
   // problem the canonical tag then has to clean up. 301, not 308 - the
@@ -197,9 +197,9 @@ export async function build(opts = {}) {
         // an /img path a stale page still asks for without its hash. The
         // build does not rename them, so such a URL is stable while its bytes
         // are not: an OG card is regenerated whenever its title changes.
-        // Serving those `immutable` for a year meant og-freshness.test.js
-        // could keep a card in sync with its title while every client that
-        // had already fetched it kept the old one for a year. A week fresh,
+        // Serving those `immutable` for a year would let og-freshness.test.js
+        // keep a card in sync with its title while every client that
+        // had already fetched it kept the stale one for a year. A week fresh,
         // then revalidate in the background: a changed file reaches new
         // fetchers at once and everyone else within a week, and nothing pays
         // a round trip on the happy path.

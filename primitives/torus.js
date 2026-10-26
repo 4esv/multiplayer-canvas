@@ -38,8 +38,8 @@ export function snapZoom(z, dpr = 1, mode = 'near') {
 }
 // A press of a zoom key is a rung, never less. A fixed fraction is under half
 // a rung on a 1x screen (15% of 0.75 is 0.11 and a rung is 0.25), so the rung
-// the camera settled onto after it was the one it left, and the key did
-// nothing. The step is the fraction's nearest rung, and at least the next one
+// the camera settles onto after it would be the one it left, and the key
+// would do nothing. The step is the fraction's nearest rung, and at least the next one
 // that way: from a rung, the neighbour; from between two (a gesture just let
 // go), the rung on that side. Below the first rung there is no ladder, and a
 // step out is the fraction itself.

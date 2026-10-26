@@ -23,7 +23,7 @@ import { GROUND, fitScale, renderRgba } from './render.mjs'
 // The SVG icons carry concrete ink with a dark-scheme swap (the native pair
 // from canvas-tokens.css).
 // THE ONE PLACE prefers-color-scheme SURVIVES, and it is not a theme.
-// The site has ONE ground (canvas-tokens.css, 2026-09-15) and no page on it
+// The site has ONE ground (canvas-tokens.css) and no page on it
 // asks the OS what colour to be. These files are different: a favicon and an
 // app icon are painted by the BROWSER, into a tab strip, a bookmark bar and a
 // task switcher whose ground follows the user's OS and which we do not own

@@ -7,10 +7,9 @@
 // they are right by construction.
 //
 // Format follows llmstxt.org: an H1, a blockquote summary, then H2 sections
-// of markdown links. It used to write bare URLs in plain lines, which reads
-// to a parser as prose with no links in it at all - Lighthouse's llms-txt
-// audit failed on exactly that ("File does not appear to contain any
-// links").
+// of markdown links. Bare URLs in plain lines read to a parser as prose
+// with no links in it at all (Lighthouse's llms-txt audit fails on that:
+// "File does not appear to contain any links").
 
 import { loadFeedEntries } from './feed.js'
 import { isCaseStudy, isExperiment, isPhotoSet, isWriting, pathFor } from '../lib/entry-kind.js'

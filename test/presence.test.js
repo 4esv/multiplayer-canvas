@@ -89,7 +89,7 @@ describe('the pile index bound is one number in two places', () => {
 
   it('covers a real game, because a game is a pile now', () => {
     // a replay shares its step through the front frame; a forty-move game
-    // is eighty plies and the bound was 64 until 2026-09-16
+    // is eighty plies, so the bound has to clear 64
     assert.ok(FRONT_MAX >= 200, `FRONT_MAX is ${FRONT_MAX}; a long game would stop sharing`)
   })
 })
@@ -180,19 +180,18 @@ describe('presence: parseMove accepts only well-formed moves', () => {
     // vocabulary is, and the two have moved in opposite directions. A game
     // replay and the light/dark flip were the two examples here of
     // things kept deliberately private. The flip went with the second theme
-    // (2026-09-15). The replay became SHARED on 2026-09-16 and did not need
-    // a frame to do it: a pile's front already travels and takes any stack
+    // The replay is SHARED and needs no frame to be: a pile's front already travels and takes any stack
     // id, a game is a pile of plies, so the ply rides `front` with the stack
     // named 'reel'. That is the point of a closed vocabulary rather than an
     // argument against one.
     //
-    // The FEED (2026-09-17) is the fourth frame and the third mutation: food
+    // The FEED is the fourth frame and the third mutation: food
     // in the slime mould's dish, a cell named by two whole numbers. It got a
     // frame rather than riding `front` because a cell is not a member index,
     // and the bound on it is the dish's own (primitives/slime/slime.js DISH). It is
     // still a thing on the ground and not a visitor's view, which is the line.
     //
-    // A move grew a THIRD field on 2026-09-16, `d`, and it is worth being
+    // A move has a THIRD field, `d`, and it is worth being
     // precise about why that is not a fourth mutation. The line this file
     // guards is not "a move has three keys", it is that a client may describe
     // ITSELF and may not reach into anybody else's view. `d` is whether the
@@ -202,8 +201,8 @@ describe('presence: parseMove accepts only well-formed moves', () => {
     // asked to press somebody else's button would still have nowhere to go.
     // A FOURTH field, `at`, is the same kind of fact: the page
     // block the sender's own pointer is on, a slug and an index, so a
-    // reader of that page can draw it there. A FIFTH, `f` (the conga,
-    // 2026-09-25), says who the sender follows. It is the one field that
+    // reader of that page can draw it there. A FIFTH, `f` (the conga),
+    // says who the sender follows. It is the one field that
     // names somebody else, and it still reaches nobody: the followed tab's
     // view does not change, and there is still no frame that says "come
     // here". The ACT (sessions) is a word only a session's socket may say,
@@ -527,7 +526,7 @@ describe("following is individual, and lets go on the follower's own input", () 
     )
   })
 
-  // THE RULE CHANGED WITH THE CONGA (2026-09-25). It was "nothing about
+  // THE RULE CHANGED WITH THE CONGA. It was "nothing about
   // following is on the wire". Now the wire carries WHO follows whom, `f` on
   // the move, so every tab can draw the line; what it still does not carry
   // is a request. There is no frame that makes anybody follow, stop, or go

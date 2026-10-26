@@ -13,7 +13,7 @@ This door opens with a passkey, in a graphical browser.
 {% block content %}
   <main class="cv-door" data-claimed="{{ '1' if claimed else '' }}" data-next="{{ next }}">
     {# the name is the way back, as a site's name is everywhere: the door
-       was a page with no way out but the browser's back #}
+       would otherwise be a page with no way out but the browser's back #}
     <p class="cv-wordmark"><a href="/">{{ identity.name }}</a></p>
     {{ 'key' | pixelTitle }}
     {% if claimed %}

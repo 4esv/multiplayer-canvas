@@ -130,16 +130,9 @@ export default [
   {
     // Third-party code we ship as-is. Linting it is noise (it trips a
     // dozen browser-API globals we don't declare) and it must never be
-    // auto-fixed. Nothing first-party is exempt any more: layout.js joined
-    // when it was extracted, theme.js joined once it earned browser globals,
-    // and app.js joined 2026-08-19. app.js was the last holdout, exempt since
-    // it was promoted from the prototype and exempt through +5247/-2882 lines
-    // of edits, which is long enough for the exemption to stop being a
-    // staging decision and start being a blind spot. Turning the rules on
-    // cost four globals to declare, six catch bindings nobody read, and it
-    // immediately found two dead symbols (a DESIGN_VIEW import and the
-    // THEME_CYCLE array the switch stopped walking when it went binary).
-    // The FORMATTER is still off for it, deliberately: see .prettierignore.
+    // auto-fixed. Nothing first-party is exempt from the rules: an
+    // exemption stops being a staging decision and becomes a blind spot.
+    // The FORMATTER is off for app.js, deliberately: see .prettierignore.
     ignores: ['node_modules/', 'src/static/js/vendor/', 'src/static/canvas/vendor/'],
   },
 ]

@@ -64,7 +64,7 @@ const MATRIX = [
 ]
 
 // The bar's controls at a density, laid out the way the CSS lays them out.
-// The bar is the field (BIBLE.md section 8, 2026-09-10): one control,
+// The bar is the field (BIBLE.md section 8): one control,
 // absolutely centred. The close that joins it while a sheet or a fan is up
 // stands in the right inset's column and is modelled with the open state
 // below. A watch has no bar, so it has no controls: not a shrunken row, an
@@ -415,19 +415,17 @@ describe('the chrome fits every screen (BIBLE.md section 8)', () => {
         // The whole architectural claim in one assertion: whatever the bar
         // costs, it costs the CAMERA. The world is the same rectangle at
         // every viewport, hero included.
-        // (3456 x 3408 until 2026-09-11; the icons left the rings for the
-        // dock under the hero and the ground hugged tighter. 3312 x 2784 until
-        // 2026-09-15, when the ground became a 4K screen of cells: 16:9,
-        // 960 x 540 at one cell a pixel.)
+        // (The ground is a 4K screen of cells: 16:9, 960 x 540 at one cell a
+        // pixel.)
         assert.deepEqual(world.world, { w: 3840, h: 2160 })
         assert.equal(world.world.w % M, 0)
         const cam = openCamera(vw, vh)
         const bare = Math.min(vw / openFrame().w, vh / openFrame().h)
         // and the price is bounded: a shrink, never a re-layout
         assert.ok(cam.z <= bare + 1e-9)
-        // (a tenth until 2026-09-11; the dock made the block taller and the
-        // foot line made the band deeper, and together they cost a laptop
-        // 10.2%. Still a shrink, never a re-layout.)
+        // (The dock makes the block taller and the foot line makes the band
+        // deeper, and together they cost a laptop 10.2%. Still a shrink,
+        // never a re-layout.)
         assert.ok(
           cam.z >= bare * 0.88,
           `the band costs ${((1 - cam.z / bare) * 100).toFixed(1)}% of the opening zoom`

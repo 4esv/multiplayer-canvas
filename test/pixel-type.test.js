@@ -141,7 +141,7 @@ describe('pixel type: the faces are well-formed data', () => {
   it('the display letters keep two-pixel stems: no one-pixel stem anywhere', () => {
     // A lone '#' with ground on both sides is fine as a CUT: a beak at the end
     // of an arm, a notch under a crossbar, a corner of a diagonal. The gothic
-    // cut (2026-09-11) uses those on purpose and more than one to a row (the
+    // cut uses those on purpose and more than one to a row (the
     // T hangs two under its arm). What the two-pixel hand forbids is a lone
     // pixel that is a STEM: inked for three rows or more in its own column.
     // So the test follows the pixel down and up, not across.
@@ -217,7 +217,7 @@ describe('pixel type: the renderer', () => {
   })
 
   it('refuses a string it cannot set, and names the holes', () => {
-    // lowercase joined the face 2026-09-11, so the hole has to be a real one
+    // lowercase is in the face, so the hole has to be a real one
     assert.throws(() => pixelText('WORK ~ play', 'display'), /no glyph for ~/)
     assert.throws(() => pixelText('é', 'label'), /no glyph for é/)
     assert.throws(() => pixelText('A', 'display', { scale: 1.5 }), /integer/)

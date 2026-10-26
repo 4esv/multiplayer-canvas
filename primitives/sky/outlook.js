@@ -73,7 +73,7 @@ export const STEP_MS = 150
 const DAY_S = 86400
 // dawn and sunset are the forty-five minutes either side of the sun's edge
 const TWILIGHT_S = 45 * 60
-// the synodic month, and a new moon to count it from (2000-01-06 18:14 UTC)
+// the synodic month, and a new moon to count it from (6 Jan 2000, 18:14 UTC)
 const MONTH_S = 29.530588853 * DAY_S
 const NEW_MOON_S = 947182440
 

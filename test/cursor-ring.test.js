@@ -19,8 +19,8 @@
 // per-peer hue is untouched (it is the identity, and a sanctioned palette
 // exception); only the chrome around it moved.
 //
-// 2026-09-15: the arrow became a SPRITE (BIBLE.md section 10) and nothing is
-// stroked any more, so the same invariant is now carried by three stacked
+// The arrow is a SPRITE (BIBLE.md section 10) and nothing is
+// stroked, so the invariant is carried by three stacked
 // grids rather than by three stroke widths: the mark, the mark grown one cell
 // for the ground ring, and grown twice for the ink one. The guard checks the
 // same pairing in the same place, and it re-grows the sprite here rather than
@@ -128,9 +128,8 @@ describe('the presence cursor has an edge on the canvas', () => {
 
   // mutation: cursor-ring.layers-out-of-order, cursor-ring.ring-inked-ground
   it('is three DRAWN layers, not one shape grown twice', () => {
-    // The change this guards. The sprite used to be a single bitmap dilated
-    // once for the black and twice for the border, which decided the outline
-    // for you; every layer is placed by hand now. If grow() reappears in the
+    // A single bitmap dilated once for the black and twice for the border
+    // decides the outline for you; every layer is placed by hand instead. If grow() appears in the
     // sprite path, the drawing has been taken back off whoever drew it.
     const sprite = PRESENCE.slice(
       PRESENCE.indexOf('const pathOfLayer'),
@@ -154,7 +153,7 @@ describe('the presence cursor has an edge on the canvas', () => {
 
   // mutation: cursor-ring.hand-colour-unedged
   it('every hand is edged: colour never meets the ground', () => {
-    // What the two grown rings used to guarantee by construction and a drawn
+    // What grown rings would guarantee by construction a drawn
     // sprite has to earn. A colour cell touching nothing is a cell sitting
     // straight on the canvas, and on the bare ground that edge is the only
     // thing telling a hand from the ground behind it.
@@ -215,7 +214,7 @@ describe('the presence cursor has an edge on the canvas', () => {
     // ground-token halo shipped once and --cv-ground IS the canvas, so the
     // cursor was outlined in the exact colour behind it. What must hold is
     // that on any ground at least one of the two shows. Grounds, not themes:
-    // there is one ground here since 2026-09-15, and the reason there are two
+    // there is one ground here, and the reason there are two
     // outlines is that a tile wearing a host's livery (a --guest-*-bg token,
     // when a fork adds one) carries that host's background, which no
     // decision of ours flips.

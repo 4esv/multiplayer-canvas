@@ -22,8 +22,8 @@
 //              (the rule: things may move by themselves;
 //              nothing shakes, strobes or flashes)
 // Elements are keyed by their place in the tree, not by identity, so a
-// screen rebuilt on every note is still compared frame to frame (which is
-// how the old LCD's restarting settle ramp was caught: 34 changes in 1.5 s).
+// screen rebuilt on every note is still compared frame to frame (which
+// catches a settle ramp that restarts on every note).
 //
 // Runs against a served build. Usage:
 //   node scripts/verify/instrument-motion.mjs [baseUrl]

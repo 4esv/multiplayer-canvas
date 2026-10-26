@@ -8,7 +8,7 @@
 //
 // The VIEW is individual (BIBLE.md section 2, tenet IV): only the
 // follower's own camera, sheet and scroll move, and nothing anybody sends
-// moves anybody else's. WHO follows whom is not (2026-09-25): app.js hands
+// moves anybody else's. WHO follows whom is not: app.js hands
 // the id to presence.js, the move frame carries it, and every tab draws the
 // follower in line behind the one it follows (conga.js). Their cursor is
 // the only thing followed, since it is the only thing the room knows about
@@ -18,7 +18,7 @@
 //   - the follower's own steering (a pan, a wheel, a scroll): a view you
 //     are steering is yours, so the first move of your own is the end of
 //     theirs
-//   - the follower's own hand walking away (2026-09-26): past FOLLOW_SLACK
+//   - the follower's own hand walking away: past FOLLOW_SLACK
 //     from where it was when the follow began, the follower has gone to
 //     do something of their own. A key is NOT steering any more: a
 //     follower plays along on the instrument the one followed opened,
@@ -28,7 +28,7 @@
 //   - the followed peer leaving the room: there is nobody to follow
 //   - picking another peer: a follow replaces a follow
 //
-// HELD (2026-09-26). In a follow room (primitives/rooms/sessions.js KINDS) following the
+// HELD. In a follow room (primitives/rooms/sessions.js KINDS) following the
 // host is what the guest came for, so none of the follower's own input
 // lets go: steering and the hand walking off are both the follower's own
 // business while the host keeps the frame. Only leaving the room ends it
@@ -37,7 +37,7 @@
 // `on` is told of every change with the id now followed (or null), once per
 // change and never for a no-op, so a tag can paint from it.
 //
-// ONE QUEUE PER LINE (2026-09-25). Following somebody who is following
+// ONE QUEUE PER LINE. Following somebody who is following
 // somebody else attaches to THEIR head instead: the pick is resolved up the
 // chain before it is taken, so the camera, the wire's `f` and the line all
 // name the same head and a line never grows a branch. `headOf` is app.js's

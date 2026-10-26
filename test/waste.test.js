@@ -56,7 +56,7 @@ describe('idle wire: a socket nobody talks to costs nothing', () => {
     mock.restoreAll()
   })
 
-  // Measured 2026-09-23: 0 B/s per socket, before and after the pass. The
+  // Measured: 0 B/s per socket, before and after the pass. The
   // room snapshots only who moved, the dish is sent only to watchers, and
   // the heartbeat is one ping every 30s, outside this window by design: the
   // window is the steady state between beats.
@@ -167,12 +167,12 @@ describe('the pellet count', () => {
 })
 
 describe('the decode', () => {
-  // Measured 2026-09-23 on node 24 (scripts/verify/waste.mjs), JS heap
-  // bytes (a typed array's backing store lives off the heap, so the output
-  // arrays themselves are not in either number): before this pass 60-74 KB
-  // per keyframe decode and 36 KB per delta; after, ~1.1 KB and 420 B. The
-  // ceilings sit an order of magnitude under the old numbers, so a per-quad
-  // array coming back fails here.
+  // Measured on node 24 (scripts/verify/waste.mjs), JS heap bytes (a typed
+  // array's backing store lives off the heap, so the output arrays
+  // themselves are not in either number): ~1.1 KB per keyframe decode and
+  // 420 B per delta. The ceilings sit an order of magnitude over that and
+  // far under a per-quad array (60-74 KB per keyframe, 36 KB per delta), so
+  // one fails here.
   it('allocates the output and not an array per four characters', () => {
     const r = spawnSync(
       process.execPath,

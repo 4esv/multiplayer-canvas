@@ -50,7 +50,7 @@ export function withSearch(search, q) {
   return parts.length ? '?' + parts.join('&') : ''
 }
 
-// THE ROOM IN THE ADDRESS (2026-09-26, BIBLE.md section 2). The room a tab
+// THE ROOM IN THE ADDRESS (BIBLE.md section 2). The room a tab
 // is in is one flag in the query too, and the address is where it lives:
 //   no flag                 the public room
 //   `?follow` `?session`    a new room of that kind (the owner's alone)

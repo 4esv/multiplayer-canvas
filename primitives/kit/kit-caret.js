@@ -4,8 +4,8 @@
 // Outputs: positioned .k-caret elements. Style: kit.css.
 //
 // The field's caret (kit.css `.k-field .k-caret`) stands at the insertion
-// point, the way every caret since the teletype has. It used to be a flex
-// sibling after a flex:1 input, so it sat at the far end of the rule
+// point, the way every caret since the teletype has. A flex
+// sibling after a flex:1 input would sit at the far end of the rule
 // whatever the text and wherever the insertion point was: a picture of a
 // caret, not a caret.
 //

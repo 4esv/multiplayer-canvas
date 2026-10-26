@@ -46,12 +46,11 @@ export async function registerWorkRoutes(fastify) {
         meta,
       })
     }
-    // Modern browsers get the canvas with the studies FANNED (2026-09-16).
-    // /work used to land the camera on a WORK zone beside the pile; the zone
-    // was dropped into the about triptych, and a path landing on a place
-    // that no longer exists parks the visitor on empty ground with no way to
-    // tell that anything went wrong. The path means the work, and the work
-    // is the pile.
+    // Modern browsers get the canvas with the studies FANNED.
+    // /work lands the camera on the pile, not on a zone beside it: a path
+    // landing on a place that does not exist parks the visitor on empty
+    // ground with no way to tell that anything went wrong. The path means the
+    // work, and the work is the pile.
     return renderPage(fastify, request, reply, 'canvas/home.njk', {
       boot: { ...(await canvasBoot(fastify)), fan: 'work' },
       meta,

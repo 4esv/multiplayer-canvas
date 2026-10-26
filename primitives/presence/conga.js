@@ -3,7 +3,7 @@
 // Inputs: entries { id, f (followed id or null), fs } and per-peer position histories.
 // Outputs: linesOf(entries) -> Map(head -> ids behind it); record and sampleAt for the trailing path. Pure.
 //
-// THE CONGA (2026-09-25). Who follows whom is on the wire now (the move
+// THE CONGA. Who follows whom is on the wire now (the move
 // frame's `f`, primitives/presence/presence-protocol.js), so every tab can draw a follower
 // where following puts it: in line behind the one it follows, walking the
 // same path a beat later. This module is the arithmetic of that and nothing

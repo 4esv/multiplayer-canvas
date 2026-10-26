@@ -7,10 +7,10 @@
 // The room behind /ws/cursors: who is connected, what each peer last said, and
 // the fan-out to the open sockets. Split out of routes/presence.js so anything
 // in the process can publish to every live tab without reaching through route
-// registration. The room used to live in a closure inside the route handler,
-// which meant it existed only after registerPresenceRoutes ran, and server.js
-// runs that AFTER the api routes: a module that wanted to push would have
-// captured undefined at boot. A module-level room has no order to get wrong.
+// registration. A room in a closure inside the route handler
+// would exist only after registerPresenceRoutes ran, and server.js runs that
+// AFTER the api routes: a module that wanted to push would capture undefined
+// at boot. A module-level room has no order to get wrong.
 //
 // Division of labour: the route file owns the plugin, the per-socket inbound
 // rate gates and the socket event wiring; this file owns the state, the roster
@@ -39,12 +39,12 @@ export const SQUISH_MS = process.env.NODE_ENV === 'production' ? 5 * 60 * 1000 :
 // killed process) would otherwise linger as a frozen ghost cursor until the OS
 // TCP timeout; the ping/pong sweep reaps it in at most two periods.
 const PING_MS = 30000
-// THE ROOM SNAPSHOTS AT 24fps (2026-09-16), it does not relay.
+// THE ROOM SNAPSHOTS AT 24fps, it does not relay.
 //
-// Every accepted move used to be fanned out the instant it arrived, and the
-// arithmetic on that is bad in a way no amount of tuning fixes. The inbound
+// Fanning every accepted move out the instant it arrives is bad arithmetic
+// that no amount of tuning fixes. The inbound
 // gate is 33ms, so 100 participants can send ~3030 moves a second between
-// them; each one went to every other open socket, and with MAX_CONN at 256
+// them; each one goes to every other open socket, and with MAX_CONN at 256
 // that is ~772,000 outbound frames a second, 67 MB/s off the box, and every
 // client parsing 3030 JSON messages a second to draw at most 60 frames.
 //
@@ -54,17 +54,16 @@ const PING_MS = 30000
 //   - a client parses 24 messages a second instead of 3030
 //   - a peer that moved ten times in a tick costs one entry, not ten
 //   - the frame is IDENTICAL for every recipient, so it is serialised ONCE
-//     per tick rather than once per message. The old fan-out already had one
-//     stringify per message, which was the right fix for the wrong loop.
+//     per tick rather than once per message. A per-message fan-out can do
+//     one stringify per message, the right fix for the wrong loop.
 //
 // 24 is the number because it is the one the visitor asked for: stepped
 // enough to read as frames, which is this canvas's whole register, and fluid
 // enough not to stutter. The client eases between snapshots either way
 // (primitives/presence/presence.js SMOOTH_TAU), so this is the rate news ARRIVES at, not
 // the rate anything is drawn at.
-// A SWITCH, temporarily: PRESENCE_SNAP_MS=0 goes back to relaying every move
-// the instant it arrives, which is what this replaced. It exists to bisect a
-// stutter by hand rather than by argument; delete it once that is settled.
+// A SWITCH: PRESENCE_SNAP_MS=0 relays every move the instant it arrives. It
+// exists to bisect a stutter by hand rather than by argument.
 const SNAP_MS =
   process.env.PRESENCE_SNAP_MS !== undefined ? Number(process.env.PRESENCE_SNAP_MS) : 1000 / 24
 // Positions go over as 12-bit integers instead of full floats. The world is
@@ -79,8 +78,8 @@ const raw = (s, text) => {
   if (isOpen(s)) s.send(text)
 }
 
-// EVERY ROOM'S SOCKETS, in one place (sessions, 2026-09-25). There used to be
-// one room, so "a socket in the room" and "a live socket" were the same
+// EVERY ROOM'S SOCKETS, in one place (sessions). With one
+// room, "a socket in the room" and "a live socket" would be the same
 // question. A session is a room of its own (primitives/rooms/sessions.js), and the things
 // that push to tabs from outside any room do not care which room a tab is
 // in: the slime mould and the weather window send to whoever says it is
@@ -156,7 +155,7 @@ export function createRoom({
   // rate limit, and it is the cursor's: the room says it at most once a tick.
   const selMoved = new Set()
   let snap = null
-  // THE CONGA's clock (2026-09-25): every time a peer starts following
+  // THE CONGA's clock: every time a peer starts following
   // somebody, the room stamps it with the next number. Two tabs that both
   // follow the same leader form a line in the order they joined it, and the
   // order has to be the room's, not each tab's guess from arrival times.
@@ -508,7 +507,7 @@ export function createRoom({
       // not sent here: noted, and shipped with everyone else's on the next
       // tick. A peer that moves twenty times before the tick costs one entry.
       moved.add(me)
-      if (SNAP_MS <= 0) flush() // the switch: relay at once, as it used to
+      if (SNAP_MS <= 0) flush() // the switch: relay at once
     },
 
     /**

@@ -63,7 +63,7 @@ test('loadMarkdownDir sorts items newest-first by date', async () => {
   const load = loadMarkdownDir(dir)
   const items = await load()
   const slugs = items.map((i) => i.slug)
-  // newer (2026-03-01) before older (2026-01-01); undated (null date) sorts last.
+  // newer (March) before older (January); undated (null date) sorts last.
   assert.deepEqual(slugs, ['newer', 'older', 'undated'])
   assert.equal(items[0].date, '2026-03-01')
   assert.equal(items[1].date, '2026-01-01')

@@ -100,9 +100,8 @@ describe('hidden filtering', () => {
 
 describe('lastmod tells the truth about modification', () => {
   // `date` is when the work happened and never moves again; `updated` is when
-  // the file last changed. The sitemap used `date`, so it advertised the case
-  // studies as untouched since 2023-2025 while their bodies had been edited
-  // four days earlier. Google cross-checks lastmod against the page it
+  // the file last changed. A sitemap using `date` would advertise edited
+  // case studies as untouched. Google cross-checks lastmod against the page it
   // fetches and discounts the signal site-wide when it is consistently wrong,
   // which would have spent the sitemap's only freshness hint.
   const CONTENT_DIR = join(import.meta.dirname, '../content/feed')

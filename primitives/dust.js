@@ -21,7 +21,7 @@
 // whether the dust is on at all (reduced motion, the canvas's ?bare and
 // ?nodust), which it answers with `enabled`.
 //
-// THE DUST SETTLES SLOWLY, AND A SETTLED CELL RESTS (2026-09-16). Two
+// THE DUST SETTLES SLOWLY, AND A SETTLED CELL RESTS. Two
 // changes, one for the look and one for the worst case, and they happen to be
 // the same change.
 //

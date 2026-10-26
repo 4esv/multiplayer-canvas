@@ -1,7 +1,6 @@
 // A user-agent string, read for a human: "Safari on iPhone", "Chrome on
 // Mac". The owner dashboard lists sessions and push devices by it, and a
-// raw UA is unreadable on a phone (one wrapped line per character was what
-// the sessions list did before this). Coarse on purpose: the browser family
+// raw UA is unreadable on a phone (one wrapped line per character). Coarse on purpose: the browser family
 // and the device family are all that tell two of one person's devices apart.
 
 const BROWSERS = [

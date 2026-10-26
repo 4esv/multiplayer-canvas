@@ -28,7 +28,7 @@
 //               Frozen in KNOWN_CONTRAST_DEBT, asserted exactly, so it cannot
 //               grow. The reason says what the fix is and why it is not here.
 //
-// Those are different states and they used to be one list. A guard that fails
+// Those are different states and must not share a list. A guard that fails
 // on things the standard does not require is a guard people learn to override,
 // and an exemption that does not say WHY is indistinguishable from a bug that
 // nobody got to.
@@ -42,7 +42,7 @@
 // frontmatter could not have.
 //
 // APCA Lc rides along as a second opinion and never fails anything. The apca-w3
-// package is deliberately not a dependency: its licence expired 2022-12-31 and
+// package is deliberately not a dependency: its licence expired at the end of 2022 and
 // forbids commercial use, and it pulls an AGPL dependency into an MIT repo. The
 // formula below is the published SAPC-APCA 0.1.9 constants, checked in the
 // first test against the reference values.
@@ -628,9 +628,8 @@ describe('contrast, measured on the tokens', () => {
   // mutation: contrast.mute-too-light
   it('the native palette clears WCAG 2, with no allowlist', () => {
     // Native pairs have no debt list on purpose. We own these values.
-    // ONE ground since 2026-09-15, so this is one census, not two: the pairs
-    // used to be measured light and dark and half of them were only ever
-    // right in one of them.
+    // ONE ground, so this is one census, not two: pairs measured on two
+    // grounds can be right on only one of them.
     const failures = nativeRows
       .filter((r) => r.gated && !r.pass)
       .map(

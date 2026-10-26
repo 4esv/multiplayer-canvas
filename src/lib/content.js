@@ -14,10 +14,10 @@ import { renderMarkdown } from './markdown.js'
 
 const USE_CACHE = process.env.NODE_ENV === 'production'
 
-// YAML parses an unquoted `2026-07-22` into a Date, whose default
+// YAML parses an unquoted `YYYY-MM-DD` into a Date, whose default
 // stringification is "Tue Jun 02 2026 20:00:00 GMT-0400 (...)". Exported
 // because every date-shaped frontmatter field needs this, not just `date`:
-// `updated` shipped a full JS Date string into <lastmod> before it did.
+// an unnormalised `updated` would put a full JS Date string into <lastmod>.
 export function normalizeDate(value) {
   if (value instanceof Date) return value.toISOString().slice(0, 10)
   if (typeof value === 'string') return value

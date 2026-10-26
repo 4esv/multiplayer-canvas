@@ -1,7 +1,6 @@
 // The field's caret stands at the insertion point (primitives/kit/kit-caret.js, kit.css
-// .k-field). It used to be a flex sibling after a flex:1 input and sat at
-// the far end of the rule whatever was typed: every field on the site had
-// a caret stuck to the end of the line (2026-09-26).
+// .k-field). A caret as a flex sibling after a flex:1 input sits at
+// the far end of the rule whatever was typed; it must follow the text.
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'

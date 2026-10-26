@@ -1,7 +1,7 @@
 // scripts/verify/session-live.mjs
 // BIBLE.md section 2, in real browsers: THREE MODES, EACH A SUPERSET OF THE
 // LAST, and A ROOM OF THE OWNER'S OWN IS THE FLAG IN THE ADDRESS
-// (2026-09-26).
+//.
 //
 // The pure guards hold the pieces: who may open a room, a named code and
 // the PIN (test/sessions.test.js), the line and what lets a follow go
@@ -286,8 +286,8 @@ try {
   const tip = { x: Math.round(b.x + b.w / 3), y: Math.round(b.y + b.h / 2) }
   // a walk to the right, then a rest: the line stays strung out BEHIND the
   // resting hand (to its left, on the path it walked), never stacked on it.
-  // The first run of this check measured 0px here and called it a pass,
-  // which was the bug: a wall clock walked the line into the head.
+  // A 0px reading here is a failure, not a pass: it means a wall clock
+  // walked the line into the head.
   for (let k = 0; k < 12; k++) await move(owner, tip.x - 120 + k * 10, tip.y)
   await move(owner, tip.x, tip.y)
   await sleep(1800)
@@ -341,8 +341,8 @@ try {
   // case study closes back to its collection's fan (the one navigation for
   // every collection), and the fan is part of the view a follow carries
   // (view-sync.js), so the guest must be on that same fan at the same address,
-  // not on the bare ground while the host looks at the fan: that was the old
-  // outcome, and it was the guest being somewhere the host was not.
+  // not on the bare ground while the host looks at the fan, which would be the
+  // guest somewhere the host is not.
   await key(owner, 'Escape')
   const hostAt = await until(
     owner,

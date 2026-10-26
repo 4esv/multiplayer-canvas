@@ -22,9 +22,8 @@
 // hairline pass). A border or an outline is one cell thick (var(--cv-px)),
 // a whole number of cells (calc(n * var(--cv-px))), one of the line tokens
 // whole (--cv-bd, --cv-bd-ink, and the ground cut --cv-bd-cut, the one named
-// half), or nothing. This used to pass 1, 2 and 3px as hairlines, which is
-// how a three-pixel focus ring and a two-pixel board frame stood beside the
-// cell. A width typed in px is off even at the cell's own 4, because it
+// half), or nothing. Passing 1, 2 and 3px as hairlines lets a three-pixel focus
+// ring and a two-pixel board frame stand beside the cell. A width typed in px is off even at the cell's own 4, because it
 // stops following the cell the day the cell moves, and a shorthand that
 // names a style and no width is `medium`, three pixels. A transparent
 // border passes (the border-drawn triangle).

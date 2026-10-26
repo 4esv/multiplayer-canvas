@@ -132,7 +132,7 @@ describe('BIBLE.md, canvas-tokens.css and layout.js agree', () => {
 
   // mutation: bible-sync.font-drift
   it('the face is one token, the frontmatter names the same family, and the file is vendored with its licence', () => {
-    // DotGothic16 replaced the old face through --cv-font alone. The family
+    // The face is swapped through --cv-font alone. The family
     // the token names is the one every typography row claims, its @font-face
     // points at a file under src/static/fonts, and the licence sits beside it.
     const family = light.font
@@ -174,10 +174,8 @@ describe('BIBLE.md, canvas-tokens.css and layout.js agree', () => {
 
   // mutation: bible-sync.dark-view-back
   it('there is ONE ground, and no second view hiding behind it', () => {
-    // This used to assert the DARK half of every pair against colors.*-dark.
-    // The pair is retired (2026-09-15): one ground, one value per token, no
-    // switch. So the guard inverts. Instead of proving the two views agree
-    // with two lists, it proves there is only one view left: the cascade's
+    // One ground, one value per token, no switch. So the guard does not
+    // prove two views agree with two lists, it proves there is only one view: the cascade's
     // dark read and its light read must be identical, and the frontmatter
     // must carry no -dark key for anything to drift into.
     for (const name of Object.keys(bible.colors)) {
@@ -273,19 +271,17 @@ describe('BIBLE.md, canvas-tokens.css and layout.js agree', () => {
   // mutation: bible-sync.chrome-hand-tuned
   it('layout CHROME mirrors the chrome tokens (inset, gap, the control height)', () => {
     // BIBLE.md section 8: the bar's measures read spacing tokens, not
-    // hand-tuned numbers. This replaced the CHROME_TOP pin (top = sp-4,
-    // height = ctrl-h), which described a band reserved in WORLD units. The
-    // reservation is retired: the bar is screen furniture, so its measures
-    // are screen px per density and the opening CAMERA subtracts them.
+    // hand-tuned numbers. No band is reserved in WORLD units: the bar is
+    // screen furniture, so its measures are screen px per density and the
+    // opening CAMERA subtracts them.
     assert.equal(CHROME.inset, tokens.pxValue('sp-6'))
     assert.equal(CHROME.foot, tokens.pxValue('module'))
     assert.equal(CHROME.gap, tokens.pxValue('sp-3'))
     assert.equal(CHROME.h, tokens.pxValue('ctrl-h'))
-    // There is ONE control height. The 36px watch variant is gone with the
-    // watch bar itself: a control cannot go below the fingertip that presses
-    // it, so shrinking never made the bar fit, and the watch density carries
-    // no chrome to size. A reintroduced ctrl-h-sm means that answer came
-    // back, so it fails here rather than passing quietly as an unused token.
+    // There is ONE control height. A control cannot go below the fingertip
+    // that presses it, so shrinking never makes the bar fit, and the watch
+    // density carries no chrome to size. A ctrl-h-sm token fails here
+    // rather than passing quietly as an unused token.
     assert.equal(CHROME.hSm, undefined)
     assert.ok(!tokens.names.includes('ctrl-h-sm'), 'the small control height is retired')
   })

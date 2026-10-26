@@ -11,9 +11,6 @@
 // says no, that an off-camera dish says no) is source-guarded in
 // test/slime.test.js.
 //
-// The number this replaced (2026-09-17, same probe shape, before the
-// change): every open tab 11.1 KB/s, 3.8 frames/s of 2855 bytes.
-//
 // Runs against a served build (`npm start` locally). Usage:
 //   node scripts/verify/slime-wire.mjs [baseUrl] [seconds]
 const BASE = process.argv[2] || process.env.BASE_URL || 'http://localhost:3000'
@@ -95,6 +92,7 @@ for (const c of all) {
   if (c.name === 'present' && (c.keys !== 0 || c.deltas === 0)) bad = true
   if (c.name === 'returns' && c.keys !== 1) bad = true
 }
+// baseline: every open tab on the full-frame stream, 3.8 frames/s of 2855 bytes
 const before = 11100
 const per = present.bytes / secs
 console.log(`  present tab against the 11.1 KB/s before: ${(before / per).toFixed(1)}x smaller`)

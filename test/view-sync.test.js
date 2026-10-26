@@ -1,5 +1,5 @@
 // test/view-sync.test.js
-// THE VIEW, SHARED (2026-09-26).  What a visitor is looking
+// THE VIEW, SHARED.  What a visitor is looking
 // at (a video's playback, the instrument up, a photograph, the sentence read
 // aloud, the fan spread) rides the act bridge as one more
 // channel, `view`, so the room's audience rules hold it unchanged: a follow
@@ -698,7 +698,7 @@ describe('the view: reading along', () => {
 // one followed blinks off the page for a frame. The close's skin comes off
 // only once the page has travelled home, so without this the late close
 // shut the chrome of the page that had just reopened: painted, scrolled,
-// playing, and invisible (found by the two-browser proof, 2026-09-26).
+// playing, and invisible (found by the two-browser proof).
 describe('the view: a page reopened', () => {
   // mutation: view-sync.skin-off-reopened
   it('a page opened again while the last close travelled home keeps its chrome', () => {

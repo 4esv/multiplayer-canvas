@@ -47,8 +47,8 @@ const WORK_TEXT = [
 
 describe('zones: the tiles', () => {
   it('one zone, on a bearing the compass has, with a home vector', () => {
-    // contact left the ground 2026-09-11: the address is the envelope in the
-    // icon ring, and a zone never repeats what the ring says
+    // contact is not a zone: the address is the envelope in the icon ring,
+    // and a zone never repeats what the ring says
     assert.deepEqual(ZONES.map((z) => z.id).sort(), ['about'])
     for (const z of ZONES) {
       for (const tag of z.tags) assert.ok(TAG_DIR[tag], `${z.id}: no bearing for ${tag}`)
@@ -61,11 +61,10 @@ describe('zones: the tiles', () => {
 
   // mutation: zones.land-by-first-segment
   it('the paths land: /about, and nothing else', () => {
-    // /work stopped being a zone on 2026-09-16: the WORK section went into
-    // the about triptych and the path became the case studies, which
-    // stackForPath answers. One zone left, so one land route, and /work
-    // must NOT land a camera any more or the visitor is parked on the ground
-    // where a section used to be.
+    // /work is not a zone: the WORK section lives in the about triptych and
+    // the path is the case studies, which stackForPath answers. One zone, so
+    // one land route, and /work must NOT land a camera or the visitor is
+    // parked on bare ground.
     assert.deepEqual(LAND_ROUTES, { '/about': 'about' })
     assert.equal(landForPath('/about'), 'about')
     assert.equal(stackForPath('/work'), 'work', '/work is the studies now')
@@ -106,7 +105,7 @@ describe("zones: the copy is the server's", () => {
       /<h3>Me<\/h3><p>My name is Ada\.<\/p>\n<p>Second paragraph about me\.<\/p>/
     )
     assert.match(z.html, /<h3>Site<\/h3><p>One canvas\.<\/p>/)
-    // Me, Work, Site: the triptych (2026-09-16)
+    // Me, Work, Site: the triptych
     assert.equal((z.html.match(/class="zcol"/g) || []).length, 3)
     assert.match(z.html, /<h3>Work<\/h3>/)
     assert.ok(

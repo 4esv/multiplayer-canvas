@@ -40,14 +40,14 @@ import { SERVER_PUSH } from '../presence/wire.js'
 import { presenceRoom } from '../presence/presence-room.js'
 
 // the clock: 90ms a tick, slowed from the lab's 55 after watching it live
-// (2026-09-17): a mould that keeps pace with a cursor reads as an
+//: a mould that keeps pace with a cursor reads as an
 // animation, and at this pace the roads are seen forming. The picture goes
 // out four times a second; the register is frames, not motion
 // seam: test/slime.test.js
 export const TICK_MS = 90
 // seam: test/slime.test.js
 export const FRAME_MS = 250
-// STANDING FOOD (2026-09-17). A colony with nothing to reach for merges into
+// STANDING FOOD. A colony with nothing to reach for merges into
 // one band (measured: the lab's own page does it by tick two hundred), and a
 // colony connecting several food sources stays a network, which is the
 // Tero et al. picture the lab cites. So the dish keeps STANDING pellets:

@@ -137,7 +137,7 @@ describe('stacks: the pile fits its footprint on the lattice', () => {
     assert.ok(g.pager.x + PILE.pagerW <= foot.w, 'the pager hangs out of the footprint')
   })
 
-  it('every pile sits the same way: the front floats over the base (2026-09-11)', () => {
+  it('every pile sits the same way: the front floats over the base', () => {
     // one physics for every stack, the cast's: the deepest back is the
     // lowest and rightmost, the front the highest and leftmost
     for (const s of PILES) {

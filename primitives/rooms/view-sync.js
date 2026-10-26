@@ -5,7 +5,7 @@
 // Outputs: view payloads over the presence act channel, with echo suppression and seek
 //   tolerance. Browser.
 //
-// THE VIEW, SHARED (2026-09-26).
+// THE VIEW, SHARED.
 //
 // What a visitor is LOOKING AT on a page, besides where their hand is: the
 // video playing and where in it, which instrument is up, which photograph of

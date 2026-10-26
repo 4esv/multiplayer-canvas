@@ -84,10 +84,9 @@ describe('elevation: one light, and tone rather than a cast', () => {
 
   // mutation: elevation.cast-returns
   it('no cast: the cast tokens are retired, the parts ramp is there', () => {
-    // No shadow at all. The one-cell cast of 2026-09-11 and the recess
-    // cast that mirrored it are gone with every other shadow
+    // No shadow at all, neither a one-cell cast nor a recess cast
     // (test/ink-chrome.test.js); a raised thing is a baked picture of itself
-    // on the grey ramp. A token that comes back is a cast waiting for a
+    // on the grey ramp. A cast token that appears is a cast waiting for a
     // consumer.
     for (const [theme, view] of [
       ['light', light],

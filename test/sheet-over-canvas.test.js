@@ -16,7 +16,7 @@
 // came back 0 the seating function returned early and left the row at 0,0, and
 // nothing in a run that reproduces can show you the run that does not. The row
 // is derived now (layout.js optionsBox, x=1440 w=912 hero-wide, centred in
-// CSS, same centre line as the measured 332 at 1730), so there is no longer a
+// CSS, same centre line as the measured 332 at 1730), so there is no
 // success case to sample.
 //
 // That leaves the only other thing on the page: #modal, a position:fixed
@@ -39,8 +39,7 @@
 // scroll, the "canvas" backlink reachable, and the round trip back to a
 // pannable canvas working (1006 and 1323 world px of drag). The hero
 // furniture also stays seated (options at y=1976, etched at y=2072) when the
-// page BOOTS into a sheet. That used to depend on positionOptions running
-// inside layout() before openChrome added the class; it is now unconditional,
+// page BOOTS into a sheet. It is unconditional,
 // since a derived seat does not care whether the subtree is displayed.
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'

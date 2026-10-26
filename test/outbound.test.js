@@ -1,8 +1,8 @@
 // test/outbound.test.js
 // Every way off the canvas leaves through one door, exit().
 //
-// Each exit used to be written twice, once for the click and once for
-// keyable(), and each called window.open itself. One door means a fork that
+// An exit written twice, once for the click and once for keyable(), each
+// calling window.open itself, is the failure. One door means a fork that
 // wants to count the clicks that leave adds it in one place, and a keyboard
 // visitor is never the one it misses. A new outbound tile that calls
 // window.open itself fails here.

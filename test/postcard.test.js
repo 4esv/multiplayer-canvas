@@ -43,12 +43,10 @@ const LIVE = TILES
 const hero = heroFixed()
 const canvasWorld = placeWorld({ tiles: LIVE, hero })
 
-// NOTE: the hero digest moved when the chrome band was retired. The postcard
-// used to hand placeWorld a chrome object of its own, so its world disagreed
-// with the canvas's; it now calls placeWorld exactly as app.js does and the
-// two agree. The work digest did NOT move, which is the evidence: work is an
-// explicit camera at an explicit zoom, so it never depended on the band, while
-// hero and world are derived from the frame the chrome used to shrink.
+// NOTE: the postcard calls placeWorld exactly as app.js does, so its world
+// agrees with the canvas's. The work digest is an explicit camera at an
+// explicit zoom and does not depend on the frame; hero and world are derived
+// from it.
 // three cameras and two sheets: a corner at reading zoom, the opening view,
 // and the whole ground on a poster
 // the cameras are DERIVED from the plan, never typed: a hand-pinned world
@@ -210,8 +208,7 @@ describe('postcard: the world at a camera', () => {
   it('drops its labels as it pulls back, and keeps the hero named', () => {
     // one centre, two zooms, so the only variable is how far back the
     // camera stands. 0.7 holds the hero and the dock under it (the belt
-    // that used to ring the hero at 0.8 stands in rows below it now); it
-    // was 0.6 until the ladder's floor rose to 16, which drops the
+    // stands in rows below it); the ladder's floor of 16 drops the
     // names under about two thirds zoom
     const texts = (svg) => (svg.match(/<text /g) || []).length
     assert.ok(

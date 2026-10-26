@@ -12,7 +12,7 @@
 //       crispEdges, so it stays sharp at fractional raster sizes. The rule
 //       keys on the IDIOM rather than on "every svg", which is what lets the
 //       stroke-drawn SOURCES (the sky, the bulb, the octicon) stay in the file
-//       as sources: since 2026-09-15 none of them is served as drawn, they are
+//       as sources: none of them is served as drawn, they are
 //       rasterised through app.js pixelGlyph and it is the rasteriser's own
 //       output, unit squares with crispEdges on it, that reaches the page.
 //   (c) The dither frames exist (0..5) and lay down strictly more ink each
@@ -63,8 +63,7 @@ describe('the pixel hand (BIBLE.md section 10)', () => {
     assert.ok(stampD && favD, 'each surface has a logo path with a d attribute')
     assert.equal(favD, stampD, 'favicon.svg logo path drifted from the canvas stamp')
 
-    // (the bar's home button, which wore the icon tool's HOME variant, left with
-    // the menu on 2026-09-10: the bar is the field, BIBLE.md section 8)
+    // (the bar has no home button: the bar is the field, BIBLE.md section 8)
     assert.ok(
       !read('src/templates/canvas/home.njk').includes('id="logo"'),
       'the bar carries no home button any more'

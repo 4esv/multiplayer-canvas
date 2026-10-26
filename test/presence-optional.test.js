@@ -12,9 +12,8 @@
 //
 // Four deploys were spent upstream of that line, on the doors, the viewport
 // meta, the fixed layers and the seat derivation. Every one of those was a
-// real bug and none of them was this one. The canvas shipped 2026-07-02 and
-// was tested on the watch then; presence landed 2026-07-23. The regression was
-// always visible in the dates.
+// real bug and none of them was this one. The failure: presence added to a
+// canvas that had only been tested without it.
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'

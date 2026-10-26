@@ -57,7 +57,7 @@ async function buildPagesIndex(fastify, entries) {
       path: pathFor(e),
       embed: e.slug,
       docTitle: isCaseStudy(e) ? `${e.title} · work · ${SITE_NAME}` : `${e.title} · ${SITE_NAME}`,
-      // FULL PAGES (2026-09-15): a case study and an experiment are
+      // FULL PAGES: a case study and an experiment are
       // destinations, not cards. They fill the frame, they carry their own
       // way back and their own way onward, and they arrive through the
       // cover pair rather than out of a card, because they did not come
@@ -76,7 +76,7 @@ async function buildPagesIndex(fastify, entries) {
 // the boot payload so the article tiles paint whole on the first frame
 // instead of each firing a /api/page fetch (that fetch survives in app.js
 // only as the fallback for a stale boot). Content is local, so this is
-// snapshot-independent. Case studies ride it too now that they live on the
+// snapshot-independent. Case studies ride it too, since they live on the
 // canvas as tiles (the work door stays the curated index over the same
 // set); root-mounted entries (their own art) are still not article tiles.
 function buildArts(entries) {

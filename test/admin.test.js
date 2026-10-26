@@ -120,7 +120,7 @@ describe('/admin', () => {
   })
 
   it('never ships an ad- class: content blockers cosmetic-filter that family', async () => {
-    // The dashboard originally wore .ad/.ad-section and rendered blank for
+    // A dashboard wearing .ad/.ad-section renders blank for
     // anyone running a blocklist, which is exactly its one intended reader.
     const r = await app.inject({ method: 'GET', url: '/admin', headers: { cookie } })
     assert.doesNotMatch(r.body, /class="ad[" -]/, 'no ad or ad-* classes in the markup')

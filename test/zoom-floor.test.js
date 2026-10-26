@@ -105,7 +105,7 @@ describe('the camera floor', () => {
   it('never floors BELOW cover, which would show void beyond the ground', () => {
     // A very wide, very short viewport is the case where cover is the larger
     // of the two: the floor must take cover's side, not the frame's. The
-    // first three used to be the whole list, and on the 16:9 ground cover is
+    // first three alone would not do, since on the 16:9 ground cover is
     // the SMALLER side on every one of them, so a floor with no clamp at all
     // passed. The last ones are where the clamp actually decides.
     const cases = [

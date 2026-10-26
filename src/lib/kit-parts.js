@@ -302,7 +302,7 @@ part('pin', ['out', 'in'], 32, 32, (state) => {
 // The tab that is down is darker than a pushed radio button: its words are
 // bright at 16 and read on every dot of the face, so the face is dithered
 // between ink and mute (bright on mute is 6.9:1) rather than mute and mid,
-// where the mid dots gave the words 3:1 (measured on the bake, 2026-09-25).
+// where the mid dots gave the words 3:1 (measured on the bake).
 part('tab', ['up', 'down'], 64, 24, (state) =>
   state === 'up' ? bevel(64, 24, true, 0.66) : bevel(64, 24, false, 0.5)
 )

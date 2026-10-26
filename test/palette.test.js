@@ -19,9 +19,9 @@
 //
 // Two surfaces cannot hold a var() at all: the theme-color metas and the web
 // app manifest. Their literals are checked AGAINST the resolved token instead
-// of skipped. Skipping is what this guard used to do, and it is how #fff/#111
-// outlived the two-ink skin by two redesigns: the browser painted its dark
-// chrome a different near-black than the page, with every other guard green.
+// of skipped. Skipping lets a stale #fff/#111 outlive the skin: the browser
+// paints its chrome a different near-black than the page, with every other
+// guard green.
 // The rule for a mandatory literal is not "look away", it is "prove it".
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
@@ -189,9 +189,7 @@ describe('palette: the mandatory literals quote their token', () => {
 
   // mutation: palette.theme-color-old-near-black
   it('meta-head.njk: the one theme-color is the one ground', () => {
-    // ONE GROUND (2026-09-15). This used to assert a light/dark PAIR, each
-    // pinned to its own --cv-ground. There is one ground now, so the guard that
-    // kept the pair honest becomes the guard that keeps the single value
+    // ONE GROUND. The guard keeps the single value
     // honest: the browser chrome must be the same colour as the page.
     const head = readFileSync(META_HEAD, 'utf8')
     const metas = [...head.matchAll(/<meta name="theme-color"[^>]*>/g)].map((m) => m[0])
@@ -207,9 +205,8 @@ describe('palette: the mandatory literals quote their token', () => {
   // mutation: palette.manifest-white-splash
   it('manifest.json: theme_color and background_color are the ground', () => {
     const app = JSON.parse(readFileSync(MANIFEST, 'utf8'))
-    // The manifest carries ONE of each with no media scoping, which used to
-    // be the awkward case: two themes, one slot, and the light ground won by
-    // fiat. With one ground it is simply the ground.
+    // The manifest carries ONE of each with no media scoping: with one
+    // ground it is simply the ground.
     const ground = hex6(tokens.light.ground, '--cv-ground')
     assert.equal(hex6(app.theme_color, 'manifest theme_color'), ground)
     assert.equal(hex6(app.background_color, 'manifest background_color'), ground)

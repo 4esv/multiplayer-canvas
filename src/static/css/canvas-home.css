@@ -63,21 +63,20 @@ textarea {
 #modal :is(canvas, svg) {
   -webkit-touch-callout: none;
 }
-/* THERE IS NO SECOND BUTTON. A bare `button {}` rule used to give
-   every button on the page a surface fill, padding and an ink invert on
-   press, so a kit button (kit.css .k-btn) wore a second button under its
-   own and a widget's button looked like neither. The chrome is on the kit
-   now and the rule is gone: a button is the kit's, or its widget draws it.
+/* THERE IS NO SECOND BUTTON. A bare `button {}` rule that gave
+   every button a surface fill, padding and an ink invert on press would put
+   a second button under a kit button (kit.css .k-btn) and make a widget's
+   button look like neither. The chrome is the kit's: a button is the kit's,
+   or its widget draws it.
    Its face is the page's, though, never the browser's. */
 button {
   font: inherit;
 }
-/* THE INVERT IS ONE THING (2026-09-15). The doors, the command roster and the
+/* THE INVERT IS ONE THING. The doors, the command roster and the
    list rows all highlight the same way (System 1 trading the two inks), so
    they change over the same length on the same easing, and that declaration
    is written once. These are the surfaces that highlight without being
-   buttons, and each of them used to carry (or, in the recent rows' case,
-   silently NOT carry) a copy. The colour is the whole transition, so it
+   buttons, so this one declaration serves them all. The colour is the whole transition, so it
    steps: a curve on 120ms of ink is a curve nobody can see, and a step is
    what the rest of this skin does. */
 #sheetInner .backlink a {
@@ -201,7 +200,7 @@ a {
   color: var(--cv-ground);
 }
 /* THE HAND IS A STATE OF THE POINTER, NOT A PROPERTY OF WHAT IT IS OVER
-   (2026-09-16). Which hand shows depends on what the pointer is DOING:
+  . Which hand shows depends on what the pointer is DOING:
    pointing, pressing, or hauling the ground. Nothing about the thing beneath
    it comes into it.
    So the state lives on ONE element. app.js puts `pressing` and `hauling` on
@@ -262,9 +261,8 @@ summary,
    goes. The button is down for the whole of a pan, so the price was paid
    exactly while the canvas most needed the frame. Panning was reported as
    nearly impossible and it was this.
-   The twelve `cursor: pointer` rules went too, for a simpler reason: the
-   hand is the inherited default now, so every one of them was re-stating
-   what the body already said. The click hand is gone with them; a press on
+   No `cursor: pointer` rules: the hand is the inherited default, so each
+   would only re-state what the body already says. A press on
    the ground still closes the hand, which is the one place it reads. */
 .el {
   position: absolute;
@@ -383,9 +381,7 @@ html.canvas-pending #prelude {
 /* the command roster: opens upward off the bar, best hit nearest it.
    Appearing is a material change, so it arrives the way all material on this
    site arrives (BIBLE.md section 9): resolving through the ordered dither
-   while it rises a unit into its seat, in four frames. It used to fade in on
-   a curve, which was the grammar the dither replaced on 2026-09-11 and which
-   survived here for four days because nothing was watching this rule. */
+   while it rises a unit into its seat, in four frames. */
 /* The roster is the kit's menu opening upward (kit.css .k-menu.k-up): one
    box of one-cell lines, a rule between rows, the row the arrows are on
    lit in ink. Only its seat and its arrival are the bar's. */
@@ -479,9 +475,8 @@ html.canvas-pending #prelude {
      out, with nothing floating over it. That is the design and it does not
      change here. What changes is HOW the stage holds the viewport.
      Everywhere else #stage and #scene are position:fixed, which is the one
-     technique watchOS's adapted layout is documented (in this repo, at
-     88004c4) to get wrong. The site used to answer that by opting out of the
-     adaptation entirely, which meant opting out of the shrink-to-fit that
+     technique watchOS's adapted layout is documented to get wrong. Opting out of the
+     adaptation entirely would also opt out of the shrink-to-fit that
      makes any page usable on a wrist. So: no opt-out, and no fixed layer to
      be got wrong. #stage is a relatively-positioned box that app.js sizes to
      the viewport inline, #scene absolutely fills it, and the camera goes on
@@ -503,14 +498,14 @@ html.canvas-pending #prelude {
      The scene rides in a zero-height sticky pin (app.js initCrown builds
      it) and stays absolute, so it is OUT of the scroller's flow: the
      scroller's height is the track's alone and never changes with the
-     zoom. The scene itself used to be the sticky element, and its in-flow
-     box (VW/Z by VH/Z, written inline) re-sized the scroller on every
-     zoom, which is half of the shiver the wrist reported (the other half
+     zoom. The scene is never the sticky element: its in-flow
+     box (VW/Z by VH/Z, written inline) would re-size the scroller on every
+     zoom, which is half of a shiver on the wrist (the other half
      is in app.js).
      html.crown is set by app.js at this density. What it risks is not an
      inert crown but these rules: if sticky does not hold under watchOS's
      adapted layout, the scene scrolls out of a scroller parked a viewport
-     down and the page reads blank. Named, accepted, one deploy from gone. */
+     down and the page reads blank. Named and accepted. */
   html.crown:not(.sheet-open) #stage {
     overflow-y: scroll;
     scrollbar-width: none;
@@ -564,7 +559,7 @@ html.canvas-pending #prelude {
   /* and the collection a page was opened from: #fan is a fixed layer too,
      and with the modal static its z-index sorted nothing, so a study opened
      out of its collection read as the collection with the page's bar
-     floating over it (a 320 phone, 2026-09-26) */
+     floating over it (a 320 phone) */
   html.sheet-open #scene,
   html.sheet-open #backdrop,
   html.sheet-open #gap,
@@ -648,7 +643,7 @@ html.canvas-pending #prelude {
 /* ---- the diagnostic overlay (?diag, or safe mode): the numbers the wrist can
    photograph. Absolute in #stage, not fixed, for the same reason the watch
    keeps nothing fixed. Ink on the ground in the meta size, and nothing else. */
-/* ?bare (2026-09-12): no layer per tile, no grid, no seam, no cursors */
+/* ?bare: no layer per tile, no grid, no seam, no cursors */
 html.bare .el {
   will-change: auto;
 }
@@ -733,7 +728,7 @@ html.bare #cursors {
   z-index: var(--cv-z-over);
   pointer-events: none;
 }
-/* the seam is a STITCH (2026-09-11): one cell of ink, one of ground, along the
+/* the seam is a STITCH: one cell of ink, one of ground, along the
    whole edge, so the world's boundary is sewn rather than ruled. The weight
    is two screen px through the camera; the stitch length is a world cell. */
 /* forced-ok: the stitch is restored as a CanvasText rule under (forced-colors: active) below */
@@ -866,7 +861,7 @@ html.bare #cursors {
   position: relative;
   width: 100%;
 }
-/* THE STATEMENT IS PIXELS (2026-09-16). Each line is one svg in the display
+/* THE STATEMENT IS PIXELS. Each line is one svg in the display
    face, the mark's own alphabet, so the logo and the hero are one hand. The
    row is what positions it; the svg carries its own size and centres in the
    row, because a pixel drawing must not be stretched to fit anything. */
@@ -883,7 +878,7 @@ html.bare #cursors {
 }
 /* the statement's own pager, under it: the kit's snap scrollbar on
    its side, the same bar that turns every pile, a card's siblings and a full
-   page's ring, where nine squares used to say only that it turns. The
+   page's ring. The
    statement is still the button; the bar says which of how many and takes
    you to one. World furniture like the piles' pager: eight cells a stepper
    in the world (lying on its side the bar's two lines come off its height,
@@ -958,12 +953,10 @@ html.bare #cursors {
 .cell {
   width: 100%;
   height: 100%;
-  /* a card is a SURFACE (2026-09-11): one tonal step off the ground. The
+  /* a card is a SURFACE: one tonal step off the ground. The
      quotations rebind --cv-ground for their own ground, so the surface reads
      the ground token where a guest set one and the site's surface where none
-     did. (The hairline and the radius this rule opened with were dead: the
-     half-cell ink border below has overridden both since the pixel law
-     landed, and they went out with the rest of the hairlines 2026-09-15.) */
+     did. (The half-cell ink border below is the whole edge: no hairline, no radius.) */
   background: var(--cv-surface, var(--cv-ground));
   /* stated, not inherited: a quotation rebinds --cv-ink on this very
      element and the text inside must follow it */
@@ -971,13 +964,12 @@ html.bare #cursors {
   padding: var(--cv-sp-4);
   overflow: hidden;
   position: relative;
-  /* NO BORDER (2026-09-15). A tile is a BLOCK: it meets the ground at a
-     sudden change of colour, and that is the whole edge (the cast it threw
-     is retired: elevation is tone). The half-cell ink border it wore could not be crisp and
-     was never going to be: the zoom ladder rests where one CELL is a whole
+  /* NO BORDER. A tile is a BLOCK: it meets the ground at a
+     sudden change of colour, and that is the whole edge (there is no cast: elevation is tone). A half-cell ink border could not be crisp:
+     the zoom ladder rests where one CELL is a whole
      number of device pixels, so half a cell lands on a half pixel at every
-     odd rung of it, and the home camera (z 0.875 at 2x) is an odd rung. Every
-     tile on the opening frame was outlined in three and a half device pixels.
+     odd rung of it, and the home camera (z 0.875 at 2x) is an odd rung. A
+     tile on the opening frame would be outlined in three and a half device pixels.
      Square corners. Lifts move in frames, not curves. */
   border: 0;
   transition: transform var(--cv-dur-glide) var(--cv-ease-step);
@@ -1007,8 +999,8 @@ html.bare #cursors {
   outline-color: var(--cv-brick);
 }
 
-/* the settle is the RISE only now: the opacity ramp that used to ride with it
-   was the fade, and nothing on this ground fades. The dither does the
+/* the settle is the RISE only: an opacity ramp would be a fade,
+   and nothing on this ground fades. The dither does the
    appearing; this does the arriving. */
 @keyframes cv-settle {
   from {
@@ -1082,7 +1074,7 @@ html.bare #cursors {
    frame, no chrome, nothing on the image. Its background is cut out
    (transparent PNG), so the one asset sits on the ground. The
    shot is content, so it keeps its color (cover-art rule). */
-/* an experiment is a thing on the ground (2026-09-11): no card, the still
+/* an experiment is a thing on the ground: no card, the still
    cut out, its name under it in the label hand; a click opens it and
    nothing lifts */
 .t-web {
@@ -1120,7 +1112,7 @@ html.bare #cursors {
   object-fit: scale-down;
 }
 
-/* THE SLIME MOULD (BIBLE.md section 5, 2026-09-17): a dish, boxless, the
+/* THE SLIME MOULD (BIBLE.md section 5): a dish, boxless, the
    name under it in the label hand like an experiment's. The dish is a canvas
    the script seats from primitives/slime/slime.js dishBox (the same numbers the guard
    reads), painted at one backing pixel a cell and shown a cell a cell, so
@@ -1215,7 +1207,7 @@ html.bare #cursors {
 /* social icon: a bare glyph floating on the canvas, no box, with a name
    below (desktop-icon style). No chrome to jam a dense glyph against; the
    mark just sizes the svg. Hover lifts the whole thing a few px instead of
-   inverting a box that no longer exists. */
+   inverting a box (there is none). */
 .t-icon {
 }
 .t-icon .cell {
@@ -1233,9 +1225,7 @@ html.bare #cursors {
   transition: transform var(--cv-dur-press) var(--cv-ease-step);
 }
 /* The glyphs do not LIFT (the dust under a cursor is their answer to a hand),
-   but a glyph you can click has to answer a PRESS, and until 2026-09-15 this
-   one answered nothing: the rule above carried a transition for a transform
-   no selector ever set, which is a delay with no motion behind it. A press
+   but a glyph you can click has to answer a PRESS. A press
    sets the glyph down the one cell every pressed thing on this ground goes
    down by. It is not .openable (it leaves the site rather than opening a
    page), so it cannot inherit the shared press and states its own. */
@@ -1243,8 +1233,7 @@ html.bare #cursors {
   transform: translate(calc(-1 * var(--cv-lift-x)), calc(-1 * var(--cv-lift-y)));
 }
 /* the glyph stands bare on the ground: a pixel accent with nothing around it
-   (the surface tile that stood here for an hour on 2026-09-11 was one more
-   box around a thing that did not need one). The name sits under it in
+   (a box around it would be one more box around a thing that does not need one). The name sits under it in
    the type face, ink. */
 /* THE ROW SETS THE BASELINE, NOT THE GLYPH. The mark is one slot
    twelve cells tall whatever it holds, the glyph centred in it, so every
@@ -1276,7 +1265,7 @@ html.bare #cursors {
   position: relative;
   white-space: nowrap;
 }
-/* no lift on a glyph (2026-09-11): the dust under the cursor is the whole
+/* no lift on a glyph: the dust under the cursor is the whole
    answer to a hand resting here, and a hop on top of it was two answers */
 /* ---- MAURICE (BIBLE.md section 5): a ladybug on the ground ------------------
    Boxless like a glyph, brick shell and ink spots, one cell a pixel. A hand
@@ -1600,8 +1589,7 @@ button:focus-visible {
 #sheet details.more p {
   margin: var(--cv-sp-3) 0 0;
 }
-/* the tools: a still list of the kit's tags, wrapping. It used to ride a
-   ribbon that scrolled forever under faded edges; a list you can read at
+/* the tools: a still list of the kit's tags, wrapping: a list you can read at
    rest reads. */
 #sheet .kwList {
   margin: var(--cv-sp-7) 0;
@@ -1639,7 +1627,7 @@ button:focus-visible {
 .cursor.idle {
   opacity: 0.3;
 }
-/* a leaving cursor pops (2026-09-11): the arrow swells a frame at a time
+/* a leaving cursor pops: the arrow swells a frame at a time
    and is cut, and a ring of pixels bursts from the tip in the peer's hue,
    struck on the first frame and growing on the step. Nothing fades: the
    burst and the arrow come and go by visibility, a cut. */
@@ -1682,7 +1670,7 @@ button:focus-visible {
 .cursor svg {
   display: block;
 }
-/* TWO HANDS, ONE SHOWN (2026-09-16). Both sprites ship inside the element and
+/* TWO HANDS, ONE SHOWN. Both sprites ship inside the element and
    this picks which, so a press is a class toggle rather than two SVGs being
    re-parsed in the middle of a click. Each hand has its OWN hot spot, so the
    clicking one is offset by the difference (--cv-click-nudge-*, written once
@@ -1709,11 +1697,11 @@ button:focus-visible {
    The two take OPPOSITE inks, one cell apart, so over ground the ink draws
    the edge and over a dark guest tile the ground does. The hue never changes
    and stays the identity; only the chrome around it moves.
-   In cells since 2026-09-15: nothing is stroked. The arrow is three sprites
+   In cells: nothing is stroked. The arrow is three sprites
    stacked, each the one under it grown by a cell (presence.js), so the halo,
    the ring and the hue are the same drawing at three sizes.
-   THE INK IS THE INNER ONE (2026-09-16). It used to be outermost, which put
-   the ground copy BETWEEN the ink and the hue: the arrow read as a small
+   THE INK IS THE INNER ONE. Outermost, it would put
+   the ground copy BETWEEN the ink and the hue: the arrow would read as a small
    coloured core suspended in a two-tone band rather than as an arrow with an
    outline on it. Ink against the mark and ground outside is the way every
    system cursor is drawn, and it costs the pairing nothing, since which of
@@ -1813,7 +1801,7 @@ button:focus-visible {
   position: absolute;
   border-radius: var(--cv-r);
 }
-/* THE BACKS ARE CARDS AGAIN (2026-09-16), and the step is what makes that
+/* THE BACKS ARE CARDS AGAIN, and the step is what makes that
    readable. They were surface cards with a one-cell edge on an eight px
    step, which showed four px of line and four of surface: a pile of
    slivers, so they were filled solid with ink instead. That fixed the
@@ -1823,7 +1811,7 @@ button:focus-visible {
    The step stays at two cells (the pile has to fit its footprint, and three
    overflows every stack on the ground), so the edge is drawn on the two sides
    that are actually exposed: the cast's own two, south and east.
-   AND THE FILL IS THE SURFACE, NOT THE GROUND (2026-09-16, later). Filling
+   AND THE FILL IS THE SURFACE, NOT THE GROUND (later). Filling
    them with --cv-ground drew the ground: three rectangles the exact colour of
    the canvas behind them, so the pile read as holes cut in the ground with a
    line under each, which is a faux tile rather than a sheet. A card in this
@@ -1831,9 +1819,9 @@ button:focus-visible {
    rule says so, and it is the whole edge a tile gets), and a back is a card.
    So each back is now surface with the cast on its two exposed sides, which
    is the same drawing every other tile on the canvas makes, repeated three
-   times going back. The all-round border stays gone: it drew a line on the
-   north and west edges too, under the card above, so the eight px step came
-   out as line, surface, line, surface with nothing to tell them apart. */
+   times going back. No all-round border: it would draw a line on the
+   north and west edges too, under the card above, so the eight px step would
+   come out as line, surface, line, surface with nothing to tell them apart. */
 .t-stack .card.back {
   background: var(--cv-surface, var(--cv-ground));
   border: 0;
@@ -1843,7 +1831,7 @@ button:focus-visible {
   box-shadow: none;
   transition: transform var(--cv-dur-quick) var(--cv-ease-step);
 }
-/* the pile sits on the ground and the front card floats (2026-09-11): the
+/* the pile sits on the ground and the front card floats: the
    backs step down the cast and never move; a hand over the stack lifts the
    front two more cells off the pile, the same vector every tile lifts on,
    and its cast deepens to say how far. Straight up once the world stands
@@ -1863,12 +1851,12 @@ button:focus-visible {
 .t-stack.peerhover .pile .card.front {
   transform: translate(calc(2 * var(--cv-lift-x)), calc(2 * var(--cv-lift-y)));
 }
-/* A PILE SAYS ITS NAME THE WAY EVERYTHING ELSE DOES (2026-09-16): the label
-   hand, under the thing, one line. It used to carry an h3, a count and
-   the pager stacked in a column, which is three rows of chrome under every
-   collection. The count went because the dots already say how many and a
-   reader can count them; the pager went to the pile's right edge, beside the
-   thing it turns. What is left is a name, like an icon's or an experiment's,
+/* A PILE SAYS ITS NAME THE WAY EVERYTHING ELSE DOES: the label
+   hand, under the thing, one line. No h3, count and
+   pager stacked in a column: that is three rows of chrome under every
+   collection. The dots already say how many and a reader can count them; the
+   pager sits at the pile's right edge, beside the thing it turns. What is
+   here is a name, like an icon's or an experiment's,
    which is what makes the whole ground read in one voice. */
 .t-stack .slabel {
   position: absolute;
@@ -1892,7 +1880,7 @@ button:focus-visible {
    as tall as the pile. The thumb is the member the pile shows; a press
    turns the pile for everyone. Controls, so they press like the doors and
    never lift. IT STANDS OFF THE PILE'S RIGHT EDGE and runs DOWN
-   (2026-09-16), beside the cards rather than under them: that is what
+  , beside the cards rather than under them: that is what
    clears the foot of every collection for its name alone. The seat is six
    cells wide (layout.js PILE.pagerW), so the steppers are six cells square
    in the world and the pad under each grows the hit to the tap floor on
@@ -1909,9 +1897,9 @@ button:focus-visible {
   height: 100%;
   background: var(--cv-ground);
 }
-/* THE TURN (2026-09-15, BIBLE.md section 9): the pile's next card rises out
+/* THE TURN (BIBLE.md section 9): the pile's next card rises out
    of the pile it was in, the two cells a hand lifts the front card by, in
-   four frames. The card it replaces is gone at once, which is what "close is
+   four frames. The card it replaces goes at once, which is what "close is
    instant" means; the arriving one also resolves through the ordered dither
    (app.js materialize), so a turn is the same arrival every other piece of
    material on the ground makes. */
@@ -1973,7 +1961,7 @@ button:focus-visible {
   color: var(--cv-ink);
   pointer-events: none;
   /* over the grid: a collection that scrolls sends its cards under the
-     title, and the title is the thing that must stay legible (2026-09-12) */
+     title, and the title is the thing that must stay legible */
   z-index: var(--cv-z-raised);
 }
 /* a phone stacks the head: the count under the title, as a subtitle */
@@ -2013,7 +2001,7 @@ button:focus-visible {
   width: var(--cv-px);
   height: var(--cv-px);
 }
-/* THE LANE (2026-09-16): on a phone a collection is a shelf you push
+/* THE LANE: on a phone a collection is a shelf you push
    sideways, not a column you scroll past. One row at the size the height
    allows, running off the screen. */
 #fan .fangrid.lane {
@@ -2039,7 +2027,7 @@ button:focus-visible {
 #fan .fangrid.lane .el {
   scroll-snap-align: center;
 }
-/* ---- DEPTH IS THE SCRIM (2026-09-15) ---------------------------------------
+/* ---- DEPTH IS THE SCRIM ---------------------------------------
    "Whatever you are not reading is drawn one step coarser: the same pixels,
    bigger" was the rule here, implemented as an SVG pixelate filter per node
    at 24 and 48 world px. It came out. At those steps a tile samples one dot
@@ -2065,10 +2053,7 @@ html.sheet-open .seam {
 }
 /* A member flying out of its pile to its seat is a LONG MOVE of material, so
    it lands in eight frames (BIBLE.md section 9), the same ladder the page
-   grows out of its card on. It rode the camera's curve until 2026-09-15,
-   with an opacity crossfade under it, which made the one move the visitor
-   makes most often the one move still speaking the pre-pixel grammar. The
-   fade is gone with it: arriving resolves through the ordered dither
+   grows out of its card on. There is no fade: arriving resolves through the ordered dither
    (app.js layoutFan calls materialize), and folding back is the card
    shrinking into the pile it came from, which needs no help vanishing. */
 #fan .member {
@@ -2276,9 +2261,8 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
 }
 
 /* ---- ZONES (BIBLE.md section 5): words CUT INTO the ground -----------------
-   Boxless until 2026-09-15: about and work were transparent cells standing on
-   the ground, and beside a world of tiles that each sit ON it they read as
-   leftovers rather than as places. They are RECESSED now: the floor of the
+   Boxless cells standing on the ground would read as leftovers beside a world
+   of tiles that each sit ON it, so zones are RECESSED: the floor of the
    cut is one tonal step under the ground (--cv-recess), and its walls are
    tone, a cell of ink along the north and west and a cell of ground along the
    south and east, lit by the one fixed light. No border: the depth is the whole edge, which is the
@@ -2299,15 +2283,11 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
     linear-gradient(var(--cv-ground), var(--cv-ground)) bottom right / 100% var(--cv-px) no-repeat,
     linear-gradient(var(--cv-ground), var(--cv-ground)) bottom right / var(--cv-px) 100% no-repeat,
     var(--cv-recess);
-  /* THE RECESS IS ON THE GRID; THE TYPE IS INSIDE IT (2026-09-16, second
-     pass). For one morning this had vertical padding only, on the argument
-     that flush sides made each panel exactly one slot wide, so the triptych's
-     columns sat on the same lattice as the tiles above. The argument was
-     about the invisible thing. What a reader actually saw was a paragraph
-     beginning ON the cut's own wall, with the first stem of every line
-     touching it, which is the one mistake no page is allowed to make.
-     The lattice claim survives anyway, because the thing that has to line up
-     is the BOX, and the box is still exactly the three slots and their air.
+  /* THE RECESS IS ON THE GRID; THE TYPE IS INSIDE IT. Vertical padding alone would
+     leave a paragraph beginning ON the cut's own wall, with the first stem of
+     every line touching it, which is the one mistake no page is allowed to
+     make. The thing that has to line up with the lattice is the BOX, and the
+     box is exactly the three slots and their air.
      Only the type is inset, by a gutter at the sides and a little more at the
      head and foot, which is what a container with content in it has always
      done. */
@@ -2319,7 +2299,7 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
   user-select: text;
   -webkit-user-select: text;
 }
-/* THE NAME SITS OVER THE ZONE (2026-09-16), on the ground rather than inside
+/* THE NAME SITS OVER THE ZONE, on the ground rather than inside
    the recess. Set in the recess it was a 48px band the triptych's three
    panels had to give up, and they are the thing with something to say; over
    it, the recess keeps its whole footprint and the panels get the height
@@ -2384,12 +2364,12 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
 .t-zone .zbody .zdocs .k-btn:active {
   color: var(--cv-bright);
 }
-/* the about zone is two blocks side by side (2026-09-12), Me and This
+/* the about zone is two blocks side by side, Me and This
    Site: the tile spans two slots of the ring (layout.js span), so each
    block is a slot wide and the gap between them is the ring's own air.
    The block titles are the type face one step up the ladder, never the display
    face: the zone has one name, set over it, and these are its parts. */
-/* THE TRIPTYCH (2026-09-16): Me, Work, Site, three columns under the hero
+/* THE TRIPTYCH: Me, Work, Site, three columns under the hero
    with the ring's own air between them. It was two-up (Me and This Site) and
    the third panel wrapped underneath, which turned a triptych into a diptych
    with a footnote. The count is the panel count, not a number picked twice.
@@ -2416,7 +2396,7 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
    them: under it the seam is a plain rule in the system's own ink. Same
    weight, same place, no pattern. */
 @media (forced-colors: active) {
-  /* THE EDGE COMES BACK (2026-09-15). By design a tile has no border at all:
+  /* THE EDGE COMES BACK. By design a tile has no border at all:
      it is a block that meets the ground at a change of colour and throws one
      cell of cast, and a zone is the same idea cut inward. A forced palette
      takes BOTH of those away in one move, repainting every ground to the same
@@ -2453,7 +2433,7 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
   }
 }
 
-/* ---- THE FULL PAGE (2026-09-15) --------------------------------------------
+/* ---- THE FULL PAGE --------------------------------------------
    A case study and an experiment are destinations, not cards: they fill the
    frame, they carry their own way back and their own way onward, and they
    arrive through the cover pair (spiral out, iris in) rather than growing out
@@ -2802,7 +2782,7 @@ html.item-open #topbar {
 /* ---- THE TAB SWITCH: a page of the ring comes in where the last one
    stood, top to bottom in four frames on the quick token, like a screen
    being redrawn a band at a time (app.js switchTab). The page it replaces
-   is gone at once: close is instant. A wipe, not a fade: every frame is a
+   goes at once: close is instant. A wipe, not a fade: every frame is a
    hard edge. */
 #sheetInner.tab-in {
   animation: cv-tab-in var(--cv-dur-quick) var(--cv-ease-step) both;
@@ -2861,7 +2841,7 @@ html.item-open #topbar {
      change.
    - NO SHADOW. The sheet's lift and the card's cast go.
    - CENTRED. The study stands in the middle of the desk.
-   and the second review (2026-09-24) two more:
+   and the second review two more:
    - ONE LADDER. The 13px prose under a 4px-a-pixel title read as two
      scales. The title is half a cell a glyph pixel at every width: its 9-row
      cap is 18px, the cap of fs-2, and its 12-row line is 24px, one line of
@@ -2874,14 +2854,13 @@ html.item-open #topbar {
    ONE AXIS. Text and figures share one centred column,
    at every width, and the column is wide enough that the two read as one
    piece: "it makes no sense to center figures but not text without at least
-   making text wider". The measure is 864px at the 16px prose: 72ch when
-   the old face's "0" was 3/4 of an em (72 x 12); DotGothic16's is half an em, so
-   the same column holds 108 of its characters. A narrower frame gives the
-   column the frame less a gutter each side. The two-track desk that came before (prose
-   on 60ch, narrow figures floated into a second track from 1202px up)
-   centred the figures and left the text on the left, and its float hung
+   making text wider". The measure is 864px at the 16px prose: DotGothic16's "0" is half an em, so
+   the column holds 108 of its characters. A narrower frame gives the
+   column the frame less a gutter each side. A two-track desk (prose
+   on 60ch, narrow figures floated into a second track) would
+   centre the figures and leave the text on the left, and its float would hang
    beside whatever came next, a code block or one short paragraph, with a
-   hole beside a figure taller than its text. It is gone.
+   hole beside a figure taller than its text.
    THE COLUMN IS THE TEXT'S MEASURE. The sheet caps every paragraph at 60ch (#sheet p, above), so in a
    72ch column the text sat on the left of it with the figures centred to
    its right: two axes again. Here the cap is lifted and the column IS the
@@ -3020,7 +2999,7 @@ html.item-open #topbar {
 #following .letgo {
   border-width: 0;
 }
-/* the session's tag (2026-09-25): the same kind of panel in the same corner,
+/* the session's tag: the same kind of panel in the same corner,
    since it is the same kind of fact about the view, and the following tag
    steps down under it while both are up. Sections for which room and, to
    the owner, its code and PIN; kit buttons for the rest. */
@@ -3072,7 +3051,7 @@ html.fullpage-open.in-session #following {
     2 * var(--cv-ctrl-h) + var(--cv-px) + 2 * var(--cv-sp-3) + env(safe-area-inset-top, 0px)
   );
 }
-/* where a peer in a session went (2026-09-26): the third of the same kind
+/* where a peer in a session went: the third of the same kind
    of panel in the same corner, under the session's tag, and under the
    following tag too while that is up. Only ever shown in a session, so it
    starts on the second row. */

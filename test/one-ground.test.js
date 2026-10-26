@@ -1,25 +1,17 @@
 // test/one-ground.test.js
-// ONE GROUND (2026-09-15, BIBLE.md section 1): there is no second theme.
+// ONE GROUND (BIBLE.md section 1): there is no second theme.
 //
-// The site ran two themes and each of them got about half the palette right.
-// Keeping both honest meant every accent carried a light value and a lifted
-// dark one, every contrast pair was measured twice, and a fix in one mode
-// routinely broke the other. It was deleted rather than repaired.
+// One value per token, one census per contrast pair, nothing to keep honest
+// in a second mode.
 //
-// This guard exists because deleting a theme is not one commit's work and the
-// first attempt proved it. The flip went in 840c629 and the sweep that should
-// have gone with it missed, among other things: a `.themeSwitch` lightbulb
-// whose rules kept shipping to every visitor with no markup left to match, an
-// `html.theming` crossfade armed with `!important` that nothing could ever
-// add the class for, a MutationObserver on every 3D preview watching the root
-// element for a class that is never written again, two templates documenting
-// the load order of a `theme.js` that no longer exists, and a selector list in
-// instruments.css duplicated verbatim because the `html.dark ` prefix had been
-// stripped off the second copy. None of it changed a pixel; all of it was
-// shipped, parsed and believed, and every one of those comments was read by
-// somebody as a statement about how the site works.
+// Deleting a theme is more than one commit's work, so the decision is
+// guarded. What a half-finished removal leaves behind is dead weight that
+// reads as a statement about how the site works: rules for markup that no
+// longer exists, a class armed with `!important` that nothing adds, an
+// observer watching for a class that is never written, comments naming a
+// script that is not there, a selector list duplicated verbatim.
 //
-// So the decision is guarded rather than remembered. Three claims:
+// Three claims:
 //
 //   1. Nothing shipped declares a dark context. No media query, no class, no
 //      attribute selector. This is the claim that keeps the other two true.
@@ -36,7 +28,7 @@
 // switcher whose ground follows the user's OS and which this site does not
 // own. That is their ground, not ours, and answering it is correct.
 //
-// And a page that is READ (2026-09-25): its shell, #modal.reading, may take the inverted ground when
+// And a page that is READ: its shell, #modal.reading, may take the inverted ground when
 // the reader asks for it (Dark Mode) or, with nothing asked, when their OS
 // does. That is the reader's eyes, not a second theme for the site, and it
 // is held to a boundary this guard draws: two files may declare it

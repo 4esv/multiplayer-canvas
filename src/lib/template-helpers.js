@@ -283,9 +283,9 @@ export function registerGlobals(env) {
   // wears the kit ships this map (kit/parts.njk), kit.css reads it as
   // --kp-<part>-<state> and js/kit.js swaps pictures from it
   env.addGlobal('kitImg', kitImg)
-  // The kind-to-path fork, once, for the text templates too. They used to
-  // spell it inline ({% if not e.webOnly %}/feed{% endif %}/{{ e.slug }}),
-  // which is the same fork the routes make and a second place for it to go
-  // wrong: curl would have been the last surface to learn a new kind.
+  // The kind-to-path fork, once, for the text templates too. Spelling it
+  // inline ({% if not e.webOnly %}/feed{% endif %}/{{ e.slug }}) would be the
+  // same fork the routes make and a second place for it to go
+  // wrong: curl would be the last surface to learn a new kind.
   env.addGlobal('entryUrl', (entry) => entry.externalUrl || `${SITE_URL}${pathFor(entry)}`)
 }

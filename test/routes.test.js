@@ -67,7 +67,7 @@ describe('Page routes', () => {
     for (const key of ['weather', 'pages', 'zones', 'slime']) {
       assert.ok(boot[key], `boot payload carries ${key}`)
     }
-    // The routed-pages index replaced content.gen.js: sections plus entries.
+    // The routed-pages index: sections plus entries.
     assert.ok(boot.pages.work && boot.pages.feed && boot.pages.about, 'section doors indexed')
     // Doors carry their sheet body so a client-side open paints whole even
     // if /api/sheet is unreachable.
@@ -255,8 +255,8 @@ describe('API routes', () => {
 
 describe('the feed sheet survives a bad external_url', () => {
   it('a garbage external_url degrades to a plain label, never throws the boot', () => {
-    // A typo'd frontmatter URL used to reach new URL() unguarded and 500 the
-    // home page. It must now build a plain item with no host label instead.
+    // A typo'd frontmatter URL must not reach new URL() unguarded and 500 the
+    // home page. It must build a plain item with no host label instead.
     const entries = [
       {
         slug: 'oops',

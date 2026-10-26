@@ -253,8 +253,7 @@ describe('the production build stamps the worker with a content-derived cache ve
 })
 
 describe('the cache name has one source, so a stale cache is never reused', () => {
-  // This used to grep sw.js for caches.open(...) and 'canvas-*' literals. The
-  // handlers below hold the same fact by running: install opens the current
+  // The handlers below hold the same fact by running: install opens the current
   // version, the asset path reads and writes it, activate drops the rest. A
   // second cache name fails those, and a correct rewrite does not.
   // mutation: sw.version-hardcoded

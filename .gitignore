@@ -35,5 +35,5 @@ coverage/
 # out of lint/format/build scans too.
 sandbox/
 # the prod-volume store; a dev symlink here must never ship (a broken
-# symlink in CI makes mkdir throw and 500s /login, found 2026-07-31)
+# symlink in CI makes mkdir throw and 500s /login)
 /data

@@ -46,7 +46,7 @@ const key = (c) => c.join(',')
 const same = (a, b) => key(a) === key(b)
 const luma = ([r, g, b]) => 0.299 * r + 0.587 * g + 0.114 * b
 
-// Ithaca, 2026-09-23, Open-Meteo's own sunrise and sunset
+// Ithaca, 23 Sep 2026, Open-Meteo's own sunrise and sunset
 const RISE = 1790160870
 const SET = 1790204486
 const AT = {
@@ -257,7 +257,7 @@ describe('outlook: what is in the sky', () => {
 
   // mutation: outlook.moon-always-full
   it('the moon is lit by its real phase', () => {
-    // a new moon (2000-01-06 18:14 UTC) and a full one (2024-01-25 17:54 UTC)
+    // a new moon (6 Jan 2000, 18:14 UTC) and a full one (25 Jan 2024, 17:54 UTC)
     assert.ok(moonAge(947182440) < 0.001 || moonAge(947182440) > 0.999)
     assert.ok(Math.abs(moonAge(1706205240) - 0.5) < 0.03, `${moonAge(1706205240)}`)
     const lit = (age) => {

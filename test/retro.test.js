@@ -278,7 +278,7 @@ describe('Retro mode: ?view= override', () => {
 
 // The text tier is text. An autoescaped value reaches curl as `O&#39;Sullivan`
 // and the retro filter, escaping the block again, prints `O&amp;#39;Sullivan`;
-// the live last-played line shipped exactly that until 2026-09-12. This bites
+// a live last-played line can ship exactly that. This bites
 // only when the data carries such a character, so it is a tripwire rather
 // than a proof: the fix is `| safe` on every value the text templates print.
 describe('Text mode: no html entity survives into plain text', () => {

@@ -6,10 +6,9 @@
 // templates/canvas/home.njk, where Nunjucks `autoescape: true` escapes
 // `{{ sheet.title }}` for free. A click inside the canvas mounts the same
 // fields client-side, where a template literal escapes nothing unless it is
-// told to. Those two paths are meant to be identical by construction, and
-// until 2026-08-19 they differed in exactly the way that matters: app.js
-// interpolated `${p.title}` and `${p.meta}` raw into innerHTML at three
-// sites while the template escaped them.
+// told to. Those two paths are meant to be identical by construction. The
+// failure mode: app.js interpolating `${p.title}` and `${p.meta}` raw into
+// innerHTML while the template escapes them.
 //
 // Nobody could reach it: the only writer of those fields is frontmatter in
 // this repo, committed to git. That is why it survived. A seam that is safe

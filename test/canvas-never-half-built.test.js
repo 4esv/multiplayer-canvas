@@ -238,10 +238,10 @@ describe('the canvas is never left half built', () => {
 
   // mutation: canvas-never-half-built.reduced-skips-mount, canvas-never-half-built.scatter-assumes-dust
   it('the statement cannot be shown without being mounted', () => {
-    // THE SAME BUG CLASS, restated for a hero that is no longer typed.
+    // THE SAME BUG CLASS, restated for a hero that is not typed.
     //
-    // The lines used to be built by mountLines and written by paintTyped, and
-    // pairing them was every caller's job. A caller that painted a phrase
+    // If lines are built by one function and written by another, pairing them
+    // is every caller's job. A caller that painted a phrase
     // nobody had mounted wrote into an empty array, threw inside boot, and
     // left the visitor on the server-rendered prelude: the exact half-built
     // canvas this file exists to prevent. It shipped for about an hour and

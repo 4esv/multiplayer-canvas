@@ -1081,7 +1081,7 @@
     h.timer = setTimeout(() => letPeerGo(key), HOLDS.has(a.i) ? HELD_MS : LIT_MS)
     heard.set(key, h)
   }
-  // THE PAGE'S LISTENERS ARE THE PAGE'S (2026-09-25). This is a classic
+  // THE PAGE'S LISTENERS ARE THE PAGE'S. This is a classic
   // script, and the canvas runs it again every time the sheet opens, so a
   // listener put on the document or the window outlives the card it was
   // made for. Two did, the keyboard's, and nothing ever took them off: after

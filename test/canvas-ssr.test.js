@@ -32,7 +32,7 @@ const sheetInner = (body) => {
 
 describe('section doors render the canvas shell with the sheet open', () => {
   it('GET /work is the canvas landing on the work zone, and /case-studies the pile fanned out', async () => {
-    // BIBLE.md section 5 (2026-09-11): the work door goes to a section
+    // BIBLE.md section 5: the work door goes to a section
     // beside the case studies, the way about does; the pile is its own page.
     const r = await app.inject({ method: 'GET', url: '/work' })
     assert.equal(r.statusCode, 200)
@@ -41,8 +41,7 @@ describe('section doors render the canvas shell with the sheet open', () => {
     const boot = r.body.match(/<script type="application\/json" id="boot">([\s\S]*?)<\/script>/)
     assert.ok(boot, 'the boot payload ships')
     const payload = JSON.parse(boot[1])
-    // /work IS the case studies (2026-09-16): the WORK zone it used to land
-    // the camera on was dropped into the about triptych.
+    // /work IS the case studies: no zone to land the camera on.
     assert.equal(payload.fan, 'work', '/work fans the case studies')
     assert.ok(r.body.includes(`<title>work · ${site.name}</title>`), 'route meta rides the shell')
     assert.ok(r.body.includes(`href="${site.url}/work"`), 'canonical stays')
@@ -146,9 +145,9 @@ describe('entry routes render the canvas shell with the entry sheet open', () =>
     const r = await app.inject({ method: 'GET', url: `/${FIXTURES.experiment}` })
     assert.equal(r.statusCode, 200)
     assert.ok(r.body.includes('<article class="prose">'))
-    // Experiments used to ship no backlink at all, which left a small touch
-    // screen (a watch) trapped in the sheet: no Escape, no reachable gap.
-    // The way back is the page bar's close box now, a real link.
+    // An experiment without a backlink traps a small touch screen (a watch)
+    // in the sheet: no Escape, no reachable gap. The way back is the page
+    // bar's close box, a real link.
     assert.ok(
       r.body.includes(
         '<a class="k-btn k-ico k-close" href="/" aria-label="Close: back to canvas">'
@@ -158,8 +157,8 @@ describe('entry routes render the canvas shell with the entry sheet open', () =>
   })
 
   it('the shell lets the watch adapt the page, like every other site', async () => {
-    // This assertion used to run the other way. The meta opted the watch out
-    // of watchOS's adapted layout, because the adapted page broke
+    // The meta must not opt the watch out of watchOS's adapted layout. Opting out was
+    // once done because the adapted page broke
     // position:fixed and put the sheet beside the canvas instead of over it.
     //
     // What it bought instead was a true device width WIDER than the watch
@@ -184,8 +183,8 @@ describe('entry routes render the canvas shell with the entry sheet open', () =>
   })
 
   it('a route that SSRs a sheet says so on <html>, not on boot', async () => {
-    // The watch's one-layer rules key on html.sheet-open. app.js used to add
-    // it, which left a direct load of an entry unarmed until a script it does
+    // The watch's one-layer rules key on html.sheet-open. If app.js added it,
+    // a direct load of an entry would stay unarmed until a script it does
     // not otherwise need decided to run.
     const entry = await app.inject({ method: 'GET', url: `/work/${FIXTURES.caseStudy}` })
     assert.match(
@@ -203,9 +202,9 @@ describe('entry routes render the canvas shell with the entry sheet open', () =>
 
   // mutation: canvas-ssr.full-page-direct-as-sheet, canvas-ssr.adopt-keeps-bar
   it('a direct load of a full page opens as one, the way a click does: no bar over it', async () => {
-    // A case study or an experiment typed into the address bar used to adopt
-    // the SSR'd sheet as a card, with the canvas's search bar floating over
-    // it; clicked open from the canvas, the same page filled the frame, and
+    // A case study or an experiment typed into the address bar must not
+    // adopt the SSR'd sheet as a card with the canvas's search bar floating
+    // over it; clicked open from the canvas, the same page fills the frame, and
     // the search should not be visible over a page that fills it.
     for (const url of [`/work/${FIXTURES.caseStudy}`, `/${FIXTURES.experiment}`]) {
       const r = await app.inject({ method: 'GET', url })

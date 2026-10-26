@@ -26,7 +26,7 @@
 // content, so they stay the reader's own in a session and under a follow
 // too.
 //
-// LISTENING IS SHARED (2026-09-26), the way a video is: in a session, and
+// LISTENING IS SHARED, the way a video is: in a session, and
 // from the one followed to the tabs following them, starting, pausing and
 // stopping go out as an `canvas:view` with the sentence being read, and a
 // peer's is read along (primitives/rooms/view-sync.js stamps and checks the page).
@@ -205,7 +205,7 @@ function readingQueue(root, title) {
 // A browser left to itself reads with whatever voice the OS never chose:
 // on a Mac that is the compact one, thin and robotic. The wanted result is one
 // voice, male and steady at a natural pace, and the same voice on as many
-// devices as possible (2026-10-01): the one listening should get the same
+// devices as possible: the one listening should get the same
 // page the next listener gets. The API says nothing about a voice but its
 // name, so the rule is a list of names, in order, and the first one the
 // device has wins: Daniel, who is on every Mac, iPhone and iPad out of the

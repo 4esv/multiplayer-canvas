@@ -3,8 +3,8 @@
 //   node scripts/img/bake-plan.mjs [baseUrl]
 //
 // Past the watch's mount floor nothing mounts and the plan (canvas/app.js
-// drawPlan) paints the world on one canvas. It used to paint a flat fill
-// per footprint, and a world of blobs makes no sense to look at, so it
+// drawPlan) paints the world on one canvas. A flat fill per footprint would
+// make a world of blobs that makes no sense to look at, so it
 // paints each tile's real picture instead: the tile exactly as the page
 // renders it, captured headless at 1:1 with nothing else on the page (no
 // ground, no chrome, no neighbours), then put through the toolkit's

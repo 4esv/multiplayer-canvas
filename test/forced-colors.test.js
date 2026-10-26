@@ -179,13 +179,12 @@ describe('forced colors: nothing meaningful is drawn in a colour the OS can take
         if (b.prelude.split(',').every((sel) => rescued.has(sel.trim()))) continue
         const shadow = decl(b.decls, 'box-shadow')
         if (!shadow || /^none$/i.test(shadow)) continue
-        // A border that is not there draws nothing. This used to accept any
-        // block that so much as MENTIONED a border property, which let
-        // `border: 0; box-shadow: var(--cv-shadow)` through: on 2026-09-15
-        // every tile on the canvas dropped its border for a block-and-cast
-        // edge and this guard reported green while the whole world lost its
-        // boundary under a forced palette. A zero, a `none` and a zero width
-        // are all nothing.
+        // A border that is not there draws nothing. Accepting any block that
+        // so much as MENTIONED a border property would let
+        // `border: 0; box-shadow: var(--cv-shadow)` through, and the whole
+        // world would lose its boundary under a forced palette while this
+        // guard reported green. A zero, a `none` and a zero width are all
+        // nothing.
         const draws = (v) => v !== null && !/^(0(px|em|rem)?|none)$/i.test(v.trim())
         const bordered = [
           'border',

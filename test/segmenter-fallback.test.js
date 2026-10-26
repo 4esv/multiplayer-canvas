@@ -15,9 +15,9 @@
 // Reproduced by deleting Intl.Segmenter in desktop WebKit: canvas-failed set,
 // zero tiles painting. With the shim: 10 tiles at 205x251, doors at 1730,1976
 // w332, z 0.203, identical to a run WITH Intl.Segmenter, at both a watch and a
-// laptop viewport. (The doors are derived rather than measured since 2026-08
-// and now read x=1440 w=912 on the same centre line; the shim result is
-// unaffected, and the numbers above are what that run recorded.)
+// laptop viewport. (The doors are derived rather than measured and read
+// x=1440 w=912 on the same centre line; the shim result is unaffected, and
+// the numbers above are what that run recorded.)
 //
 // The shim is a LOCAL PATCH to vendored code, so this guard also pins that the
 // patch survives a re-vendor: a fresh copy of pretext would reintroduce the

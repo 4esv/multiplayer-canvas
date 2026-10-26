@@ -2,8 +2,7 @@
 //
 // Pixel isometric is the same cell with depth: an edge along x steps two
 // cells right and one UP, along y two cells right and one down, along z two
-// cells up. (Turned 2026-09-11: the world's depth used to run top-right to
-// bottom-left and read backwards; now y runs from the top-left of the
+// cells up. (y runs from the top-left of the
 // screen to the bottom-right and a line of text rises to the right.) Every vertex lands on a cell, every slope is 2:1, so a box drawn
 // here rasterises to clean stairs at any integer scale and sits on the same
 // lattice as a flat sprite, a glyph or a tile. That is what lets a thing on

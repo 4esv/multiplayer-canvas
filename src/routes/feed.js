@@ -140,9 +140,8 @@ export async function registerFeedRoutes(fastify) {
     })
   })
 
-  // /feed/:slug: detail page for every article and web experiment (the 2026-07
-  // rename of /www, itself the merge of the old /feed + /web; clean break, no
-  // redirect). Case studies live under /work, so a case-study slug 404s here.
+  // /feed/:slug: detail page for every article and web experiment. Case
+  // studies live under /work, so a case-study slug 404s here.
   fastify.get('/feed/:slug', async (request, reply) => {
     const entries = await loadEntries()
     const entry = entries.find((e) => e.slug === request.params.slug)

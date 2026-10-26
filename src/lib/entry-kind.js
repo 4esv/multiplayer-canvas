@@ -1,13 +1,13 @@
 // What an entry IS, and where it lives. One pair of functions, read by every
 // surface that has to route a piece of content.
 //
-// The fork used to be written out longhand at fifteen sites (home, canvas,
-// feed, work, sitemap, llms, the sheet builders, three test suites), each a
-// two-way ternary over `type === 'case-study'` and `webOnly`. Two kinds fit
-// in a ternary. A third turns every one of those lines into a chain, and a
-// chain copied fifteen times is fifteen chances to copy it wrong: the day
-// one site learned a new kind and another did not, an entry would render on
-// the canvas and 404 at its own URL, with every guard green.
+// The fork is written once, here, not longhand at every site (home, canvas,
+// feed, work, sitemap, llms, the sheet builders). Two kinds fit in a
+// ternary over `type === 'case-study'` and `webOnly`. A third turns every
+// one of those lines into a chain, and a chain copied across many sites is
+// many chances to copy it wrong: the day one site learned a new kind and
+// another did not, an entry would render on the canvas and 404 at its own
+// URL, with every guard green.
 //
 // So the taxonomy lives here (BIBLE.md section 5, items):
 //
@@ -119,7 +119,7 @@ export function isCaseStudy(entry) {
   return kindOf(entry) === CASE_STUDY
 }
 
-// A case study and an experiment are destinations, not cards (2026-09-15):
+// A case study and an experiment are destinations, not cards:
 // they take the frame. ONE predicate, read by the canvas payload and by the
 // direct load, because two copies drifted: the server SSR'd a direct-loaded
 // experiment as a sheet over the canvas while the canvas opened the same

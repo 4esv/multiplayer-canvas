@@ -28,7 +28,7 @@
 // stands out in ink, with its words in the sheet.
 //
 // A figure's aria-label is READ from the markdown and written back as it
-// was, and every label in the old drawing is in the new one: a figure is
+// was, and every label in a figure's drawing survives a redraw: a figure is
 // redrawn, never cut. Wrapping a long label onto two lines is the only
 // liberty taken with its words.
 //

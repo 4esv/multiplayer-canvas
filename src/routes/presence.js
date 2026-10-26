@@ -21,10 +21,10 @@
 // the weather window's push ({type:'push', dx, dy} in; the sky's offset out,
 // from primitives/sky/server.js, to the tabs watching it with of:'sky').
 //
-// SESSIONS (2026-09-25) ride the same endpoint. `?session=new&kind=...` from
+// SESSIONS ride the same endpoint. `?session=new&kind=...` from
 // the owner (the session cookie AND our own Origin) opens one with a
 // generated code and joins it as its host; `?session=<code>&kind=...` from
-// the owner opens one WITH that code when none is live (2026-09-26), so a
+// the owner opens one WITH that code when none is live, so a
 // room can be named in the address (`?session=jam`), and joins it when it
 // is. Anybody else's `?session=<code>[&pin=<digits>]` joins a live one, with
 // the PIN when it has one. Joining, the room's own kind wins over the
@@ -117,7 +117,7 @@ export async function registerPresenceRoutes(fastify) {
   // bytes, so a larger frame is garbage or abuse and the socket is torn down by
   // the plugin. Outbound frames are not bound by it (the welcome roster already
   // exceeds it in a busy room), which is a reason to size our own pushes, not a
-  // licence to skip doing so. It was 512 until the act (sessions, 2026-09-25):
+  // licence to skip doing so. It was 512 until the act (sessions):
   // the act grammar (presence-protocol.js isActData) admits eight keys of
   // sixty-four-character strings, about 660 bytes framed, and a frame the
   // grammar would accept must never be one that tears the socket down.
@@ -131,8 +131,8 @@ export async function registerPresenceRoutes(fastify) {
   fastify.register(async (scoped) => {
     scoped.get('/ws/cursors', { websocket: true }, (socket, request) => {
       const q = request.query || {}
-      // the public room is joined at once, exactly as before: no await, so
-      // nothing about its timing changed with sessions
+      // the public room is joined at once: no await, so
+      // its timing does not depend on sessions
       if (q.session === undefined) {
         admit(socket, presenceRoom)
         return
@@ -156,7 +156,7 @@ async function enterSession(socket, request, q) {
   let rec
   const fresh = q.session === 'new'
   // the owner naming a room nobody has opened yet opens it: the code in
-  // his address is the room (2026-09-26). Anybody else's unknown code is
+  // his address is the room. Anybody else's unknown code is
   // the same 4404 as an ended one, so a guess learns nothing either way.
   const naming = !fresh && owner && typeof q.session === 'string' && CODE_RE.test(q.session)
   if (fresh || (naming && !findSession(q.session))) {

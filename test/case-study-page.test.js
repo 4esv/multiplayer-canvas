@@ -141,7 +141,7 @@ describe('case study: the page rules', () => {
       assert.ok(CSS.indexOf(cast) < at, `${cast} comes after the card's rule and wins`)
   })
 
-  // The second review (2026-09-24): title and body on one ladder, figures
+  // The second review: title and body on one ladder, figures
   // that belong to the white page, the page to the bottom of the frame, and
   // a nav that walks both ways with the collection at the foot.
   // mutation: case-study-page.two-scales
@@ -290,7 +290,7 @@ describe('case study: the page rules', () => {
     assert.match(APP, /dustUnder\(e\.target\?\.closest\?\.\('#sheetInner > h1\.ptitle'\)/)
   })
 
-  // The fourth review (2026-09-24): the pixel face came into the figures,
+  // The fourth review: the pixel face came into the figures,
   // and the figures got less responsive. A figure's words are the page's
   // body face; a figure fits a phone's column, scaling down, never scrolling.
   // mutation: case-study-page.figure-pixel-face, case-study-page.figure-face-css
@@ -331,7 +331,7 @@ describe('case study: the page rules', () => {
       }
   })
 
-  // The fifth review (2026-09-24): the figures centred in the column at
+  // The fifth review: the figures centred in the column at
   // every width, and
   // the documented case-study primitives this branch had deleted, back.
   // mutation: figure-fit.off-centre

@@ -40,8 +40,8 @@ export async function registerSitemapRoute(fastify) {
 
     // What a page's lastmod actually means: when the FILE changed, not when
     // the work happened. `date` is a fixed historical event, so it can never
-    // move again once published - it advertised the case studies as untouched
-    // since 2023-2025 while their bodies were edited days earlier.
+    // move again once published, and would advertise an edited page as
+    // untouched since its date.
     const lastmodOf = (e) => e.updated || e.date || undefined
 
     // Static-route lastmod tracks the site's freshness (the newest content

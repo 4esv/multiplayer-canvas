@@ -76,7 +76,7 @@ function heroSize(vw, vh) {
 
 // ---- the tiles (dims in MODULE UNITS; declaration order is curation) --------
 // Every tile is items-or-widgets (BIBLE.md section 5) and takes one of the
-// six shapes (BIBLE.md section 3, the snap, 2026-09-27): 8x8 square, 8x5
+// six shapes (BIBLE.md section 3, the snap): 8x8 square, 8x5
 // shelf, 5x8 portrait, 5x5 small square, 3x3 and the 2x2 icon, Fibonacci on
 // the module. Each took the shape nearest the footprint it had, by aspect
 // first and then area (both as log ratios), and its content refits to the
@@ -191,9 +191,8 @@ export const FRONT_OF = {
 // is whole cells and the whole composition is centred in the footprint on
 // the cell lattice; the footprint is declared, and stackFits() is the guard
 // that the composition actually fits inside it.
-// THE FOOTPRINT WINS (the snap, 2026-09-27). The footprint used to be the
-// card plus the pile plus the label, snapped up; it is one of the six
-// shapes now, and the pile is composed inside it. The card keeps its
+// THE FOOTPRINT WINS (the snap). The footprint is one of the six
+// shapes, and the pile is composed inside it. The card keeps its
 // member's shape on the largest module the footprint holds, a whole number
 // of cells and never more than M: a 5 x 5 study stands at its own size in
 // the 8 x 8 pile.
@@ -205,9 +204,7 @@ export const FRONT_OF = {
 // The backs are solid blocks now (canvas-home.css), and the step stayed.
 // THE LABEL BLOCK IS TWO LINES: the name, and under it
 // the count (countLine above), each one line of the type face (six cells,
-// kit.css .k-lbl), the count a step dimmer. It was one line from
-// 2026-09-16, when the count went because the backs already said how many
-// and a reader could count them; the number is said now. The
+// kit.css .k-lbl), the count a step dimmer. The
 // pager stays at the pile's right edge, beside the thing it turns.
 // seam: test/stacks.test.js
 // pagerInset: the pager stands a few cells short of the pile at each end
@@ -234,16 +231,14 @@ export function pileGeometry(stack, front = dims(FRONT_OF[stack.id] || FRONT_OF.
   const pileH = card.h + spread
   const blockH = pileH + PILE.labelGap + PILE.labelH
   const onCell = (v) => Math.round(v / PX) * PX
-  // the pile is no longer the whole composition: the pager stands off its
-  // right edge, so what centres in the footprint is pile + gap + pager. It
-  // was the pile alone for an hour and the pager hung 16px outside every
-  // stack, which stackFits did not catch because it did not know the pager
-  // existed (it does now, below).
+  // the pile is not the whole composition: the pager stands off its
+  // right edge, so what centres in the footprint is pile + gap + pager, and
+  // stackFits knows about the pager (below).
   const compW = pileW + PILE.labelGap + PILE.pagerW
   const x0 = onCell((foot.w - compW) / 2)
   const y0 = onCell((foot.h - blockH) / 2)
   // the pile sits on the ground and the front card floats on top of it
-  // (2026-09-11): every card beneath sits one PILE.step further along the
+  //: every card beneath sits one PILE.step further along the
   // cast, down and to the right, which is straight down once the world
   // stands up in isometric. The front is the one that lifts (canvas-home.css
   // .t-stack:hover), the pile never moves.
@@ -256,7 +251,7 @@ export function pileGeometry(stack, front = dims(FRONT_OF[stack.id] || FRONT_OF.
     card,
     front: { x: frontX, y: frontY },
     backs, // nearest first; the last is the deepest, the base
-    // the label block spans the whole pile and centres in it (2026-09-11)
+    // the label block spans the whole pile and centres in it
     // centred on the PILE, not on the composition: the pager is a control
     // standing beside the cards, and a name that shifted right to average it
     // in read as off-centre under the thing it names
@@ -284,8 +279,7 @@ export function stackFits(stack) {
   const g = pileGeometry(stack)
   const foot = dims(stack)
   // the pager is part of the composition and has to be inside the footprint
-  // like everything else: it hung 16px out of every stack on 2026-09-16
-  // because this checked the block and the block did not include it
+  // like everything else, so the check includes it, not only the block
   if (g.pager.x + PILE.pagerW > foot.w || g.pager.x < 0) return false
   // vertical is a centre line, not a top edge: the stylesheet centres the
   // pager on it, so what has to hold is that the line itself is inside the
@@ -320,7 +314,7 @@ export const FAN = { margin: 24, gap: 24, head: 72, minScale: 0.75 }
  * @param {boolean} [lane] one row, scrolled sideways: the phone's reading
  * @returns {object} the grid: scale, slots, and which way it scrolls
  *
- * THE LANE (2026-09-16). A phone used to get the same fitted grid a desktop
+ * THE LANE. A phone does not get the same fitted grid a desktop
  * does, which on a narrow screen means either two columns of small cards or a
  * long vertical stack. Neither is how a phone reads a collection: a shelf of
  * things you push sideways is, and every app a visitor already uses agrees.
@@ -513,7 +507,7 @@ const snap = (v) => Math.round(v / M) * M
 
 // ---- placement: tiered shells (BIBLE.md sections 2-3) -----------------------
 // The world is concentric: radius is importance, angle is the tag compass.
-// Icons ring the hero tightest (the old satellite ring, made law for every
+// Icons ring the hero tightest (the satellite ring, law for every
 // tier), then widgets, then feed items on the outermost. Within a (tier,
 // direction) group tiles fan evenly across their wedge, sorted by id:
 // wedges, not stacks, and no randomness anywhere. A
@@ -594,33 +588,26 @@ export const openBlock = (hero) => {
 
 // ---- the hero's furniture (BIBLE.md section 4) ------------------------------
 // The doors row and the etched mark ride the hero rather than the solver's
-// shells. Until 2026-08 they were also the only two nodes in the world whose
-// SEAT came out of a DOM measurement instead of a derivation: app.js read
-// offsetWidth, and when the read came back 0 (offsetWidth is 0 on any
-// display:none subtree, and the hero system hides when panned off screen)
-// both seating functions returned early. That did not leave the row unplaced.
-// It left it at its initialised 0,0, which is the WORLD ORIGIN, most of a
-// world away from the hero and directly on top of whatever tile the shells
-// seated there. "work and about landing on top of an entry" is that sentence.
+// shells. Their SEAT is a derivation, never a DOM
+// measurement: offsetWidth is 0 on any display:none subtree (the hero system
+// hides when panned off screen), and a seat read from it falls back to the
+// initialised 0,0, which is the WORLD ORIGIN, most of a world away from the
+// hero and directly on top of whatever tile the shells seated there.
 //
 // So the furniture is derived like everything else in this file, and the
 // derivation costs nothing visually: each row spans the hero's FULL WIDTH and
 // centres its own contents in CSS. The world box needs no text metric, the
-// buttons still hug their labels, and the centre line lands where the
-// measured version put it, because both centre on the hero.
+// buttons still hug their labels, and the centre line lands on the hero.
 // one line of the type face at the label's 16: six cells (kit.css .k-meta)
 // seam: test/canvas-widgets-kit.test.js
 export const TYPE_LINE = 6 * PX
 const FURNITURE = {
-  // THE DOORS ARE GONE (2026-09-16). Two buttons under the statement, work
-  // and about, existed because the ground was not legible on its own: they
-  // were shortcuts past a layout nobody could read. The layout says it now
-  // (the studies stand beside the about triptych),
-  // and a shortcut past a thing that is already obvious is furniture with
-  // nothing behind it. The instruction and the tally move up into the space
-  // they left, which is all the space they ever needed.
-  south: 80, // the hero's south line, where the doors used to sit
-  etchGap: 0, // the mark sits ON the south line now, not a row below it
+  // NO DOORS UNDER THE STATEMENT. The layout is legible on its own (the
+  // studies stand beside the about triptych), and a shortcut past a thing
+  // that is already obvious is furniture with nothing behind it. The
+  // instruction and the tally take the space.
+  south: 80, // the hero's south line
+  etchGap: 0, // the mark sits ON the south line, not a row below it
   // the mark is the instruction block, sp-6, then the tally: two lines of
   // the type face (how the canvas moves, and that it wraps; the pixel
   // face is for the hero alone), then the kit's small flaps, one type line
@@ -637,8 +624,8 @@ export const etchedBox = (hero) => ({
 
 // ---- screen-space chrome (BIBLE.md section 8) -------------------------------
 // The bar is SCREEN furniture: fixed pixels that do not scale with the camera.
-// So a WORLD reservation for it cannot be right at more than one zoom, and the
-// retired one (a single 108-world-px band solved against DESIGN_VIEW) was not.
+// So a WORLD reservation for it cannot be right at more than one zoom, and a
+// single world-px band (108, say, solved against a design view) is not.
 // Measured against the opening frame: a 184x224 watch opens at 0.1825 and
 // needs 285 world px for the bar, a 1440x900 laptop opens at 0.8929 and needs
 // 68. Reserving the worst case would have surrendered 28% of the opening
@@ -648,11 +635,11 @@ export const etchedBox = (hero) => ({
 // is a 6.7% apparent shrink (the laptop, where the height binds).
 //
 // Density is three discrete states, never a fluid scale. Discrete keeps the
-// measures deterministic and guardable, which is the property the retired
-// "nothing shrinks by viewport" law was actually protecting.
+// measures deterministic and guardable, which is the property a
+// "nothing shrinks by viewport" law protects.
 export const CHROME = {
   inset: 24, // --cv-sp-6: the bar's inset from the screen's sides
-  foot: 48, // --cv-module: the bar's foot line, shared with the map (2026-09-11)
+  foot: 48, // --cv-module: the bar's foot line, shared with the map
   gap: 12, // --cv-sp-3: between the field and the close button beside it
   h: 44, // --cv-ctrl-h: the control height at phone and desktop
   // the omni field's one fixed measure. Air comes from the inset, not from a
@@ -674,8 +661,7 @@ export const mapOpenAt = (density) => density === 'desktop' || density === 'phon
 // (toggling the map slid the search bar a module on a desktop).
 // seam: test/canvas-layout.test.js
 export const slotShared = (density) => density === 'phone'
-// The width the bar needs. The bar is the field (2026-09-10: the logo and the
-// menu left it, home is Esc or /home or a tap on the map, the doors are the
+// The width the bar needs. The bar is the field (home is Esc or /home or a tap on the map, the doors are the
 // sections, the bulb is on the ground), and a CLOSE joins it while a sheet or
 // a fan is up. The field is absolutely CENTRED, so the close's column binds
 // both sides: 200 + 2 x (24 + 44 + 12) = 360. Under it the close would land
@@ -757,22 +743,22 @@ export function zoomFloor(vw, vh, world) {
 // ---- the camera's rest bounds, on the ladder --------------------------------
 // The floor snaps UP the ladder (a rung below it would show a repeat) and the
 // opening fit snaps DOWN (a rung above it would overflow the frame). Where
-// the two land on different rungs the floor used to win the clamp and the
-// opening frame overflowed the screen: a true 205px watch at 2x fits at
+// the two land on different rungs the floor would win the clamp and the
+// opening frame overflow the screen: a true 205px watch at 2x fits at
 // 0.203, whose rung down is 0.125, while its watch floor (fit/1.5 = 0.136)
-// climbed to 0.25, so the camera opened at 0.25 with the doors row off the
+// climbed to 0.25, so the camera would open at 0.25 with the doors row off the
 // screen. A screen is always allowed the frame it opens on, so the watch's
 // extra step out yields to the fit's rung. COVER never yields: below it the
 // view is longer than the world and would hold one place twice. But it only
 // climbs the ladder where there is one: under a device pixel per cell
 // nothing is crisp anyway, and it keeps its raw value there.
 //
-// THE WRIST'S CAP (2026-09-12). A watch that does not zoom out does not die:
+// THE WRIST'S CAP. A watch that does not zoom out does not die:
 // measured on the device after every other cause was struck off (zoom
 // inputs, page weight, compositing layers, presence). What kills it is the
 // world in view, so at the watch density the camera never holds more than
 // WATCH_SLOTS slots across, whatever the opening frame would have fit. Two
-// still died twice in a minute on the Ultra; one slot is the floor now. The
+// still died twice in a minute on the Ultra; one slot is the floor. The
 // hero overflows a 320px screen there and the wrist pans; the instruments run and
 // the crown scrolls a sheet, which is the trade. (The device lies about
 // itself: 320x240 at 2x is the adapted layout, the panel is 205x154 pt.)
@@ -789,8 +775,8 @@ export const WATCH_SLOTS = 1
 // remaining part is at the opposite edge, where the world starts again, so
 // it is drawn there too, as a live copy that shows the other half of the
 // same tile and never the same half twice (wrapSpots, app.js mirror).
-// It used to go out to the whole width, past one world on every screen that
-// is not the ground's shape: a phone held the hero three times over.
+// It does not go out to the whole width: past one world, on every screen that
+// is not the ground's shape, a phone would hold the hero three times over.
 export function cameraBounds(vw, vh, world, dpr = 1, maxZ = 1.5) {
   const frame = openFrame()
   const fitRaw = Math.min(vw / frame.w, Math.max(1, vh - chromeBand(vw, vh)) / frame.h)
@@ -814,12 +800,12 @@ export function cameraBounds(vw, vh, world, dpr = 1, maxZ = 1.5) {
   const mountZ = MOUNT_OUT[chromeDensity(vw, vh)] ? outZ : minZ
   return { minZ, fit: Math.max(minZ, fit), outZ, mountZ }
 }
-// WHO MOUNTS ALL THE WAY OUT (2026-09-23). Past minZ the plan used to paint
-// one flat fill per footprint, and at full width that is all anyone saw:
-// blobs. So the mount floor was measured instead of assumed
+// WHO MOUNTS ALL THE WAY OUT. Past minZ a plan paints
+// one flat fill per footprint, and at full width that is all anyone sees:
+// blobs. So the mount floor is measured, not assumed
 // (scripts/verify/zoom-out-cost.mjs, headless Chrome, every tile mounted at
 // the full width the camera then reached, against the plan, a 120-frame pan
-// across the world; the clones were the torus copies it faked then):
+// across the world; the clones are the torus copies):
 //
 //   density   elements        tiles + clones   render/frame   style+layout
 //   desktop   1161 -> 2493     26 +  49         0.3 ms         37 ms / 120
@@ -838,7 +824,7 @@ export const MOUNT_OUT = { desktop: true, phone: true, watch: false }
 // seam: test/canvas-layout.test.js
 export const mountsAt = (z, minZ) => z >= minZ - 1e-9
 
-// ---- THE BENTO (2026-09-11, BIBLE.md section 3) -------------------------------
+// ---- THE BENTO (BIBLE.md section 3) -------------------------------
 // The world is a ring of SLOTS around the hero's block, on a coarse grid:
 // a slot is nine modules square, the gutter between slots is the
 // strangers' AIR, and the ring is seven slots across by four down with the
@@ -848,7 +834,7 @@ export const mountsAt = (z, minZ) => z >= minZ - 1e-9
 // the compass (TAG_DIR) and checked by the guard. Positions are arithmetic;
 // the invariants are law.
 export const BENTO = { unit: 9 * M, gap: AIR, cols: 7, rows: 4 }
-// ---- THE GROUND IS A SCREEN (2026-09-15) --------------------------------------
+// ---- THE GROUND IS A SCREEN --------------------------------------
 // The world is 3840 x 2160: 16:9, and at one cell a pixel exactly 960 x 540
 // CELLS. The ground is a 4K screen whose pixel is the logo's pixel, which is
 // the whole point of a board you can paint on: a person can say where a
@@ -895,7 +881,7 @@ export const SLOTS = {
 // takes that many slots across (and the gaps between them) as one box and
 // centres in that; the slots it covers stay unseated in SLOTS.
 const onCell = (v) => Math.round(v / PX) * PX
-// A ZONE'S NAME IS PART OF ITS SEAT (the snap, 2026-09-27). The name stands
+// A ZONE'S NAME IS PART OF ITS SEAT (the snap). The name stands
 // over the cut (canvas-home.css .ztitle): the display face's twelve rows at
 // a cell a pixel (pixel-type.js FACES.display), and sp-4 of ground under
 // them. The name and the cut centre in the slot as one block, the way a

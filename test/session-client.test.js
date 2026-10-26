@@ -1,5 +1,5 @@
 // test/session-client.test.js
-// The browser half of rooms, following and the conga (2026-09-25). The
+// The browser half of rooms, following and the conga. The
 // server half (who may open a room, the PIN, the relay) is
 // test/sessions.test.js; this holds what a tab does with it: the arithmetic
 // of a line of followers (primitives/presence/conga.js), what lets a follow go

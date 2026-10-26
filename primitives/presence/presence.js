@@ -43,7 +43,7 @@
 // tab that arrives (BIBLE.md section 2). There is one ground, so there is
 // no theme to flip.
 //
-// A SESSION (2026-09-25) is the same socket into a room of its own, opened by
+// A SESSION is the same socket into a room of its own, opened by
 // the owner and joined by code (goRoom). It carries everything above and one
 // thing more: ACTS, the things a session plays together (a note, a knob, an
 // egg, a marked line), relayed to the rest of the session as they happen.
@@ -72,18 +72,17 @@ import { RATE_MS, SERVER_PUSH } from './wire.js'
 // quoting a dark host carries that host's near-black. So the two grown copies
 // take OPPOSITE inks, and whichever ground the cursor is over, one of them
 // contrasts with it (test/cursor-ring.test.js measures every one of them).
-// THE ARROW IS CELLS (2026-09-15, BIBLE.md section 10). It was a vector kite
+// THE ARROW IS CELLS (BIBLE.md section 10). It was a vector kite
 // with a 4px and a 2px stroke around it, which is the one hand this canvas
 // does not draw in: a pointer sitting on a 4px-cell world was the softest
 // thing on the screen. So it became a sprite.
 //
-// THE POINTER IS A HAND, AND EVERY PIXEL OF IT IS DRAWN (2026-09-16).
+// THE POINTER IS A HAND, AND EVERY PIXEL OF IT IS DRAWN.
 //
-// Four hands, three layers each, nothing derived. This replaced a sprite that
-// was ONE bitmap grown outward twice: the colour was the drawing and the two
-// rings were arithmetic. That arrangement is what every arrow draft fought,
-// because it decides the outline for you and the outline is where a pointer
-// reads. Here the colour, the black and the border are three things a hand
+// Four hands, three layers each, nothing derived. It is not a sprite that
+// is ONE bitmap grown outward twice, where the colour is the drawing and the
+// two rings are arithmetic: that arrangement decides the outline for you and
+// the outline is where a pointer reads. Here the colour, the black and the border are three things a hand
 // placed, and grow() touches none of them.
 //
 // Two populations, and the split is the design (BIBLE.md section 2):
@@ -182,7 +181,7 @@ export const HANDS = {
 const HAND_W = HANDS.point.rows[0].length
 const HAND_H = HANDS.point.rows.length
 // ONE CSS px a cell: 18 x 19, against a system pointing hand's 20 x 26.
-// The chrome's own pitch of two was tried on 2026-09-16 and is the one place
+// The chrome's own pitch of two is the one place
 // this drawing is allowed to leave the site's ladder. At two a cell the hand
 // is 36 x 38, roughly twice the area of anything else on the machine, and a
 // pointer that large stops being a pointer: it is the one mark on a screen
@@ -260,15 +259,10 @@ const EDGE_W = 24
  * @param {string} ground
  * @returns {string} a cursor value: url(...) hotspot, fallback
  *
- * An SVG data URI, the same shape the arrow used from 2026-09-11, because
- * that ran for a week on one element without costing anything. It was briefly
- * rasterised to a PNG here on a theory that SVG cursors are expensive to
- * swap; the theory was wrong, and the evidence against it is that the old
- * cursor was an SVG too. What actually made the canvas stutter was SCOPE: the
- * hand had been made the inherited default and put on 989 of 991 elements,
- * with a `:where(...) :active` rule swapping a fourth hand on every press,
- * which is the whole duration of a pan. Three rules in canvas-home.css now,
- * and the drawing is an SVG again.
+ * An SVG data URI: swapping SVG cursors is cheap. What makes a canvas stutter
+ * is SCOPE: a hand set as the inherited default lands on every element, and a
+ * `:where(...) :active` rule swapping a hand on every press lasts the whole
+ * duration of a pan. Three rules in canvas-home.css carry the cursor.
  */
 export function cursorImage(which, color, ink, ground) {
   const hand = HANDS[which] || HANDS.point
@@ -401,14 +395,10 @@ const colorOf = (id) => `hsl(${hueOf(id)} 65% 57%)`
 
 // Presence is company, and company is the first thing you do without.
 //
-// This used to be load-bearing by accident. initPresence runs at app.js module
-// scope, after the tiles are built and before boot() installs its catch, so
-// `new WebSocket(...)` throwing took the entire canvas down with it, on every
-// engine that does not have the constructor. watchOS Safari is one: it has no
-// WebSocket at all, and reported itself in one line once the page was asked to
-// say why it had not painted:
-//
-//   the canvas threw: Can't find variable: WebSocket (K1@/canvas/app.js:4:32316)
+// initPresence runs at app.js module scope, after the tiles are built and
+// before boot() installs its catch, so `new WebSocket(...)` throwing would
+// take the entire canvas down with it, on every engine that does not have the
+// constructor. watchOS Safari is one: it has no WebSocket at all.
 //
 // So the socket is optional in the only way that counts: initPresence is TOTAL.
 // It returns an API on every engine, and where it cannot connect, that API is
@@ -534,9 +524,7 @@ export function initPresence({
   function onData(cb) {
     dataCbs.add(cb)
   }
-  // This tab's own colour, once the room has named it. It went out on
-  // 2026-09-16 with the visitor's own arrow and came back the same day with
-  // the visitor's own HANDS, which is a different thing: the hue is not
+  // This tab's own colour, once the room has named it. The hue is not
   // mirroring what the room sees of you, it is so the hand you drag the ground
   // with is the one everybody else knows you by.
   const selfCbs = new Set()
@@ -822,7 +810,7 @@ export function initPresence({
       // and so do the words they had selected
       const hadSel = !!p.sel
       p.sel = null
-      // a leaving cursor POPS like a bubble (2026-09-11): the arrow swells
+      // a leaving cursor POPS like a bubble: the arrow swells
       // and goes in three frames while a ring of pixels bursts out of its
       // tip, then the element is gone. A tab that never placed its cursor
       // has nothing to pop.
@@ -853,7 +841,7 @@ export function initPresence({
   // the dust would rather tick slightly off than not at all.
   let skew = 0
 
-  // ---- which room (2026-09-25) ----------------------------------------------
+  // ---- which room ----------------------------------------------
   // A SESSION is a room of its own on the same socket: the owner opens one
   // (`?follow` or `?session` on any page, or the desk), and whoever has its
   // code (and its PIN, when it has one) is in it and in nothing else.
@@ -1272,7 +1260,7 @@ export function initPresence({
   let sentK = null
   let sentD = false
   let sentAt = null
-  // WHOM THIS TAB FOLLOWS (the conga, 2026-09-25). follow.js decides it and
+  // WHOM THIS TAB FOLLOWS (the conga). follow.js decides it and
   // app.js hands it here; the room carries it so everyone can draw this tab
   // in line behind the one it follows. `selfFs` is this tab's number in that
   // line, which only the room can hand out (it reads it off its own entry).
