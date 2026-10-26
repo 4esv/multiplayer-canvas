@@ -8,6 +8,9 @@
 //   - words from the world the code came from (features and hosts that are
 //     not here), with the exact allowlist below
 //   - editor and agent files and local absolute paths
+//   - calendar dates (YYYY-MM-DD) in comments and docs: a stamp dates the
+//     private site's history, not the code (content frontmatter and test
+//     inputs are data and are not comments, so they are not scanned)
 //   - repo paths (primitives/, src/, scripts/, test/, content/, examples/ and
 //     the older short forms canvas/, js/, css/, lib/, routes/, services/) that
 //     do not resolve to a tracked file
@@ -133,6 +136,85 @@ const REMOVED_WORLD = new RegExp(
   'i'
 )
 
+// A date stamp in a comment or doc line. Comments are pulled out per file
+// kind; a date in code (a fixture, an expected value) is data and is left.
+const DATE = /\b20\d\d-[01]\d-[0-3]\d\b/
+const LINE_COMMENT_FILES = /\.(m?js|cjs|ts)$/
+const BLOCK_COMMENT_FILES = /\.(m?js|cjs|ts|css)$/
+const HASH_COMMENT_FILES =
+  /(^|\/)(\.gitignore|\.prettierignore|\.dockerignore|\.editorconfig|\.env\.example|Dockerfile)$|\.ya?ml$/
+const NJK_FILES = /\.(njk|html)$/
+// frontmatter in a doc is data: `date:` and `updated:` keys
+const DATA_KEY = /^\s*(date|updated):\s/
+
+function commentText(f, lines) {
+  const out = []
+  let block = null // the close marker of the block comment we are inside
+  lines.forEach((line, i) => {
+    let text = ''
+    let rest = line
+    while (rest.length) {
+      if (block) {
+        const end = rest.indexOf(block)
+        if (end < 0) {
+          text += rest
+          rest = ''
+        } else {
+          text += rest.slice(0, end)
+          rest = rest.slice(end + block.length)
+          block = null
+        }
+        continue
+      }
+      const opens = []
+      if (BLOCK_COMMENT_FILES.test(f)) opens.push([rest.indexOf('/*'), '/*', '*/'])
+      if (NJK_FILES.test(f)) {
+        opens.push([rest.indexOf('{#'), '{#', '#}'], [rest.indexOf('<!--'), '<!--', '-->'])
+      }
+      if (LINE_COMMENT_FILES.test(f)) {
+        const m = rest.match(/(^|\s)\/\//)
+        if (m) opens.push([m.index + m[1].length, '//', null])
+      }
+      if (HASH_COMMENT_FILES.test(f)) {
+        const m = rest.match(/(^|\s)#/)
+        if (m) opens.push([m.index + m[1].length, '#', null])
+      }
+      const live = opens.filter((o) => o[0] >= 0).sort((a, b) => a[0] - b[0])
+      if (!live.length) break
+      const [at, open, close] = live[0]
+      if (close === null) {
+        text += rest.slice(at + open.length)
+        rest = ''
+      } else {
+        block = close
+        rest = rest.slice(at + open.length)
+      }
+    }
+    if (text) out.push([i + 1, text])
+  })
+  return out
+}
+
+function dateHits() {
+  const out = []
+  for (const { f, lines } of FILES) {
+    // frontmatter and the mutation payloads are data
+    if (/^content\//.test(f) || f === 'scripts/verify/mutations.json') continue
+    if (/\.md$/.test(f)) {
+      lines.forEach((line, i) => {
+        if (DATE.test(line) && !DATA_KEY.test(line))
+          out.push(`${f}:${i + 1}: ${line.match(DATE)[0]}`)
+      })
+      continue
+    }
+    for (const [n, text] of commentText(f, lines)) {
+      const m = text.match(DATE)
+      if (m) out.push(`${f}:${n}: ${m[0]}`)
+    }
+  }
+  return out
+}
+
 const LOCAL_WORLD = /CLAUDE\.md|\.claude\b|\/Users\/|\/private\/tmp|\bscratchpad\b/
 
 const PATH_REF =
@@ -157,6 +239,11 @@ describe('this repo points at nothing outside itself', () => {
   // mutation: isolation.agent-file
   it('no agent file, home directory or scratch path', () => {
     assert.deepEqual(hits(LOCAL_WORLD), [])
+  })
+
+  // mutation: isolation.dated-comment
+  it('no calendar date in a comment or a doc line', () => {
+    assert.deepEqual(dateHits(), [])
   })
 
   // mutation: isolation.dead-path

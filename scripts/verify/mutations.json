@@ -8803,5 +8803,16 @@
         "replace": "## Credits (see primitives/gone/missing.js)"
       }
     ]
+  },
+  {
+    "name": "isolation.dated-comment",
+    "wrong": "a comment carries the date its code was written",
+    "edits": [
+      {
+        "file": "primitives/torus.js",
+        "find": "// multiplayer-canvas/torus: the camera",
+        "replace": "// multiplayer-canvas/torus (added 2026-01-02): the camera"
+      }
+    ]
   }
 ]
