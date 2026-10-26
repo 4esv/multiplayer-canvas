@@ -1,5 +1,5 @@
 // scripts/verify/slime-wire.mjs
-// Issue #259, against a real socket: WHAT THE DISH COSTS A TAB.
+// Against a real socket: WHAT THE DISH COSTS A TAB.
 //
 // Three clients on /ws/cursors, measured over the same window:
 //   absent   never says it can see the dish (a hidden tab, or one with the

@@ -19,7 +19,7 @@
 // same tile at the same moment. It is on the move frame and not a frame of
 // its own because the inbound rate gate (RATE_MS) is shared by everything a
 // client sends, and a hover frame would spend its life queued behind a cursor
-// that is always moving (lib/presence-protocol.js says the rest). A cursor
+// that is always moving (primitives/presence/presence-protocol.js says the rest). A cursor
 // and what it is touching are one fact anyway.
 //
 // The SERVER'S CLOCK arrives once, in the welcome, and now() reads it: the
@@ -51,7 +51,7 @@
 // now says whom this tab follows, so a follower is drawn in line behind the
 // one it follows (conga.js) rather than wherever its idle pointer was left.
 
-// The pile index bound, mirroring lib/presence-protocol.js FRONT_MAX. It is
+// The pile index bound, mirroring primitives/presence/presence-protocol.js FRONT_MAX. It is
 // stated here rather than imported because that module is the SERVER's (the
 // browser never loads it), and a client that sent an index the room would
 // drop is a client that thinks it shared something it did not.
@@ -243,9 +243,9 @@ export const CLICK_NUDGE = NUDGE
 const BURST =
   '<svg class="burst" width="44" height="44" viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true">' +
   '<path fill="currentColor" d="M4 1h3v1h-3zM2 2h2v1h-2zM7 2h2v1h-2zM1 4h1v3h-1zM9 4h1v3h-1zM2 8h2v1h-2zM7 8h2v1h-2zM4 9h3v1h-3zM0 0h1v1h-1zM10 0h1v1h-1zM0 10h1v1h-1zM10 10h1v1h-1z"/></svg>'
-// the edge marker (issue #327): a peer on this page but above or below the
+// the edge marker: a peer on this page but above or below the
 // part of it on screen shows as an arrow at that edge, in its hue. On the kit
-// (#336) it is the face's own arrow in a cell of ground ruled one cell thick
+// it is the face's own arrow in a cell of ground ruled one cell thick
 // in the hue, not a hand-drawn chevron. Two marks, one shown, the same way
 // the two hands are. EDGE_W is the cell: six --cv-px, as canvas-home.css
 // sizes it.
@@ -303,13 +303,13 @@ const IDLE_MS = 45000
 const GONE_MS = 120000
 
 // Position sentinel, client half. The welcome roster includes participants that
-// have never moved with fx/fy -1 (lib/presence-room.js): they count toward the
+// have never moved with fx/fy -1 (primitives/presence/presence-room.js): they count toward the
 // tally but must not paint a phantom at the world origin. Exported for test.
 // seam: test/presence.test.js
 export const hasPos = (q) => q.fx >= 0 && q.fy >= 0
 
-// The hover key of one snapshot entry, client half (lib/presence-room.js
-// flush, issue #246). The room sends a key only when it changes, so an entry
+// The hover key of one snapshot entry, client half (primitives/presence/presence-room.js
+// flush). The room sends a key only when it changes, so an entry
 // has THREE states and the length is what tells the first from the second:
 //   [id, x, y, down]          unchanged: keep the key this tab already holds
 //   [id, x, y, down, 0]       cleared: the peer is over nothing at all
@@ -488,7 +488,7 @@ export function initPresence({
   const layer = document.createElement('div')
   layer.id = 'cursors'
   scene.appendChild(layer)
-  // THE SECOND LAYER (issue #327): peers on the same PAGE as this tab. It
+  // THE SECOND LAYER: peers on the same PAGE as this tab. It
   // rides the modal rather than the scene because a page is screen chrome,
   // not world: nothing in it pans, zooms or wraps. `locate` is app.js's
   // arithmetic from an anchor to a screen point (anchor.js pointOf on the
@@ -543,7 +543,7 @@ export function initPresence({
   function onSelf(cb) {
     selfCbs.add(cb)
   }
-  // The roster, for the who's-here list and the follower (issue #327): who
+  // The roster, for the who's-here list and the follower: who
   // is in the room and where. Told on every join, leave and place change,
   // never per move: a list that rebuilt at 24 a second would be the most
   // expensive thing on the screen. roster() is the same fact as a value.
@@ -577,7 +577,7 @@ export function initPresence({
     const p = peers.get(id)
     return p && p.fx >= 0 ? { fx: p.fx, fy: p.fy, at: p.at } : null
   }
-  // Whether this tab may ACT (issue #260). The welcome names the role, and
+  // Whether this tab may ACT. The welcome names the role, and
   // squish/front/feed already return silently for a spectator; the fact is
   // exposed so app.js can gate the OPTIMISTIC paint on the same thing the
   // send is gated on. A spectator who painted a pellet saw it for a quarter
@@ -604,7 +604,7 @@ export function initPresence({
   }
   // The slime mould's dish: the frame the server painted, the room's word,
   // handed on whole. A KEYFRAME carries the picture (`g`, cell data through
-  // canvas/slime.js decode) and the food (`f`); a DELTA carries the changed
+  // primitives/slime/slime.js decode) and the food (`f`); a DELTA carries the changed
   // cells (`d`) against the tick it was cut from (`b`), and the food only
   // when it moved. Nothing is drawn or decoded here; app.js holds the
   // picture and knows which base it holds.
@@ -925,7 +925,7 @@ export function initPresence({
   // room relays them to the rest of the session as they happen (not on the
   // snapshot tick: a note that waits 40ms is a late note), and in the public
   // room to the tabs following this one, since a follow is a session of one
-  // direction (lib/presence-protocol.js, the acts). Nobody following in the
+  // direction (primitives/presence/presence-protocol.js, the acts). Nobody following in the
   // public room is nobody to tell, so nothing is sent. What an act MEANS is
   // the page's business (app.js and the page scripts); here it is a
   // channel, a small object and who sent it.
@@ -1037,7 +1037,7 @@ export function initPresence({
           emitPeers()
         }
       } else if (m.type === 'moves') {
-        // ONE SNAPSHOT A TICK (lib/presence-room.js, 24fps): every peer who
+        // ONE SNAPSHOT A TICK (primitives/presence/presence-room.js, 24fps): every peer who
         // moved since the last one, as [id, x, y, down, key] with the
         // coordinates as 12-bit integers and the key present only when it
         // changed (keyOf). The room ships the sender's own
@@ -1056,7 +1056,7 @@ export function initPresence({
           const fx = e[1] / 4096
           const fy = e[2] / 4096
           // the anchor is the sixth field, present only when it changed
-          // (lib/presence-room.js flush): 0 says back on the canvas
+          // (primitives/presence/presence-room.js flush): 0 says back on the canvas
           if (e.length >= 6) setAt(p, e[5] || null)
           // whom it follows, and its number in that line: the seventh and
           // eighth, present only when that changed (0 says nobody)
@@ -1068,7 +1068,7 @@ export function initPresence({
         }
       } else if (m.type === 'sels') {
         // the words peers on this tab's page have selected, or collapsed
-        // (lib/presence-room.js flushSels); this tab's own comes back in the
+        // (primitives/presence/presence-room.js flushSels); this tab's own comes back in the
         // same frame, since the frame is the page's, and is skipped
         for (const e of Array.isArray(m.s) ? m.s : []) {
           if (!Array.isArray(e) || e[0] === selfId) continue
@@ -1121,7 +1121,7 @@ export function initPresence({
         connect()
         return
       }
-      // A session's own refusals (lib/sessions.js), each read once and never
+      // A session's own refusals (primitives/rooms/sessions.js), each read once and never
       // retried blind: a wrong PIN offered again is a wrong PIN again, and a
       // session that ended is not coming back. A PIN keeps the tab out of
       // every room until one is offered (goRoom()) or the visitor gives up
@@ -1142,7 +1142,7 @@ export function initPresence({
         connect()
         return
       }
-      // 1013 = server full (lib/presence-room.js MAX_CONN): honor "try again
+      // 1013 = server full (primitives/presence/presence-room.js MAX_CONN): honor "try again
       // later" with a long wait instead of hammering a saturated room. Both
       // paths jitter so a fleet of tabs dropped together doesn't reconnect in
       // lockstep. A tab stuck here sees no cursors and no data nudges; the
@@ -1192,7 +1192,7 @@ export function initPresence({
     if (!ws || ws.readyState !== WebSocket.OPEN) return
     ws.send(JSON.stringify({ type: 'feed', x, y }))
   }
-  // ---- the watch: whether this tab can see the dish (issue #259) ------------
+  // ---- the watch: whether this tab can see the dish ------------
   // Sent on CHANGE only, and at once: the room sends the dish's frames to
   // the tabs that said yes and nothing to the rest, so the first frame of a
   // pan that brings the dish on screen must not wait behind the cursor.
@@ -1200,7 +1200,7 @@ export function initPresence({
   // against a picture it does not hold and wants a keyframe. Spectators
   // send this too, since they are sent the dish too.
   let sentWatch = null
-  // What was SAID, handed on as it is said (issue #271): a no means the room
+  // What was SAID, handed on as it is said: a no means the room
   // stops sending this tab the dish, so app.js draws the dish asleep from
   // the same fact, and wakes it on the keyframe the next yes brings.
   const watchCbs = new Set()
@@ -1234,7 +1234,7 @@ export function initPresence({
     }
   })
 
-  // ---- the weather window (issue #305, round six) ----------------------------
+  // ---- the weather window ----------------------------
   // The same watch, said for the window with of:'sky', on change only, and
   // the push: a hand's impulse in whole cells, sent at once, never by a
   // spectator. The room answers every watcher with the sky's offset.
@@ -1284,7 +1284,7 @@ export function initPresence({
   let resend = false
   let lastSent = 0
   let lastFrameT = 0
-  // `at` (issue #327) is the page block under the pointer, null on the
+  // `at` is the page block under the pointer, null on the
   // canvas; with it set, fx and fy are fractions of that block's box.
   function post(fx, fy, k = null, down = false, at = null) {
     pendFx = fx
@@ -1305,7 +1305,7 @@ export function initPresence({
     if (!myF) selfFs = 0
   }
   // whether anybody else is in this tab's place: the room sends a lone
-  // reader nothing (lib/presence-room.js flush), and a lone reader sends
+  // reader nothing (primitives/presence/presence-room.js flush), and a lone reader sends
   // the room nothing either, so an empty page costs no bytes in either
   // direction. A place CHANGE still goes: it is the one fact about this
   // tab the rest of the room needs.
@@ -1325,7 +1325,7 @@ export function initPresence({
     const moving = pendAt !== sentAt || myF !== sentF
     // room full: watch, don't broadcast. The page it reads is the one thing
     // a spectator says, when it changes, so the room can send it that page;
-    // the room notes it and tells nobody (lib/presence-room.js place)
+    // the room notes it and tells nobody (primitives/presence/presence-room.js place)
     if (spectating && placeOf(pendAt) === placeOf(sentAt)) return
     // A hover change is news even when the pointer has not budged since the
     // last frame we sent, and it has to be, or the last thing a leaving

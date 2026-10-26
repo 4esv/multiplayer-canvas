@@ -1,8 +1,8 @@
 // scripts/verify/page-ground.mjs
-// Issue #300, in a real browser: THE PAGE GROUND REACHES THE BOTTOM. A case
+// In a real browser: THE PAGE GROUND REACHES THE BOTTOM. A case
 // study or an experiment is a destination that takes the frame, and a short
 // one scrolled to its end used to leave a strip of the canvas showing under
-// it (author, 2026-09-23). That is a fact about the painted frame, not the
+// it. That is a fact about the painted frame, not the
 // stylesheet, so this loads each page, scrolls it to the bottom, and asks
 // the browser what is painted on the last row of the viewport.
 //
@@ -21,8 +21,7 @@
 //            end (and showing the canvas under the ground) cannot be painted
 //            here; the property that forbids it is read instead
 //   bar      the canvas's bar (#topbar, the search field in it) is not
-//            painted: it sits at the collection layer at most (author,
-//            2026-09-25). Read on the direct load AND on the same page
+//            painted: it sits at the collection layer at most. Read on the direct load AND on the same page
 //            opened from the canvas (window.__lab.openPage), because on
 //            main the two doors disagreed: the direct load was a sheet with
 //            the bar floating over it, the canvas-opened one was not

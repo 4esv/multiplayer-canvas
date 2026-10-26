@@ -36,8 +36,7 @@
 // switcher whose ground follows the user's OS and which this site does not
 // own. That is their ground, not ours, and answering it is correct.
 //
-// And a page that is READ (2026-09-25, the author: "make sure anyone can
-// read it"): its shell, #modal.reading, may take the inverted ground when
+// And a page that is READ (2026-09-25): its shell, #modal.reading, may take the inverted ground when
 // the reader asks for it (Dark Mode) or, with nothing asked, when their OS
 // does. That is the reader's eyes, not a second theme for the site, and it
 // is held to a boundary this guard draws: two files may declare it

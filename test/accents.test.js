@@ -1,5 +1,5 @@
 // test/accents.test.js
-// The accent inventory (#313, author review of #315): every accent token in
+// The accent inventory: every accent token in
 // canvas-tokens.css is there because something still paints with it.
 // scripts/tokens/accents.mjs computes the table; this holds it at zero
 // vestigial, so an accent whose last consumer goes takes the token with it.

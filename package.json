@@ -1,7 +1,7 @@
 {
   "name": "multiplayer-canvas",
   "version": "0.1.0",
-  "description": "A multiplayer toroidal canvas for a personal site, and the primitives it is built from.",
+  "description": "A multiplayer toroidal canvas for a site, and the primitives it is built from.",
   "type": "module",
   "exports": {
     "./pixel-type": "./primitives/pixel-type.js",

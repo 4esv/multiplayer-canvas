@@ -158,7 +158,7 @@ describe('the guard', () => {
 })
 
 describe('the client address', () => {
-  // Production trusts X-Forwarded-For from a private peer (Caddy on the
+  // Production trusts X-Forwarded-For from a private peer (the reverse proxy on the
   // Docker network) and from nobody else. A number would not do: Fastify 5
   // fails a hop count closed, which is how the first deploy of the trail
   // wrote the Docker peer as every caller's address.

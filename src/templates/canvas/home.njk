@@ -13,7 +13,7 @@
    on boot, which left the watch's one-layer rules unarmed for a direct load
    until a script it does not need decided to run.
    item-open: the open sheet is an entry, the layer above the canvas and its
-   collections; the bar is not drawn over it (#300). Stamped here for the
+   collections; the bar is not drawn over it. Stamped here for the
    same reason: a direct load must not flash the bar over the page. #}
 <html lang="en" class="canvas-pending{% if sheet %} sheet-open{% endif %}{% if sheet and sheet.full %} fullpage-open{% endif %}{% if sheet and sheet.item %} item-open{% endif %}">
 <head>
@@ -45,11 +45,11 @@
 <link rel="stylesheet" href="{{ asset('/primitives/kit/canvas-tokens.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/ptitle.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/canvas-home.css') }}">
-{# the kit's parts at their hashes (#313, #319): a sheet that wears the kit
+{# the kit's parts at their hashes: a sheet that wears the kit
    (an experiment's controls) reads them as --kp-<part>-<state>, opened from the
    canvas or loaded direct, so kit.css never writes an /img URL #}
 {% include "kit/parts.njk" %}
-{# the kit (#313): the one set of controls; presence's tag and list wear it (#336) #}
+{# the kit: the one set of controls; presence's tag and list wear it #}
 <link rel="stylesheet" href="{{ asset('/primitives/kit/kit.css') }}">
 {# the reader's settings on a page that is read (Dark Mode, Plain Type,
    Listen), scoped to #modal.reading; in the head rather than the entry's
@@ -155,7 +155,7 @@
       {%- endif %}
     </div>
   </div>
-  {# The plan (#303): past the mount floor nothing mounts and app.js paints
+  {# The plan: past the mount floor nothing mounts and app.js paints
      the world here instead, on the map's cell, at camera scale. It takes no
      pointer; the scene under it keeps every gesture. #}
   <canvas id="plan" aria-hidden="true" hidden></canvas>
@@ -169,7 +169,7 @@
     {# The bar is the field (BIBLE.md section 8, 2026-09-10). The home
        button and the menu left it: the doors are the sections, the bulb is
        on the ground, home is Esc, /home or a tap on the map. #}
-    {# A phone's middle slot is shared (#303): the field comes in from the
+    {# A phone's middle slot is shared: the field comes in from the
        left, the map from the right, one up at a time. This is the left
        column's way back to the field; a desktop keeps the field up and has
        no use for it. #}
@@ -179,7 +179,7 @@
          top result and lights it; the arrows walk the rest, Enter goes in.
          One line over the field says which of how many. #}
       <div id="found" aria-live="polite" hidden></div>
-      {# the kit's field (#336), boxed: one-cell lines on all four sides
+      {# the kit's field, boxed: one-cell lines on all four sides
          (a rule under the words alone blended into the world under the
          bar), and the block caret after the words, blinking in a step
          while the field has focus #}
@@ -207,7 +207,7 @@
   {# The minimap (BIBLE.md section 8): the world as a plan in the corner,
      drawn by app.js in the two inks; a drag on it moves the camera. Chrome,
      so the watch density hides it with the bar. Ships hidden: styled like a
-     tile, it would paint as an empty one until the module boots (#242). #}
+     tile, it would paint as an empty one until the module boots. #}
   <canvas id="minimap" width="192" height="168" role="img" aria-label="map of the canvas; drag to move the view" hidden></canvas>
   </nav>
   <div id="modal" role="dialog"{% if sheet %} class="open{% if sheet.full %} fullpage{% endif %}{% if sheet.reading %} reading{% endif %}" aria-label="{{ sheet.title }}"{% endif %}><div id="backdrop"></div><div id="mscroll"><div id="gap"></div><div id="sheet" tabindex="-1">{% if sheet and sheet.bar %}{{ sheet.bar | safe }}{% endif %}<div class="inner" id="sheetInner">{% if sheet %}{% if sheet.pixel %}{{ sheet.title | pixelTitle }}{% else %}<h1>{{ sheet.title }}</h1>{% endif %}<div class="meta">{{ sheet.meta }}{% if sheet.tagRow %}{{ sheet.tagRow | safe }}{% endif %}</div>{{ sheet.body | safe }}{% endif %}</div></div></div></div>

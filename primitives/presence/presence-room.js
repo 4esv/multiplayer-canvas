@@ -60,7 +60,7 @@ const PING_MS = 30000
 // 24 is the number because it is the one the visitor asked for: stepped
 // enough to read as frames, which is this canvas's whole register, and fluid
 // enough not to stutter. The client eases between snapshots either way
-// (canvas/presence.js SMOOTH_TAU), so this is the rate news ARRIVES at, not
+// (primitives/presence/presence.js SMOOTH_TAU), so this is the rate news ARRIVES at, not
 // the rate anything is drawn at.
 // A SWITCH, temporarily: PRESENCE_SNAP_MS=0 goes back to relaying every move
 // the instant it arrives, which is what this replaced. It exists to bisect a
@@ -81,10 +81,10 @@ const raw = (s, text) => {
 
 // EVERY ROOM'S SOCKETS, in one place (sessions, 2026-09-25). There used to be
 // one room, so "a socket in the room" and "a live socket" were the same
-// question. A session is a room of its own (lib/sessions.js), and the things
+// question. A session is a room of its own (primitives/rooms/sessions.js), and the things
 // that push to tabs from outside any room do not care which room a tab is
 // in: the slime mould and the weather window send to whoever says it is
-// watching (services/slime.js, services/sky.js), and the stale nudge is for
+// watching (primitives/slime/slime.js, primitives/sky/server.js), and the stale nudge is for
 // every open tab (routes/api.js). So each room adds its sockets here on join
 // and takes them out on leave, and sendTo and publish read this rather than
 // one room's peers. It holds nothing a room does not already hold.
@@ -108,7 +108,7 @@ export function publish(msg) {
  * @param {number} [opts.pingMs] heartbeat period, overridable for tests
  * @param {number} [opts.maxConn] admission backstop
  * @param {{code:string, kind:string, pin:string|null}} [opts.session] a
- *   session's record (lib/sessions.js): its welcome says so, and it relays acts
+ *   session's record (primitives/rooms/sessions.js): its welcome says so, and it relays acts
  * @param {(size:number) => void} [opts.onSize] told the head count after
  *   every join, leave and end, which is how a session knows it is empty
  * @returns {object} the room handle used by routes/presence.js and publishers
@@ -213,9 +213,9 @@ export function createRoom({
   // one frame, one serialisation, every open socket. The sender's own move
   // rides along rather than being filtered out per-recipient: that filtering
   // is what forced a message per peer, and the client already skips its own
-  // id when it draws (canvas/presence.js).
+  // id when it draws (primitives/presence/presence.js).
   //
-  // THE KEY GOES ONLY WHEN IT CHANGES (issue #246). It was ~13 of an entry's
+  // THE KEY GOES ONLY WHEN IT CHANGES. It was ~13 of an entry's
   // ~30 bytes, and a peer resting on one tile sent it 24 times a second to
   // say nothing had changed. So an entry has three states, told apart by its
   // length and its last field:
@@ -233,7 +233,7 @@ export function createRoom({
   // nothing, stranding the joiner on B. A flag sends that A. The price is one
   // redundant key on a round trip inside a single tick.
   //
-  // THE ANCHOR GOES THE SAME WAY (issue #327), as a sixth field behind the
+  // THE ANCHOR GOES THE SAME WAY, as a sixth field behind the
   // key, which is then always present when the anchor is:
   //   [id, x, y, down, key, 0]       back on the canvas
   //   [id, x, y, down, key, 'nao#4'] on a page, at a block
@@ -378,7 +378,7 @@ export function createRoom({
       if (ended || peers.size >= maxConn) return null
       const id = nextId++
       const spectator = spectatesAt(participants)
-      // `at`/`ad` (issue #327): the page block this peer is on, and whether
+      // `at`/`ad`: the page block this peer is on, and whether
       // that changed since the last snapshot, the same pair `k`/`kd` are
       const me = {
         id,
@@ -415,7 +415,7 @@ export function createRoom({
       beat()
       beatSnap()
       // `t` is the server's clock, so the tabs agree about the time
-      // (canvas/presence.js now()): the dust's tick, the instant Maurice
+      // (primitives/presence/presence.js now()): the dust's tick, the instant Maurice
       // is back and the weather window's step are read off it, and every
       // tab that agrees on the time draws them the same. The statement is
       // not on it: the hero is a pile, and its phrase rides `fronts` like
@@ -458,7 +458,7 @@ export function createRoom({
       LIVE.delete(socket)
       moved.delete(me)
       // a leaver's selection goes with it: the readers drop it with the
-      // cursor (canvas/presence.js dropPeer), so there is nothing to send
+      // cursor (primitives/presence/presence.js dropPeer), so there is nothing to send
       selMoved.delete(me)
       if (!peers.size) stop()
       sized()
@@ -649,7 +649,7 @@ export function createRoom({
      * thing. Participants only. In a session it goes to every other socket;
      * in the public room only to the tabs following the sender, so a follow
      * is a session of one direction (presence-protocol.js, the acts) and
-     * nobody who follows nobody hears a note. A FOLLOW ROOM (lib/sessions.js
+     * nobody who follows nobody hears a note. A FOLLOW ROOM (primitives/rooms/sessions.js
      * KINDS) is that direction made a room: the host plays to everyone in
      * it, and a guest's act is dropped here, since everybody in the room
      * came to hear the host and none of them chose to hear each other.
@@ -732,7 +732,7 @@ export function createRoom({
      * Send to SOME sockets: one serialisation, the given sockets, and only
      * those still in A room (any room: a session's tabs watch the same dish
      * as the public room's, see LIVE above) and open. The slime mould's
-     * frames go this way (services/slime.js): the picture is identical for
+     * frames go this way (primitives/slime/slime.js): the picture is identical for
      * every tab watching the dish, and nothing for a tab that is not.
      * @param {Iterable<object>} sockets
      * @param {object} msg

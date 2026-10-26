@@ -1,4 +1,4 @@
-// The case-study figures, drawn on the cell (#300).
+// The case-study figures, drawn on the cell.
 //
 //   node scripts/img/figures.mjs          rewrite every figure in content/
 //   node scripts/img/figures.mjs --check  exit 1 if a figure is stale

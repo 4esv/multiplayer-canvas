@@ -1,5 +1,5 @@
 // test/lib/img-version.test.js
-// The hash is the file's, and a re-bake moves it (issue #319). Against a
+// The hash is the file's, and a re-bake moves it. Against a
 // temp /img root, so a byte change is something this test can make.
 import { describe, it, after } from 'node:test'
 import assert from 'node:assert/strict'

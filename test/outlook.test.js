@@ -388,7 +388,7 @@ describe('outlook: the page', () => {
     const m = APP.match(/else if\(t\.type==='weather'\)\{[\s\S]*?n\.innerHTML = `([^`]*)`;/)
     assert.ok(m, 'the weather tile branch is found')
     // two elements: the window, and the name every thing on the ground
-    // carries under it (#339, "My Sky")
+    // carries under it ("My Sky")
     assert.equal((m[1].match(/</g) || []).length - (m[1].match(/<\//g) || []).length, 2)
     assert.match(
       m[1],

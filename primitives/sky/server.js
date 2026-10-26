@@ -3,13 +3,13 @@
 // Inputs: startSky(), pushSky(dx, dy), watchSky(socket, on).
 // Outputs: the push offset, sprung home on a server clock and published to the room. Node.
 //
-// The window's one shared push (issue #305, round six). The weather tile's
+// The window's one shared push. The weather tile's
 // clouds (and only its clouds; never its sun or moon) answer a hand, and the room
 // sees one sky: the offset lives here, a push from any participant moves
 // it, and the spring that brings it home is stepped on this clock. The
-// arithmetic is canvas/outlook.js, shared with the browser.
+// arithmetic is primitives/sky/outlook.js, shared with the browser.
 //
-// THE WIRE IS THE SLIME'S (services/slime.js, issue #259), read first and
+// THE WIRE IS THE SLIME'S (primitives/slime/slime.js), read first and
 // kept: the same /ws/cursors socket, the same `watch` frame (with
 // of:'sky'), frames only to the tabs that said they can see the tile, a
 // fresh watcher owed one frame at once, the ask floored per socket. What

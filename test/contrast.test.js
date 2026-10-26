@@ -236,7 +236,7 @@ const NATIVE = [
     fg: 'brick',
     bg: 'ground',
     scope: 'text',
-    why: 'entry links and every aphorism strong at 20px (entry.css, case-study.css, since lavender was retired in #313) and :208 `.num.bad` at 26px; footnote refs are ink since #336',
+    why: 'entry links and every aphorism strong at 20px (entry.css, case-study.css, since lavender was retired) and :208 `.num.bad` at 26px; footnote refs are ink since the kit',
   },
   {
     fg: 'sage',
@@ -270,7 +270,7 @@ const NATIVE = [
     why: 'the about and work zones are cut INTO the ground (canvas-home.css .t-zone .cell.zonecell): their title, their block heads and every word of their copy are set in the ink on the recess floor',
   },
 
-  // ---- the second ground and the kit (#313, Lo-Hi tech). The parts are
+  // ---- the second ground and the kit. The parts are
   // dithered pictures (src/lib/kit-parts.js) on the grey ramp deep, ink,
   // mute, mid, ground, bright and the brick ramp; each row names the face of
   // kit.css that sets the pair.
@@ -381,7 +381,7 @@ const GUESTS = [
     fg: 'sky-day-1',
     bg: 'sky-day-2',
     scope: 'none',
-    why: 'NOT COVERED: the day sky in the weather window (canvas/outlook.js, issue #305) is a picture, not a ground. Nothing is written on it (the reading sits on the ground plate in the frame, ink on ground, covered natively). SC 1.4.3 and 1.4.11 reach neither',
+    why: 'NOT COVERED: the day sky in the weather window (primitives/sky/outlook.js) is a picture, not a ground. Nothing is written on it (the reading sits on the ground plate in the frame, ink on ground, covered natively). SC 1.4.3 and 1.4.11 reach neither',
   },
   {
     fg: 'sky-night-1',
@@ -404,7 +404,7 @@ const GUESTS = [
 ]
 
 // One Dark, quoted whole with its own ground (the syntax theme block of the
-// tokens). Its names are --cv-*, but its values are its author's, the way a
+// tokens). Its names are --cv-*, but its values are its creator's, the way a
 // guest's are its host's: highlight.css paints every highlight.js class with
 // them, 13px Hasklig on the code ground, which is text, so every hue is
 // scoped 'text' and measured, and a miss is quotation debt, not a native

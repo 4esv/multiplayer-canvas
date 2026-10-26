@@ -4,7 +4,7 @@
 // Outputs: anchorOf / pointOf convert between a point and { i, fx, fy }; selections and page
 //   places too. Pure.
 //
-// A cursor's place on a PAGE (issue #327), and the way back. Pure: it reads
+// A cursor's place on a PAGE, and the way back. Pure: it reads
 // boxes and returns numbers, so the same arithmetic runs in a test with
 // rects written by hand and in the browser with rects read off the sheet.
 //
@@ -17,7 +17,7 @@
 // other the same word.
 //
 // The wire form is one string, `slug#index`, the grammar the server checks
-// (lib/presence-protocol.js isAt). That module is the server's and the
+// (primitives/presence/presence-protocol.js isAt). That module is the server's and the
 // browser never loads it, so the grammar is stated here as well and
 // test/presence.test.js holds the two together.
 const AT = /^([a-z0-9][a-z0-9-]{0,47})#([0-9]{1,3})$/
@@ -115,7 +115,7 @@ export function pointOf(rect, fx, fy) {
 // offsets (an edited entry, a block that renders live text of its own) draws
 // nothing rather than the wrong words. A missing highlight is honest; a
 // highlight on the wrong words tells the room something that is not true.
-// The grammar is the server's (lib/presence-protocol.js parseSel), stated
+// The grammar is the server's (primitives/presence/presence-protocol.js parseSel), stated
 // here too because the browser never loads that module, and
 // test/presence.test.js holds the two together.
 

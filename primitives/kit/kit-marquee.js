@@ -5,7 +5,7 @@
 // The marquee: one line of type longer than its box walks through it (the
 // drawing and the walk are kit.css `.k-marquee`; this is the measuring).
 //
-// Two halves in one file, the way js/kit-scroll.js keeps them: the MARKUP
+// Two halves in one file, the way primitives/kit/kit-scroll.js keeps them: the MARKUP
 // and the arithmetic are pure (node imports this file and the tests hold
 // them), the WIRING is DOM only and never runs at import.
 //

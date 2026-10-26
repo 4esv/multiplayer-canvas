@@ -1,5 +1,5 @@
 // test/wire.test.js
-// canvas/wire.js states the words both ends of the socket say, once, where
+// primitives/presence/wire.js states the words both ends of the socket say, once, where
 // the browser can load them and the server can import them. A word stated
 // twice agrees until the day one copy is edited, and for these nothing else
 // would notice that day:

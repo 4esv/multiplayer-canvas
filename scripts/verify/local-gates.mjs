@@ -46,7 +46,6 @@ const CHROME_CANDIDATES = [
   '/usr/bin/google-chrome-stable',
   '/usr/bin/chromium-browser',
   '/usr/bin/chromium',
-  '/opt/pw-browsers/chromium',
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
 ]
 

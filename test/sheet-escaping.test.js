@@ -78,7 +78,7 @@ function templateLiterals(src) {
 
 const LITERALS = templateLiterals(CODE)
 // the page head's builder writes markup too: it is where a meta line becomes
-// markup, for every sheet (js/tags.js sits beside it for the tags)
+// markup, for every sheet (primitives/kit/tags.js sits beside it for the tags)
 const MARKUP = LITERALS.filter((l) => /innerHTML|insertAdjacentHTML|metaMarkup/.test(l.head))
 
 describe('the sheet title and meta are escaped wherever they become markup', () => {

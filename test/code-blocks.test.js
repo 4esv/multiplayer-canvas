@@ -1,5 +1,5 @@
-// Code blocks in a case study (issue #360) and the mapping between prose
-// and code (issue #361): the numbered fence lib/markdown.js renders, the
+// Code blocks in a case study and the mapping between prose
+// and code: the numbered fence lib/markdown.js renders, the
 // line splitter (lib/code-lines.js), and the ref
 // grammar the client reads (js/line-ref.js). Behaviour, not text: every
 // assertion is on what the renderer or the parser returns.

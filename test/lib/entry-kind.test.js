@@ -90,8 +90,7 @@ describe('the derived predicates agree with kindOf', () => {
 
 describe('labels and the way back', () => {
   it('every kind in a collection has a label, every kind a back link', () => {
-    // a root-mounted thing is not filed under a word for its kind (author,
-    // 2026-09-25): its label is empty and its meta line is its date alone
+    // a root-mounted thing is not filed under a word for its kind: its label is empty and its meta line is its date alone
     for (const e of [CASE, ARTICLE, EXPERIMENT, PHOTOS]) {
       if (e === EXPERIMENT) assert.equal(kindLabel(e), '', 'an experiment is labelled')
       else assert.ok(kindLabel(e), `${kindOf(e)} has no label`)

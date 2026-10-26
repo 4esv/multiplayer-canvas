@@ -4,7 +4,7 @@
 // Outputs: roomFromUrl, withRoom, searchFromUrl, withSearch -> the value or a new search string.
 //   Pure.
 //
-// canvas/finder-url.js
+// primitives/rooms/finder-url.js
 // THE FINDER IN THE ADDRESS (BIBLE.md section 8). The bar's state is one
 // flag in the query, so a find can be sent to someone and opens for them
 // the way it was open here:
@@ -67,7 +67,7 @@ const PIN_KEY = 'pin'
 // lower case letters, digits and dashes, a letter or digit first, up to
 // thirty-two. Wide enough for a name (`thursday-jam`), narrow enough to sit
 // in an address and a log line as itself, with nothing to escape. Stated
-// here, where the browser can load it, and nowhere else: lib/sessions.js
+// here, where the browser can load it, and nowhere else: primitives/rooms/sessions.js
 // imports it as CODE_RE.
 export const ROOM_CODE_RE = /^[a-z0-9][a-z0-9-]{0,31}$/
 

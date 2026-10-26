@@ -1,31 +1,26 @@
 // test/page-bar.test.js
-// Issue #338: ONE navigation for every full page, and the same control on
+// ONE navigation for every full page, and the same control on
 // the ground.
 //
-// The author's complaint: a case study ended in a "packed limbo UI at the
-// bottom" (four truncated titles in a foot dock), an experiment wore "its
-// own limbo UI that remains up top and absolutely pinned" (two corner
-// boxes), and the piles turned with square dots and arrows. "The intuition
-// someone builds using one side of the site should work on the other."
+// The problem: a case study ended in a packed UI at the bottom (four
+// truncated titles in a foot dock), an experiment wore its own pinned UI
+// up top (two corner boxes), and the piles turned with square dots and
+// arrows. The intuition someone builds using one side of the site should
+// work on the other.
 //
-// So: the kit's snap scrollbar (js/kit-scroll.js) turns the piles, and every
+// So: the kit's snap scrollbar (primitives/kit/kit-scroll.js) turns the piles, and every
 // full page, a case study or an experiment, opened from the canvas or loaded
 // direct, carries exactly one page bar at the top of its sheet and no other
 // previous/next anywhere. The bar is a strip of TABS, the way a browser
-// holds its pages (the author, 2026-09-25: "switch to tabs like a web
-// browser ... It's intuitive because it's familiar"): one tab a page of the
+// holds its pages: one tab a page of the
 // ring, each a real link, exactly one lit (aria-current), the close box on
 // the lit tab, the corner close at the bar's right end going to the same
-// place (author, 2026-09-25: "Add another x to the top right for an extra
-// intuitive exit"), and nothing else. The bar is stuck to the top of the
+// place, and nothing else. The bar is stuck to the top of the
 // scroll owner, the ring never mixes kinds, a tab never shrinks under a
 // readable title (a strip too long for its bar scrolls sideways instead,
 // the lit tab brought into view), the arrows walk the tabs, and a tab switches its page in place
-// (author, 2026-09-25: "switching tabs should be its own quick and snappy
-// animation"), never by the round trip through the collection. The way back to the top is the
-// foot of a long page, where the web puts it (author, 2026-09-25: "The back
-// to top button should show at the bottom of long things not be a confusing
-// arrow up top").
+//, never by the round trip through the collection. The way back to the top is the
+// foot of a long page, where the web puts it.
 import { describe, it, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -171,7 +166,7 @@ describe('the page bar: one navigation for every full page', () => {
         mine.map((x) => x.title),
         'a row cuts its title'
       )
-      // a quick switcher: titles only (author: "Let's drop the descriptions")
+      // a quick switcher: titles only
       assert.ok(!list.includes('k-meta'), 'a row carries a description again')
       assert.deepEqual(
         rows.flatMap((m, k) => (m[1] ? [k] : [])),
@@ -364,7 +359,7 @@ describe('the page bar: one navigation for every full page', () => {
     assert.match(strip, /overflow-x: auto;/)
     assert.match(strip, /scroll-snap-type: x /)
     assert.match(strip, /min-width: 0;/)
-    // a tab is the kit's card tab (author, 2026-09-26: "tabs not buttons"):
+    // a tab is the kit's card tab:
     // open at the foot, the lit one a cell taller on the page's own ground
     const kit = cssRules(KIT)
     const kitRule = (sel) =>
@@ -429,9 +424,7 @@ describe('the page bar: one navigation for every full page', () => {
   // mutation: page-bar.phone-keeps-strip, page-bar.phone-tab-not-dropdown, page-bar.phone-two-x, page-bar.ring-hidden-on-watch, page-bar.ring-closed-drawn, page-bar.ring-row-round-trip, page-bar.ring-row-cut, page-bar.ring-rows-unruled, page-bar.ring-lit-inverted
   it('on a phone the bar is one tab, the v and the X, and the list reads every page whole', () => {
     // the strip was the phone's only way to the other pages, and at 390 it
-    // showed one and a half truncated titles (author, 2026-09-26: "on mobile
-    // we show one tab that's the dropdown, the v and the X like a mobile
-    // browser").
+    // showed one and a half truncated titles.
     const at = (sel, media) =>
       RULES.filter(
         (r) =>

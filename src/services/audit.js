@@ -2,11 +2,11 @@
 // to a month file under data/audit/ (the prod volume). Who, what, on which
 // target, how it went, from where.
 //
-// Application-level on purpose. The access log (Caddy's, since it is the
+// Application-level on purpose. The access log (the reverse proxy's, since it is the
 // one thing that sees the client address) can say a DELETE hit
-// /api/etc/pages/snowknight at 15:52 and got a 200. It cannot say that the
+// /api/pages/example at 15:52 and got a 200. It cannot say that the
 // owner's session deleted the page rather than the sweep expiring it, and
-// that is the question that came up first (#222: a live page vanished and
+// that is the question that came up first (a live page vanished and
 // it took directory mtimes and a source audit to answer). So every route
 // that changes state writes one of these, and so does the sweep.
 //

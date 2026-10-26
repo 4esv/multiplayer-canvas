@@ -1,4 +1,4 @@
-// /admin/sessions: the owner's desk for sessions (lib/sessions.js). Start
+// /admin/sessions: the owner's desk for sessions (primitives/rooms/sessions.js). Start
 // one (a follow room or a session, with or without a PIN), hand its link
 // and QR and PIN to the room, watch who is in each, end one, and set
 // whether a new session gets a PIN by default (services/rooms.js).

@@ -34,7 +34,7 @@ const fn = (open) => {
 }
 // the recent tile's branch in mkTile
 
-describe('the marquee (kit.css .k-marquee, js/kit-marquee.js)', () => {
+describe('the marquee (kit.css .k-marquee, primitives/kit/kit-marquee.js)', () => {
   it('a line walks whole cells: the distance is the overflow rounded up to the cell', () => {
     assert.equal(marqueeRun(100, 100), null, 'a line that fits walks')
     assert.equal(marqueeRun(100.4, 100), null, 'a subpixel overflow walks')

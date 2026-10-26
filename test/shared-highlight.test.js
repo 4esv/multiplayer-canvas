@@ -8,14 +8,14 @@
 //     the anchor draws nothing rather than the wrong words (anchor.js)
 //   - the frame is small and closed: a slug, three numbers and two short
 //     quotes, or a clear, and anything else is dropped whole
-//     (lib/presence-protocol.js parseSel)
+//     (primitives/presence/presence-protocol.js parseSel)
 //   - the room says a selection to the readers of its page only, at most
 //     once a snapshot with the latest state, never on a page its sender is
-//     not reading, and never for a spectator (lib/presence-room.js)
+//     not reading, and never for a spectator (primitives/presence/presence-room.js)
 //   - the page is never touched: the highlight is a Range registered with
 //     the Custom Highlight API, and no element is ever added to draw it
 //     (canvas/highlight.js)
-import './env.js' // first: no boot refresh over the network (issue #273)
+import './env.js' // first: no boot refresh over the network
 
 import { describe, it, before, after, afterEach, mock } from 'node:test'
 import assert from 'node:assert/strict'

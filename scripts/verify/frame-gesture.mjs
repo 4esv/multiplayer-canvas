@@ -50,7 +50,7 @@ const ENTRIES = [
     answer: 'slide',
     sideways: '.stage',
     // ...and the board under it keeps its whole range and pans sideways in
-    // its own scroller on a phone (#301), so a swipe there shows more frets
+    // its own scroller on a phone, so a swipe there shows more frets
     // and leaves the instrument alone.
     pans: '.carousel-slide:not([inert]) .scroll',
   },

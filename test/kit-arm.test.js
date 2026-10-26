@@ -1,4 +1,4 @@
-// Arm, then act (js/kit-arm.js): the one confirm a destructive button on this
+// Arm, then act (primitives/kit/kit-arm.js): the one confirm a destructive button on this
 // origin gets. The first press arms it (brick, "sure?"), the second acts, and
 // an armed button nobody presses again disarms on its own. Before the snap
 // the desk's pages carried five copies of this, and one of

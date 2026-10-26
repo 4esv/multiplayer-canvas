@@ -793,7 +793,7 @@ const DISPLAY_GLYPHS = {
     ..`),
   // the degree sign sits on the cap line: a ring in the two-pixel hand,
   // cut square at the corners like the bowls, so a reading ("54°") sets in
-  // one face (#305)
+  // one face
   '°': rows(`
     .####.
     ##..##
@@ -1471,7 +1471,7 @@ const LABEL_GLYPHS = {
     #.###
     #....
     .####`),
-  // the case-study figures (#300) label an approximate duration and a
+  // the case-study figures label an approximate duration and a
   // dialog's close box, and a figure keeps every word it had
   '~': rows(`
     .....
@@ -1542,7 +1542,7 @@ export function layoutText(text, face) {
 //
 // Breaks on spaces only. A word longer than the bound is left long rather
 // than broken mid-word: hyphenating pixel type would need a hyphen glyph
-// placed by rule, and the phrases are the author's own, so a line that
+// placed by rule, and the phrases are the site's own, so a line that
 // overruns is a sentence to rewrite rather than a case to handle.
 /**
  * @param {string} text
@@ -1672,7 +1672,7 @@ export function lifeStep(g) {
   return next
 }
 
-// A TITLE THAT WRAPS WHERE IT STANDS (#300). The case-study page and its card
+// A TITLE THAT WRAPS WHERE IT STANDS. The case-study page and its card
 // set the same title in the same face, and neither knows its width until the
 // browser lays it out: the page is a phone or a desk, the card is a slot. So
 // the title is one svg a WORD and the browser does the wrapping, the way it

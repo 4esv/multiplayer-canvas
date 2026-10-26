@@ -22,7 +22,7 @@
    step for what is armed, each measured on this ground (page-dark,
    page-dark-muted and page-dark-armed there, which `design.md lint`
    checks for WCAG AA). Code blocks keep One Dark's own ground: a syntax
-   theme is its author's. A token composed at :root out of the ink (the
+   theme is its creator's. A token composed at :root out of the ink (the
    line, the strong edge) is composed again here, because a var() is
    resolved where it is declared (test/elevation.test.js). The rebinding is
    written twice, once for the reader's word and once for the OS's, since a

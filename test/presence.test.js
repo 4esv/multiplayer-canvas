@@ -10,7 +10,7 @@
 // reading the same /api/canvas. Two clients disagreeing about what is on a
 // tile is a correctness bug on a canvas that claims to be deterministic, so it
 // gets a guard rather than a claim.
-import './env.js' // first: no boot refresh over the network (issue #273)
+import './env.js' // first: no boot refresh over the network
 
 import { describe, it, before, after, afterEach, mock } from 'node:test'
 import assert from 'node:assert/strict'
@@ -78,7 +78,7 @@ describe('the pile index bound is one number in two places', () => {
   // mutation: presence.client-cap-drifts
   it('the client never sends an index the room would drop', () => {
     // presence-protocol.js is the server's and the browser never loads it, so
-    // canvas/presence.js states the same bound. A client sending past it
+    // primitives/presence/presence.js states the same bound. A client sending past it
     // would think it had shared something the room silently dropped. The
     // bound is exclusive: the last index the room keeps is FRONT_CAP - 1.
     assert.equal(FRONT_CAP, FRONT_MAX, 'the client and the wire disagree about the pile bound')
@@ -151,7 +151,7 @@ describe('presence: parseMove accepts only well-formed moves', () => {
     // room because the highlight it claimed was junk
     for (const k of [
       '<img src=x onerror=alert(1)>',
-      'Album', // the grammar is lowercase; a case slip is a bug, not a key
+      'Camera', // the grammar is lowercase; a case slip is a bug, not a key
       'a'.repeat(HOVER_KEY_MAX + 1),
       '../../etc/passwd',
       'recent#999',
@@ -189,7 +189,7 @@ describe('presence: parseMove accepts only well-formed moves', () => {
     // The FEED (2026-09-17) is the fourth frame and the third mutation: food
     // in the slime mould's dish, a cell named by two whole numbers. It got a
     // frame rather than riding `front` because a cell is not a member index,
-    // and the bound on it is the dish's own (canvas/slime.js DISH). It is
+    // and the bound on it is the dish's own (primitives/slime/slime.js DISH). It is
     // still a thing on the ground and not a visitor's view, which is the line.
     //
     // A move grew a THIRD field on 2026-09-16, `d`, and it is worth being
@@ -200,7 +200,7 @@ describe('presence: parseMove accepts only well-formed moves', () => {
     // room draws for THEM, exactly as `k` picks what they light. Nothing
     // about another visitor's canvas changes because of it. A frame that
     // asked to press somebody else's button would still have nowhere to go.
-    // A FOURTH field, `at` (issue #327), is the same kind of fact: the page
+    // A FOURTH field, `at`, is the same kind of fact: the page
     // block the sender's own pointer is on, a slug and an index, so a
     // reader of that page can draw it there. A FIFTH, `f` (the conga,
     // 2026-09-25), says who the sender follows. It is the one field that
@@ -257,7 +257,7 @@ describe('presence: parseMove accepts only well-formed moves', () => {
     const feed = JSON.stringify({ type: 'feed', x: 51, y: 40, amount: 1e9, theme: 'dark' })
     assert.deepEqual(parseFrame(feed), { kind: 'feed', x: 51, y: 40 })
     assert.deepEqual(parseFeed(feed), { x: 51, y: 40 })
-    // the watch (issue #259) is the fifth frame and NOT a fourth mutation:
+    // the watch is the fifth frame and NOT a fourth mutation:
     // whether the sender can see the slime mould's dish, one boolean about
     // itself, the same line `k` and `d` sit on. It is what lets the room
     // send the dish to nobody who is not looking at it (test/slime.test.js)
@@ -358,7 +358,7 @@ describe('presence: parseMove accepts only well-formed moves', () => {
   })
 })
 
-describe('presence on every page (issue #327): the anchor', () => {
+describe('presence on every page: the anchor', () => {
   // mutation: presence.anchor-unbounded
   it('the anchor grammar is a slug and a block index, bounded, or nothing', () => {
     assert.equal(isAt('nao#0'), true)
@@ -500,7 +500,7 @@ describe('presence on every page (issue #327): the anchor', () => {
   })
 })
 
-describe("following (issue #327) is individual, and lets go on the follower's own input", () => {
+describe("following is individual, and lets go on the follower's own input", () => {
   it('picks, replaces, and lets go on input, escape, the tag and the peer leaving', () => {
     const seen = []
     const f = createFollow((id) => seen.push(id))
@@ -597,7 +597,7 @@ describe("following (issue #327) is individual, and lets go on the follower's ow
   })
 })
 
-describe('presence speaks the kit (#336): panels, kit buttons, the face for words', () => {
+describe('presence speaks the kit: panels, kit buttons, the face for words', () => {
   const PRES = readFileSync(join(ROOT, 'primitives/presence/presence.js'), 'utf8')
   const HOME_CSS = readFileSync(join(ROOT, 'src/static/css/canvas-home.css'), 'utf8')
   const HOME_NJK = readFileSync(join(ROOT, 'src/templates/canvas/home.njk'), 'utf8')
@@ -632,8 +632,7 @@ describe('presence speaks the kit (#336): panels, kit buttons, the face for word
 
   // mutation: presence.follow-frame-never, presence.follow-frame-takes-pointer, presence.follow-frame-uncoloured
   it('following frames the whole screen in the followed one’s colour, as Figma does', () => {
-    // the author: "I like the figma frame for following, that sort of
-    // intuitive association". The frame comes and goes with the tag
+    //. The frame comes and goes with the tag
     const cb = APP.slice(APP.indexOf('const follow = createFollow('), APP.indexOf('}, lineHead);'))
     assert.match(cb, /followTag\.hidden = id == null;\s*followFrame\.hidden = id == null;/)
     assert.match(cb, /setProperty\('--follow-hue', q \? q\.color/)
@@ -663,7 +662,7 @@ describe('presence speaks the kit (#336): panels, kit buttons, the face for word
   })
 })
 
-describe('the anchor is the same content point at every width (issue #327)', () => {
+describe('the anchor is the same content point at every width', () => {
   // A page as two readers see it: the same blocks in document order, one
   // column 358 wide (a phone at 390) and one 720 wide (a desktop sheet),
   // with the paragraphs reflowed to different heights. The anchor taken
@@ -802,7 +801,7 @@ describe('presence room: the cursor fan-out, unchanged by the data push', () => 
 
   it('SNAPSHOTS moves rather than relaying them, one frame a tick', async () => {
     // The room holds each peer's latest position and ships one frame at 24fps
-    // carrying everyone who moved (lib/presence-room.js). Three separate
+    // carrying everyone who moved (primitives/presence/presence-room.js). Three separate
     // things are being asserted here and each one is a load-bearing half of
     // why the room can hold a hundred people: a move sends NOTHING on its
     // own, several moves from one peer collapse to one entry, and the frame
@@ -834,7 +833,7 @@ describe('presence room: the cursor fan-out, unchanged by the data push', () => 
     room.stop()
   })
 
-  // THE KEY GOES ONLY WHEN IT CHANGES (issue #246). Three states on the
+  // THE KEY GOES ONLY WHEN IT CHANGES. Three states on the
   // wire: no fifth field is "unchanged", 0 is "over nothing", a string is a
   // new key. One tick per step, because the tick is what sends.
   const oneTick = () => new Promise((r) => setTimeout(r, 60))
@@ -906,7 +905,7 @@ describe('presence room: the cursor fan-out, unchanged by the data push', () => 
   })
 
   it('every listener ends up holding the key the room holds, a mid-tick joiner included', async () => {
-    // A client is modelled the way canvas/presence.js is: the roster seeds
+    // A client is modelled the way primitives/presence/presence.js is: the roster seeds
     // the key, keyOf folds each entry in. The joiner is the trap. The roster
     // carries the key as STORED, so a peer that goes slime -> recent#2, is
     // seen on recent#2 by someone arriving, and is back on slime before the
@@ -1256,7 +1255,7 @@ describe('presence over the wire: one refresh, one message, one payload', () => 
   let url
 
   before(async () => {
-    // The suite never reaches the network (issue #273). test/env.js keeps
+    // The suite never reaches the network. test/env.js keeps
     // build() from refreshing at boot: a boot refresh lands in cached() inside
     // its TTL, real weather or an offline null alike, and then the refresh
     // below never runs its own loader, so nothing "moved". The mock covers
@@ -1279,11 +1278,11 @@ describe('presence over the wire: one refresh, one message, one payload', () => 
   // Every socket a test opened closes here, pass or fail. The room is the
   // process's one room, so a test that threw before its own close() used to
   // leave participants behind and fail the spectator test after it: one
-  // broken guard read as two (issue #273).
+  // broken guard read as two.
   const opened = []
   // It also waits for the server to see each close: an unawaited close lets
   // the room's `leave` fan-out land inside the next test's quiet window
-  // (issue #349).
+  //.
   afterEach(async () => {
     const mine = opened.splice(0)
     await Promise.all(
@@ -1424,7 +1423,7 @@ describe('presence over the wire: one refresh, one message, one payload', () => 
     a.close()
   })
 
-  it('a spectator over the real socket feeds, squishes and turns nothing (issue #260)', async () => {
+  it('a spectator over the real socket feeds, squishes and turns nothing', async () => {
     // The room is the process's own singleton, and the tests above close
     // their sockets without waiting for the server to notice; wait for the
     // last of them to leave, or a straggler would hold the slot this test
@@ -1489,7 +1488,7 @@ describe('presence over the wire: one refresh, one message, one payload', () => 
   })
 })
 
-describe('the client keeps the same fact its sends are gated on (issue #260)', () => {
+describe('the client keeps the same fact its sends are gated on', () => {
   // initPresence under a stub socket and the least DOM it touches: a scene
   // to append the cursor layer to, and a document that hands out inert
   // elements. The welcome is fed in by hand, the way the server would.
@@ -1521,7 +1520,7 @@ describe('the client keeps the same fact its sends are gated on (issue #260)', (
       close() {}
     }
     globalThis.WebSocket = StubSocket
-    // the watch (#259) subscribes to visibilitychange at init; the stub takes it
+    // the watch subscribes to visibilitychange at init; the stub takes it
     globalThis.document = { createElement: el, hidden: false, addEventListener() {} }
     globalThis.location = { protocol: 'http:', host: 'test' }
     globalThis.addEventListener = () => {}
@@ -1584,7 +1583,7 @@ describe('the client keeps the same fact its sends are gated on (issue #260)', (
   it('every optimistic paint in app.js asks mayAct before it paints', () => {
     // The claim is an order: between where a handler starts and its first
     // paint, it asks presence.mayAct(). Spacing and the shape of the early
-    // return are the author's. The old dots check compared indexOf against
+    // return are the original's. The old dots check compared indexOf against
     // -1, so deleting the guard outright passed it.
     const asksBefore = (start, paint, why) => {
       const at = APP.indexOf(start)
@@ -1604,7 +1603,7 @@ describe('the client keeps the same fact its sends are gated on (issue #260)', (
       "a spectator's hand turns a pile on their tab alone"
     )
     asksBefore('const turnHero = ', 'showHero(', "a spectator's hand turns the hero")
-    // the statement's snap scrollbar (#336): its commit asks too, and puts
+    // the statement's snap scrollbar: its commit asks too, and puts
     // the thumb back for a spectator rather than turning anything
     asksBefore(
       'const heroBar = wireScroll(',

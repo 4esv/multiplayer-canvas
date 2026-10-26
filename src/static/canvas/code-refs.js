@@ -1,8 +1,8 @@
 // canvas/code-refs.js: a code block's copy key, and the mapping between a
-// case study's prose and what it describes (issues #360, #361).
+// case study's prose and what it describes.
 //
 // The page arrives complete: lib/markdown.js has numbered every fence and
-// given a named one addressable lines, and the author has wrapped the words
+// given a named one addressable lines, and the page marks the words
 // that map to something in <a class="ref" href="#target">, where the target
 // is a line (#nao-loop-L7), a range (#nao-loop-L3-L4), a whole block or a
 // figure (#fig-dispatch). Without this script that anchor still jumps and

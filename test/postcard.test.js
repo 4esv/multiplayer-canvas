@@ -211,7 +211,7 @@ describe('postcard: the world at a camera', () => {
     // one centre, two zooms, so the only variable is how far back the
     // camera stands. 0.7 holds the hero and the dock under it (the belt
     // that used to ring the hero at 0.8 stands in rows below it now); it
-    // was 0.6 until the ladder's floor rose to 16 (#313), which drops the
+    // was 0.6 until the ladder's floor rose to 16, which drops the
     // names under about two thirds zoom
     const texts = (svg) => (svg.match(/<text /g) || []).length
     assert.ok(

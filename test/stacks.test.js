@@ -152,7 +152,7 @@ describe('stacks: the pile fits its footprint on the lattice', () => {
   })
 })
 
-describe('stacks: the count under the name (#339)', () => {
+describe('stacks: the count under the name', () => {
   // mutation: stacks.count-ignores-one
   it('every pile counts in its own noun, in Title Case, and a pile of one in the singular', () => {
     for (const s of STACKS) assert.ok(s.count, `${s.id} has no count noun`)

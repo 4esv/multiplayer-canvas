@@ -1,5 +1,5 @@
 // test/em-dash.test.js
-// Site voice rule (CLAUDE.md, BIBLE.md section 1): no em-dashes on any
+// Site voice rule (BIBLE.md section 1): no em-dashes on any
 // surface. A period, colon, parens, or comma carries the rhythm instead, so a
 // reader never writes the prose off as machine-set. This guard scans the
 // surfaces a reader actually meets: every template, every content entry, the
@@ -17,7 +17,7 @@ const EM_DASH = '—'
 // Genuinely quoted third-party text that must keep an em-dash verbatim (a
 // quoted tweet, a cited title): keyed by repo-relative path to the substrings
 // allowed to carry one on a line. Currently empty: nothing on the surfaces
-// quotes an em-dash. Never add a line of the author's own prose here; fix the prose.
+// quotes an em-dash. Never add a line of published prose here; fix the prose.
 const ALLOW = new Map()
 
 function walk(dir, ext, out = []) {

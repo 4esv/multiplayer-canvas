@@ -90,14 +90,14 @@ describe('BIBLE.md, canvas-tokens.css and layout.js agree', () => {
     assert.equal(hex6(light.ground, '--cv-ground'), hex6(bible.colors.ground, 'colors.ground'))
     assert.equal(hex6(light.mute, '--cv-mute'), hex6(bible.colors.mute, 'colors.mute'))
     assert.equal(hex6(light.surface, '--cv-surface'), hex6(bible.colors.surface, 'colors.surface'))
-    // the second ground, by decision (#313): case studies stand on white
+    // the second ground, by decision: case studies stand on white
     assert.equal(hex6(light.white, '--cv-white'), hex6(bible.colors.white, 'colors.white'))
     assert.equal(hex6(light.bright, '--cv-bright'), hex6(bible.colors.bright, 'colors.bright'))
   })
 
   // mutation: bible-sync.ramp-drift
   it('the ramps a part is dithered onto are named tokens, and written in both places', () => {
-    // #313, Lo-Hi tech: a part (src/lib/kit-parts.js) is baked onto the grey
+    // A part (src/lib/kit-parts.js) is baked onto the grey
     // ramp and the brick ramp, read off the token file by name. Every grey
     // has a frontmatter row, and the bake reads the same hex the page paints.
     const css = readFileSync(join(ROOT, 'primitives/kit/canvas-tokens.css'), 'utf8')
@@ -132,7 +132,7 @@ describe('BIBLE.md, canvas-tokens.css and layout.js agree', () => {
 
   // mutation: bible-sync.font-drift
   it('the face is one token, the frontmatter names the same family, and the file is vendored with its licence', () => {
-    // #313: DotGothic16 replaced the old face through --cv-font alone. The family
+    // DotGothic16 replaced the old face through --cv-font alone. The family
     // the token names is the one every typography row claims, its @font-face
     // points at a file under src/static/fonts, and the licence sits beside it.
     const family = light.font

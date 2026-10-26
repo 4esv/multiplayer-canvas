@@ -5,8 +5,7 @@
 // Outputs: view payloads over the presence act channel, with echo suppression and seek
 //   tolerance. Browser.
 //
-// THE VIEW, SHARED (2026-09-26). The author: "Ensure everything that can be
-// synced (even video playback if possible) is."
+// THE VIEW, SHARED (2026-09-26).
 //
 // What a visitor is LOOKING AT on a page, besides where their hand is: the
 // video playing and where in it, which instrument is up, which photograph of
@@ -14,9 +13,9 @@
 // ground and which of its cards is up. In a
 // follow that goes one way, from the one followed to the tabs following it;
 // in a session it goes from everyone to everyone. Both are the room's rules
-// for an ACT (lib/presence-room.js act), and this rides that one bridge: a
+// for an ACT (primitives/presence/presence-room.js act), and this rides that one bridge: a
 // view is one more act channel, `view`, whose payload says WHAT it is in
-// its `what` key (lib/presence-protocol.js ACT_CHANNELS). Nothing here
+// its `what` key (primitives/presence/presence-protocol.js ACT_CHANNELS). Nothing here
 // touches the socket. It says `canvas:act` on the window like every page
 // script does, and hears `canvas:peer-act` the same way (app.js, the page
 // bridge), so who hears a view is exactly who hears a note.

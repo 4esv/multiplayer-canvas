@@ -125,7 +125,7 @@ export async function registerWorkRoutes(fastify) {
     }
     // Modern browsers get the canvas with the case study SSR'd into the
     // open sheet; the backlink goes to /work, closing lands on /.
-    // the page bar walks the case studies in the door's order (#338); the
+    // the page bar walks the case studies in the door's order; the
     // canvas repaints it from the pile's ring once it boots
     const { sheet, assets } = buildEntrySheet(entry, assetUrl, caseStudies)
     return renderPage(fastify, request, reply, 'canvas/home.njk', {

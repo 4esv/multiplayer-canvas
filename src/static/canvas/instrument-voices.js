@@ -1,4 +1,4 @@
-// The voices of /web-instruments (#301): every sound the page makes, as a
+// The voices of /web-instruments: every sound the page makes, as a
 // function from an AudioContext, a destination and the instrument's options
 // to a graph. PURE of the page: no DOM and no module state, so a test can run
 // a voice on a context that only records, and prove that each control on the

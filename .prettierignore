@@ -1,5 +1,4 @@
 node_modules/
-.claude/
 src/static/css/highlight.css
 src/static/js/vendor/
 package-lock.json

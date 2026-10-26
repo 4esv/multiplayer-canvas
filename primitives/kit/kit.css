@@ -2,7 +2,7 @@
    Inputs: class names on plain HTML (.k-btn, .k-field, .k-scroll, .k-marquee, .k-tag); needs tokens.css first.
    Outputs: styles only, no script. */
 /* =========================================================
-   kit.css: the one set of controls (#313, Lo-Hi tech).
+   kit.css: the one set of controls.
 
    A control is a picture of its state, lit from the top left and dithered:
    the hardware (knob, toggle, push button, radio button, lamp, call, key,
@@ -560,7 +560,7 @@
 
 /* ---- the field: a rule under the text and a block caret at the
    insertion point. The caret blinks in a step, and only while the field is
-   focused. js/kit-caret.js measures where it stands and marks the field
+   focused. primitives/kit/kit-caret.js measures where it stands and marks the field
    .k-tracked; until it has, the platform's own caret shows, in ink, so a
    field is never without a working caret. ---- */
 .k-field {
@@ -759,9 +759,7 @@
 }
 /* ---- the page tab (.k-tab), for a strip of pages rather than a card's
    sections: the page bar holds a collection the way a browser holds its
-   pages, and a browser's tab is the index card's (author, 2026-09-26: "the
-   desktop was meant to be tabs not buttons, make it more like the web
-   instruments tabs"). So a page tab is the card tab above, one piece with
+   pages, and a browser's tab is the index card's. So a page tab is the card tab above, one piece with
    the page under it: the same one-cell outline open at the foot, the same
    ground and mute words for a tab that stands behind with the bar's rule
    running under it, and the page you are on a cell taller, its floor the
@@ -870,13 +868,13 @@
   white-space: nowrap;
 }
 
-/* ---- the snap scrollbar (#338): a stepper at each end, a track between
+/* ---- the snap scrollbar: a stepper at each end, a track between
    them, one thumb. An INDEX PICKER over N things, not a scroll position:
    the thumb is the track over N (never under two cells) and sits at slot
    --k-at of --k-n; it snaps, it never rests between slots. Steppers step by
    one and wrap (a collection is a ring); a press on the track jumps to that
    slot, a held press scrubs it, a wheel notch steps, the arrows step, Home
-   and End go to the ends (js/kit-scroll.js, the one script; markup from the
+   and End go to the ends (primitives/kit/kit-scroll.js, the one script; markup from the
    same file). Horizontal by default, .k-vert stands it on end. Software,
    so it is lines of one cell on the ground and a solid ink thumb; the
    thumb goes brick while it is held (armed), and every change is a step.
@@ -1046,7 +1044,7 @@
 }
 
 /* =========================================================
-   FORM PARTS (#336): the native elements a form needs, drawn the kit's
+   FORM PARTS: the native elements a form needs, drawn the kit's
    way. Each keeps its element and its semantics (a <select> is still a
    select, a <details> still a disclosure, a <progress> still a progress)
    and wears one-cell lines, the type face and stepped states; the
@@ -1437,7 +1435,7 @@
 }
 
 /* =========================================================
-   CHROME PARTS (#336): the four a window's chrome needs that a form does
+   CHROME PARTS: the four a window's chrome needs that a form does
    not. A menu to pick a command from, a mark for the thing that is picked,
    a loader for a wait whose length nobody knows, and a marquee for a line
    longer than its box. Software, so each is lines of one cell and solid
@@ -1557,7 +1555,7 @@
 }
 
 /* ---- the marquee: one line of type in a box that clips it. A line that
-   fits stands still; a line longer than its box (js/kit-marquee.js
+   fits stands still; a line longer than its box (primitives/kit/kit-marquee.js
    measures it once per text and sets .is-over, the distance --mq-d and
    the steps --mq-n, one a cell) waits, walks left through the box a cell
    a step until its end shows, waits there, and is back at its start in

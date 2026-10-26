@@ -1,7 +1,7 @@
 // test/minimap-pre-boot.test.js
 // The minimap is styled like a tile (white, ink border, cast), so an empty
 // one reads as a tile that failed to load. Before the module boots and
-// drawMinimap() fills it, it must not paint at all (#242).
+// drawMinimap() fills it, it must not paint at all.
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -77,8 +77,7 @@ describe('the minimap never paints blank before boot', () => {
   })
 })
 
-// AN ACTUAL MAP (author, 2026-09-26: "the minimap should be a full size
-// screenshot of the world ran through textmode or shrunken otherwise"). The
+// AN ACTUAL MAP. The
 // corner is every tile's own picture shrunk to the map's cell and set back
 // in the inks, never footprints; it is drawn whole, cell for cell; and the
 // camera's frame keeps an edge of the ground so it reads over a dark tile.

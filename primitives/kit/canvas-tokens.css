@@ -28,7 +28,7 @@
    is the quotation law doing its job, not a theme surviving in a corner.
    ========================================================= */
 
-/* THE FACE (#313, Lo-Hi tech): DotGothic16, a 16px dot-matrix gothic, OFL,
+/* THE FACE: DotGothic16, a 16px dot-matrix gothic, OFL,
    vendored as the latin subset with its licence beside it
    (fonts/LICENSE-DotGothic16.txt). It replaced the face before it on
    2026-09-24 through the one token below: every stylesheet and every measurement reads
@@ -53,7 +53,7 @@
 
 :root {
   /* ---- ONE GROUND (2026-09-15): A REFLECTIVE GREY -----------------------
-     RETUNED (#366): ink #18181b on ground #e4e4e7, the zinc pair. The note
+     RETUNED: ink #18181b on ground #e4e4e7, the zinc pair. The note
      below is the history of the first grey: #c8c8be was the WINDOWS CLASSIC
      face as XP shipped it, the grey you get
      with Luna turned off, which is the machine this site's author actually
@@ -82,7 +82,7 @@
      the flip went; one ground, one surface. Depth is the step plus the
      hairline. */
   --cv-surface: #ffffff;
-  /* THE SECOND GROUND, BY DECISION (#313): case-study pages stand on white,
+  /* THE SECOND GROUND, BY DECISION: case-study pages stand on white,
      experiment pages on the ground. White is a ground here, not a card, so
      it has its own name even while it shares the surface's value. */
   --cv-white: #ffffff;
@@ -97,7 +97,7 @@
   --cv-grid: color-mix(in srgb, var(--cv-ink) 6%, transparent);
   --cv-grid-fine: color-mix(in srgb, var(--cv-ink) 4%, transparent);
   --cv-scrim: rgba(24, 24, 27, 0.55);
-  /* NO SHADOW (#313). No box-shadow, no drop-shadow, and the one-cell hard
+  /* NO SHADOW. No box-shadow, no drop-shadow, and the one-cell hard
      cast is retired (BIBLE.md section 12). A control is a picture of its
      state, lit from the top left and dithered (the parts under img/kit/,
      baked from their shading functions through the textmode Bayer preset),
@@ -132,11 +132,11 @@
      device pixels. A whole cell is crisp at every rung by construction. */
   --cv-bd-ink: var(--cv-px) solid var(--cv-ink);
 
-  /* ---- THE RAMP (#313, Lo-Hi tech): the greys a part is dithered onto,
+  /* ---- THE RAMP: the greys a part is dithered onto,
      darkest first. ink, mute and ground are the tokens above; deep sits under
      the ink (the floor of a knurl, the bore of a pin), mid between mute and
      ground (a turned face half in light), bright above the ground (the lit
-     edge, and the light text on a dark face). scripts/img/kit-parts.mjs
+     edge, and the light text on a dark face). scripts/img/bake-parts.mjs
      reads these by name, so a retuned grey rebakes into every part, and
      test/kit.test.js holds every kit PNG to exactly these colours. ---- */
   --cv-deep: #0c0c0f;
@@ -175,12 +175,12 @@
   --cv-brick-fixed: #b81818;
   --cv-ground-fixed: #e4e4e7;
   /* ---- faces ----
-     THE FACE IS THIS ONE LINE (#313): every surface and every kit control
+     THE FACE IS THIS ONE LINE: every surface and every kit control
      reads --cv-font, so swapping the face is here, with its @font-face
      at the top of this file if the new face is a file. */
   --cv-font: 'DotGothic16', system-ui, sans-serif;
   --cv-font-code: 'Hasklig', ui-monospace, monospace;
-  /* THE SMEAR (#313): dark on light is smear bold, the glyph drawn again one
+  /* THE SMEAR: dark on light is smear bold, the glyph drawn again one
      dot to the right. A dot-matrix face has one weight, and this is how a
      terminal made a bold. It is a glyph weight, not a shadow, and it is the
      one text-shadow test/ink-chrome.test.js passes: by this token only,
@@ -301,7 +301,7 @@
   --cv-z-menu: 7;
   /* the skip link, over all of it once it has the keyboard */
   --cv-z-skip: 8;
-  /* a move in flight (js/pixel-moves.js paints it over everything) */
+  /* a move in flight (primitives/pixel-moves.js paints it over everything) */
   --cv-z-move: 9;
   /* the ?diag readout */
   --cv-z-diag: 10;
@@ -313,7 +313,7 @@
    and chrome, the hero, the sheet and every native tile never read it.
    ========================================================= */
 :root {
-  /* the sky in the weather window (canvas/outlook.js, issue #305), told by
+  /* the sky in the weather window (primitives/sky/outlook.js), told by
      the DATA: the ends of the day and of the night, and the three warm
      inks a low sun paints (the rose and the glow at the horizon at dawn and
      sunset, and the sun's own face). Nothing is written on the sky; the
@@ -328,8 +328,8 @@
 }
 
 /* =========================================================
-   THE SYNTAX THEME: One Dark, quoted verbatim from its author. Code is
-   content (BIBLE.md section 1), and a syntax theme is its author's the way
+   THE SYNTAX THEME: One Dark, quoted verbatim from its creator. Code is
+   content (BIBLE.md section 1), and a syntax theme is its creator's the way
    a guest's livery is its host's, so these sit apart from the accents and
    chrome never reads them. css/highlight.css paints every highlight.js
    class with them. Two of its hues are under the text minimum on their

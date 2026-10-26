@@ -1,4 +1,4 @@
-// Every /img URL the site emits carries its bytes' hash (issue #319).
+// Every /img URL the site emits carries its bytes' hash.
 //
 // Images keep their names across re-bakes (the build copies them verbatim),
 // so a bare /img/canvas/web-instruments.png is the same URL before and after the

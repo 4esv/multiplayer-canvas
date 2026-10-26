@@ -2,7 +2,7 @@
    The pixel title: one part, wherever a title is set in the display face
    (the canvas's cards, the case-study page, the door pages' headers).
 
-   pixelTitle (canvas/pixel-type.js) sets a title one svg a word, so the
+   pixelTitle (primitives/pixel-type.js) sets a title one svg a word, so the
    browser wraps it like words and every word stays a drawing. --tpx is the
    world px one glyph pixel measures, and it is only ever a whole multiple of
    half a cell: the card and the page set it at half a cell (the label
@@ -12,7 +12,7 @@
    the same pitch.
 
    The hidden span beside the words (.px-vh) is the title for a reader and
-   for the lens; canvas/dust.js reads the same words to know each svg's
+   for the lens; primitives/dust.js reads the same words to know each svg's
    cells, so the title is something a cursor can disturb wherever it stands.
    ========================================================= */
 

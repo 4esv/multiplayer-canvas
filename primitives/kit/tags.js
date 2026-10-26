@@ -2,7 +2,7 @@
 // Inputs: a list of tag words and an optional kind.
 // Outputs: tagsMarkup -> an HTML string, visibleTags -> the filtered list. Pure. Style: kit.css.
 //
-// js/tags.js: the tags a page, a card and a row wear (BIBLE.md section 1, the
+// primitives/kit/tags.js: the tags a page, a card and a row wear (BIBLE.md section 1, the
 // tag). One list of words, one filter, one drawing (.k-tag in kit.css). The
 // server writes the same markup the canvas does, so a direct load and a click
 // read alike.

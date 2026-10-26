@@ -1,5 +1,5 @@
 // test/kit.test.js
-// The kit (#313, Lo-Hi tech): one set of controls in kit.css, every one a
+// The kit: one set of controls in kit.css, every one a
 // picture of its state, shown working on both grounds at /admin/kit. Three
 // halves. The PARTS half holds the pictures to their toolchain: every kit PNG
 // is baked from src/lib/kit-parts.js through the textmode Bayer preset, so it
@@ -262,7 +262,7 @@ describe('kit.css: the law the kit carries', () => {
   })
 
   // mutation: kit.part-travels-on-press
-  // The author on #301: a knob, a switch or a pin does not travel toward
+  // A knob, a switch or a pin does not travel toward
   // you when you touch it; its state is its picture. A part may light under
   // the hand, and nothing on it may move.
   it('a part never travels under the hand: no offset on a knob, toggle, pin or lamp pressed', () => {
@@ -401,8 +401,7 @@ describe('the kit: one face, the real hands, no drawn-by-hand svg', () => {
   })
 })
 
-// THE GRAMMAR (author, 2026-09-26: "we use flip switches for binaries that
-// can be toggled, lights for binaries that are read only"). A state is
+// THE GRAMMAR. A state is
 // drawn by what a person can do with it, so the brain reads it before the
 // words: a binary you set is a flip switch, a binary you read is a lamp.
 // Walked over every surface that draws a control (templates, entries and
@@ -500,7 +499,7 @@ describe('/admin/kit: the specimen', () => {
   })
 
   // mutation: img-version.kit-part-bare, img-version.kit-map-bare
-  it('every kit picture on the page carries its bytes’ hash (#319)', async () => {
+  it('every kit picture on the page carries its bytes’ hash', async () => {
     // the kit is about to stand on public pages, so it keeps the rule the
     // public routes keep (test/img-version.test.js): no bare /img URL, and
     // the hash is the file's

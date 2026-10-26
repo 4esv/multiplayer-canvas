@@ -500,7 +500,7 @@ export function noteGlyph(note, x, win = WINDOWS[4]) {
 }
 
 // ---------------------------------------------------------------- the hit
-// What a hit throws, back from main (#312's audit on #321). A struck pad
+// What a hit throws, back from main. A struck pad
 // lights three sparks across its top while it is down (main's drum
 // ripples: left low, the middle high, right low); a plucked ukulele lets a
 // quaver go from the soundhole of its photograph. Both are ink cells, lit

@@ -1,7 +1,5 @@
 // test/canvas-widgets-kit.test.js
-// The canvas widgets speak the kit (#336, group c, "Canvas widgets"). The
-// author approved the kit and asked for it everywhere: "GLOBAL, CONSISTENT
-// and INTUITIVE UI". The doors, the desk, the page bar and the canvas
+// The canvas widgets speak the kit . The doors, the desk, the page bar and the canvas
 // chrome moved first (test/canvas-chrome-kit.test.js); this holds the
 // widgets on the ground to it: lines are one cell; the pixel face is for the
 // hero titles and the logo glyph alone, and every other string is the type
@@ -96,7 +94,7 @@ describe('the canvas widgets speak the kit', () => {
   })
 
   // mutation: widgets-kit.dock-name-rides-glyph
-  it('every name in a dock row sits on one line: the mark slot is the row, not the glyph (#339)', () => {
+  it('every name in a dock row sits on one line: the mark slot is the row, not the glyph', () => {
     // the icon's column is centred, so a mark that took its glyph's height
     // lifted the name by half the difference: the key and the envelope
     // (42px, on the 21 lattice) sat three px over their 48px neighbours.
@@ -120,7 +118,7 @@ describe('the canvas widgets speak the kit', () => {
 
   // mutation: widgets-kit.card-lift, widgets-kit.card-chip-block, widgets-kit.card-tag-unkitted, widgets-kit.card-tags-two-rows
   it("a card's tags are the kit's tag, and it never lifts", () => {
-    // the tags are the kit's (kit.css .k-tag, js/tags.js), drawn by nobody here
+    // the tags are the kit's (kit.css .k-tag, primitives/kit/tags.js), drawn by nobody here
     assert.match(APP, /s\.className='k-tag';/)
     assert.equal((CARDS.match(/<div class="k-tags">\$\{tagList\(tags\)\}<\/div>/g) || []).length, 1)
     assert.equal(decl('.t-article .k-tag', 'background'), undefined, 'the tag is drawn on its own')
@@ -153,7 +151,7 @@ describe('the canvas widgets speak the kit', () => {
       [],
       'mkTile builds a kind no tile is'
     )
-    // the case-study primitives #336 listed, gone unless a study uses them
+    // the case-study primitives the kit retired, gone unless a study uses them
     const CS_CSS = read('src/static/css/case-study.css')
     const feed = readdirSync(join(ROOT, 'content/feed'))
       .filter((f) => f.endsWith('.md'))
@@ -174,6 +172,7 @@ describe('the canvas widgets speak the kit', () => {
         )
     // the self-animating loader picture and its emitter went with the kit loader
     for (const rel of ['src/static/img/icon/loader.svg', 'scripts/icon/loader.mjs'])
+      // isolation-ok: asserts these are gone
       assert.ok(!existsSync(join(ROOT, rel)), `${rel} is back`)
   })
 })

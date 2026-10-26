@@ -7,17 +7,17 @@
 // PORTED FROM sandbox/motion-lab/moves2.js, the `physarum` candidate, which
 // is the picture that was wanted: "Slime mould finds the roads". The rules,
 // the numbers and the three tones are the lab's, moved into a round dish
-// with a wall instead of a torus and given food to find. Issue #254 records the
-// attempt before this one, written from the Jones (2010) ground with the lab
+// with a wall instead of a torus and given food to find. An earlier attempt was
+// written from the Jones (2010) ground with the lab
 // running ten lines away; it drew slabs. The rule since: port the neighbour,
 // do not re-derive it.
 //
 // No DOM, no timers, no globals, no Math.random: same seed, same steps,
-// same picture. The server runs the ONE copy that counts (services/slime.js),
+// same picture. The server runs the ONE copy that counts (primitives/slime/slime.js),
 // visitors or not, and ships the picture over the presence wire as cell
 // data; the browser only decodes and paints. This file is in the static tree
 // so node and the browser import the same arithmetic rather than a copy (the
-// same arrangement as canvas/layout.js and js/textmode-settings.js).
+// same arrangement as canvas/layout.js and primitives/textmode-settings.js).
 import { PX } from '../grid.js'
 
 // The dish is the circle that circumscribes a 5x5 square, on the cell:
@@ -92,7 +92,7 @@ export const PARAMS = Object.freeze({
   smellDecay: 0.998, // the smell field's forgetting: slow, so it reaches
   bite: 0.005,
 })
-// the lab's three tones, flat: ink over 2.4, mute over 1.1, mid over 0.45 (the grey ramp, #336; the lab drew it in sage)
+// the lab's three tones, flat: ink over 2.4, mute over 1.1, mid over 0.45 (the grey ramp; the lab drew it in sage)
 // seam: test/slime.test.js
 export const TONES = Object.freeze([0.45, 1.1, 2.4])
 
@@ -180,7 +180,7 @@ export function createSlime(seed = 1, p = {}) {
     tick: 0,
     // how many cells hold food right now: feed() adds the cells it covers,
     // step() recounts in the smell pass it already runs over every cell, so
-    // pelletCount is a division and not a scan of the dish (issue #264)
+    // pelletCount is a division and not a scan of the dish
     fed: 0,
     p: params,
   }
@@ -305,7 +305,7 @@ export function feed(s, cx, cy) {
 }
 
 // the cells one drop covers, counted from the shape feed() paints with the
-// radius the STATE carries (issue #261: a dish with an override counted its
+// radius the STATE carries (a dish with an override counted its
 // pellets against the default shape). A rim drop paints fewer, so a pellet
 // on the rim counts as a fraction; that is kept, the count is a measure of
 // food and not of taps
@@ -321,7 +321,7 @@ export function pelletCells(s) {
  * How many pellets the dish holds right now (a pellet is one drop's cells).
  * Read off the count feed() and step() keep, not a scan: the service asks
  * this every tick, eleven times a second, and the scan was 8184 cells to
- * learn a number step() had just walked past (issue #264). A caller that
+ * learn a number step() had just walked past. A caller that
  * writes s.food by hand is right again after the next step.
  */
 export function pelletCount(s) {
@@ -392,7 +392,7 @@ const B64_INV = (() => {
   for (let i = 0; i < 64; i++) t[B64.charCodeAt(i)] = i
   return t
 })()
-// ONE allocation, the output (issue #264): this ran four times a second on
+// ONE allocation, the output: this ran four times a second on
 // every watching tab and made an array per four characters, ~680 a frame,
 // plus a trimmed copy of the string
 function fromBase64(str) {
@@ -440,14 +440,14 @@ export function decode(g, f = []) {
   return { tones: unpack(b), food }
 }
 
-// ---- the delta (issue #259, 2026-09-17) ----------------------------------------
+// ---- the delta ----------------------------------------
 // A watching tab holds the last picture the room sent, so the next frame
 // need only carry the cells that changed: measured at steady state, 250 to
 // 600 of 8184 a frame. Each change is one varint, seven bits a byte, high
 // bit for "more": the gap since the previous changed cell (in CELLS order,
 // so the reader walks the same list the keyframe does) shifted up two, the
 // new tone in the low two bits. Base64 like the keyframe. The food list is
-// sent only when it changed (services/slime.js), since it is the long half
+// sent only when it changed (primitives/slime/slime.js), since it is the long half
 // of a quiet frame.
 export function encodeDelta(prev, cur) {
   const out = []
@@ -498,7 +498,7 @@ export function applyDelta(tn, d) {
   return out
 }
 
-// ---- the paint (issue #264) ------------------------------------------------------
+// ---- the paint ------------------------------------------------------
 // One backing pixel a cell. A keyframe (no `prev`) clears and paints every
 // lit cell; a delta paints only the cells whose tone moved, plus the cells
 // the old food covered when the food moved, and the food on top. At steady
@@ -577,8 +577,7 @@ export function paintDish(ctx, tn, food, ink, live, prev = null, prevFood = []) 
 // tile's, and the name hangs under it, centred under the dish. It was
 // centred across the tile for a week, which left the ring three cells in
 // from the tile's west edge and flush with its north one, so the painted
-// circle lined up with nothing (the author: "I want the top and left to be
-// lined up with the top and left of the tile for cleaner alignment").
+// circle lined up with nothing.
 // seam: test/slime.test.js
 export const TILE_M = 8
 export const dishBox = () => ({

@@ -4,7 +4,7 @@
 // pictograms; and a line (a border or an outline) is a whole cell, or the
 // ground cut, or not there.
 //
-// NO SHADOWS (#313). A control is a picture of its state, lit and dithered
+// NO SHADOWS. A control is a picture of its state, lit and dithered
 // (the baked parts), never a thing with a cast. The soft key, the per-card
 // lamp, the one-cell hard cast, the inset recess cast and the inset ring are
 // all retired, so there is nothing left to allowlist: `box-shadow: none` is

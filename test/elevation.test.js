@@ -1,5 +1,5 @@
 // test/elevation.test.js
-// BIBLE.md section 1, the elevation half: one light, fixed, and since #313
+// BIBLE.md section 1, the elevation half: one light, fixed, and now
 // no cast at all: a control is a lit, dithered picture of itself.
 //
 // This guard exists because of a bug that shipped for the life of the token
@@ -84,7 +84,7 @@ describe('elevation: one light, and tone rather than a cast', () => {
 
   // mutation: elevation.cast-returns
   it('no cast: the cast tokens are retired, the parts ramp is there', () => {
-    // #313: no shadow at all. The one-cell cast of 2026-09-11 and the recess
+    // No shadow at all. The one-cell cast of 2026-09-11 and the recess
     // cast that mirrored it are gone with every other shadow
     // (test/ink-chrome.test.js); a raised thing is a baked picture of itself
     // on the grey ramp. A token that comes back is a cast waiting for a

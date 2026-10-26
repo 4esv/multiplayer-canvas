@@ -36,7 +36,7 @@ import { wireCarets } from 'multiplayer-canvas/kit/caret'
   addEventListener('blur', up)
 }
 
-// every field's caret at its insertion point (js/kit-caret.js)
+// every field's caret at its insertion point (primitives/kit/kit-caret.js)
 wireCarets()
 
 // the grammar's flip switches throw (the page's own settings wire theirs)
@@ -45,7 +45,7 @@ for (const s of document.querySelectorAll('[data-flip]'))
     s.setAttribute('aria-checked', String(s.getAttribute('aria-checked') !== 'true'))
   )
 
-// The form parts on the specimen (#336): the native range fills the
+// The form parts on the specimen: the native range fills the
 // progress bar, and a drag over the file drop lights it, the way a page's
 // own script does.
 for (const r of document.querySelectorAll('[data-range]')) {
@@ -297,7 +297,7 @@ for (const board of document.querySelectorAll('[data-board]')) {
       name.textContent = RING[(i + Number(a.dataset.ring) + RING.length) % RING.length]
     })
 
-  // the snap scrollbar (#338): the same ring as an index picker, across and
+  // the snap scrollbar: the same ring as an index picker, across and
   // on end. The label beside the flat one shows the slot under a drag and
   // the chosen one after it, the way a page's bar does.
   for (const host of board.querySelectorAll('[data-scrollbar]')) {

@@ -46,7 +46,7 @@
   overflow-x: auto;
 }
 
-/* ---------- The numbered block in the sheet (issue #360) ----------
+/* ---------- The numbered block in the sheet ----------
    Every fence is lines (lib/code-lines.js, the gutter is code.css's); a
    named block (```lang id=name) has each number a link to its own line.
    The copy key is the kit's button, added by canvas/code-refs.js, pinned to
@@ -69,8 +69,8 @@
   background: var(--cv-ground);
 }
 
-/* ---------- The mapping (issue #361) ----------
-   The author marks the words that map to something as <a class="ref"
+/* ---------- The mapping ----------
+   The words are marked that map to something as <a class="ref"
    href="#target">: a dashed line under them, not the plain link's. One
    class on either end says it is lit, by the URL (:target on a line) or by
    canvas/code-refs.js under the pointer, the focus or a tap: the theme's
@@ -191,7 +191,7 @@
   scroll-margin-top: var(--cv-sp-8);
 }
 /* A deep-linked heading gets the same quiet ink bar the footnotes use (a mark of where you are is ink,
-   never brick: brick is live, #336), so
+   never brick: brick is live), so
    the reader lands with a cue instead of guessing where the jump ended.
    The mark is a held frame: it lands whole once the jump has, never fading
    in (BIBLE.md section 9). */
@@ -212,7 +212,7 @@
 }
 
 /* ---------- Footnotes: first-class citation style ----------
-   A reference is a link, and a link is ink (#336): brick is kept for what
+   A reference is a link, and a link is ink: brick is kept for what
    is live or armed, so it is not spent on an accent. The mark is on the
    ladder like every word (the face is only crisp there), raised off the
    line rather than shrunk. */

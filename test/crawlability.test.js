@@ -98,11 +98,11 @@ describe('trailing slashes redirect to the canonical path', () => {
 })
 
 describe('the home document is readable without JavaScript', () => {
-  it('names the author and the site in the served HTML', async () => {
+  it('names the owner and the site in the served HTML', async () => {
     const r = await app.inject({ method: 'GET', url: '/', headers: CRAWLER })
     assert.equal(r.statusCode, 200)
     const text = textOf(r.body)
-    assert.ok(text.includes(site.author.name), 'the author is named')
+    assert.ok(text.includes(site.author.name), 'the owner is named')
     assert.ok(text.includes(site.description), 'the site says what it is')
   })
 

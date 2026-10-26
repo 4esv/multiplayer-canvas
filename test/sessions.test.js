@@ -1,5 +1,5 @@
 // test/sessions.test.js
-// Sessions (lib/sessions.js): a room of the owner's own on the presence
+// Sessions (primitives/rooms/sessions.js): a room of the owner's own on the presence
 // socket, reached with `?session=`. The security-relevant decisions are all
 // at the door (routes/presence.js enterSession), so they are driven here
 // over REAL sockets against a real server, with the headers a browser would
@@ -7,7 +7,7 @@
 // the PIN, wrong PINs lock the session, an ended session closes everyone.
 // Then what a session is for: the act grammar, the acts relayed to the
 // others and nowhere else, and the two rooms not seeing each other.
-import './env.js' // first: no boot refresh over the network (issue #273)
+import './env.js' // first: no boot refresh over the network
 
 import { describe, it, before, after, afterEach } from 'node:test'
 import assert from 'node:assert/strict'
@@ -493,7 +493,7 @@ describe('in the room', () => {
     assert.deepEqual(await guest.next('stale'), { type: 'stale', keys: ['weather'] })
     assert.deepEqual(await pub.next('stale'), { type: 'stale', keys: ['weather'] })
     // the dish's and the sky's channel: a socket from ANY room, through the
-    // public room's handle (services/slime.js, services/sky.js)
+    // public room's handle (primitives/slime/slime.js, primitives/sky/server.js)
     const rec = startSession({ pin: false })
     const sent = []
     const fake = { OPEN: 1, readyState: 1, send: (t) => sent.push(JSON.parse(t)), ping() {} }

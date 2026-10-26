@@ -2,7 +2,7 @@
 // The photo-set content type, end to end, against a content tree built here.
 //
 // No photo set ships in content/feed/: the pictures and the words on this
-// site are the author's, and a test is not the place to invent either. So this
+// site are the owner's, and a test is not the place to invent either. So this
 // points CONTENT_DIR and CONTENT_IMAGE_DIR at temp directories (the same
 // override the auth store carries for the same reason), fills
 // them with one entry of every kind, and drives the real server: real
@@ -100,7 +100,7 @@ after(async () => {
   rmSync(IMAGES, { recursive: true, force: true })
 })
 
-// every /img URL carries its bytes' hash (issue #319); the pictures are named without it
+// every /img URL carries its bytes' hash; the pictures are named without it
 const bare = (src) => src.replace(/\?v=[0-9a-f]{8}$/, '')
 const V = '\\?v=[0-9a-f]{8}'
 
@@ -153,7 +153,7 @@ describe('a photo set is a page whose body is its pictures', () => {
   it('brings its own stylesheet and script without frontmatter saying so', async () => {
     const r = await get('/holiday')
     assert.match(r.body, /<link rel="stylesheet" href="\/css\/photoset\.css" data-sheet-css>/)
-    // a module: it imports the kit's walker (js/kit-scroll.js)
+    // a module: it imports the kit's walker (primitives/kit/kit-scroll.js)
     assert.match(r.body, /<script type="module" src="\/js\/photoset\.js"><\/script>/)
   })
 

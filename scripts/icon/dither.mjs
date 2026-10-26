@@ -26,7 +26,7 @@ import { bayer } from 'multiplayer-canvas/dither'
 const N = 8
 const OUT = resolve('src/static/img')
 
-// The 8x8 Bayer order, grown from the site's one 4x4 (js/textmode-settings.js).
+// The 8x8 Bayer order, grown from the site's one 4x4 (primitives/textmode-settings.js).
 // Values 0..63, each row and column a maximally spread threshold order,
 // which is what makes every coverage level tile seamlessly.
 const B = bayer(N)

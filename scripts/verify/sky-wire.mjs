@@ -1,5 +1,5 @@
 // scripts/verify/sky-wire.mjs
-// Issue #305 round six, against a real socket: WHAT THE SHARED SKY COSTS A TAB.
+// Against a real socket: WHAT THE SHARED SKY COSTS A TAB.
 //
 // Four clients on /ws/cursors over the same window, the sky pushed once a
 // second by the `hand` for the middle third and left alone either side:

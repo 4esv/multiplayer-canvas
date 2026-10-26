@@ -63,7 +63,7 @@ textarea {
 #modal :is(canvas, svg) {
   -webkit-touch-callout: none;
 }
-/* THERE IS NO SECOND BUTTON (#336). A bare `button {}` rule used to give
+/* THERE IS NO SECOND BUTTON. A bare `button {}` rule used to give
    every button on the page a surface fill, padding and an ink invert on
    press, so a kit button (kit.css .k-btn) wore a second button under its
    own and a widget's button looked like neither. The chrome is on the kit
@@ -224,11 +224,11 @@ a {
 html {
   cursor: var(--cv-hand-point, default);
 }
-/* over a collection's scrollbar the pointer is about to haul it (#339, the
-   author: "Scrolling a collection should use the grab hand cursor"), so it
+/* over a collection's scrollbar the pointer is about to haul it (scrolling a
+   collection uses the grab hand cursor), so it
    offers the grab before the press. It is the one state that reads what is
    under the pointer, for the reason the I-beam does: a track walked by
-   dragging is a real affordance. js/kit-scroll.js writes it, and a held
+   dragging is a real affordance. primitives/kit/kit-scroll.js writes it, and a held
    scrub is `hauling` below. First, so a press anywhere still clicks. */
 html.grabbable {
   cursor: var(--cv-hand-grab, grab);
@@ -455,7 +455,7 @@ html.canvas-pending #prelude {
   /* !important because this block comes early and the rules it overrules come
      later: #close's grid and the map's block win on order, an open #cmds on
      specificity. Without it the hide held only because app.js set [hidden]
-     and the bar was hidden around the rest (issue #320). */
+     and the bar was hidden around the rest. */
   #topbar,
   #searchWrap,
   #cmds,
@@ -470,7 +470,7 @@ html.canvas-pending #prelude {
   }
   /* but a page's own list is the page's, not the canvas's chrome: the page
      bar is on the page at every density, and the list its box opens is how
-     a small screen sees the rest of the ring (js/kit-scroll.js) */
+     a small screen sees the rest of the ring (primitives/kit/kit-scroll.js) */
   #modal.fullpage #sheet > .k-bar > .k-ring:popover-open {
     display: flex !important;
   }
@@ -881,7 +881,7 @@ html.bare #cursors {
   display: block;
   flex: none;
 }
-/* the statement's own pager, under it (#336): the kit's snap scrollbar on
+/* the statement's own pager, under it: the kit's snap scrollbar on
    its side, the same bar that turns every pile, a card's siblings and a full
    page's ring, where nine squares used to say only that it turns. The
    statement is still the button; the bar says which of how many and takes
@@ -973,7 +973,7 @@ html.bare #cursors {
   position: relative;
   /* NO BORDER (2026-09-15). A tile is a BLOCK: it meets the ground at a
      sudden change of colour, and that is the whole edge (the cast it threw
-     is retired, #313: elevation is tone). The half-cell ink border it wore could not be crisp and
+     is retired: elevation is tone). The half-cell ink border it wore could not be crisp and
      was never going to be: the zoom ladder rests where one CELL is a whole
      number of device pixels, so half a cell lands on a half pixel at every
      odd rung of it, and the home camera (z 0.875 at 2x) is an odd rung. Every
@@ -988,13 +988,13 @@ html.bare #cursors {
 }
 
 /* every clickable card shares one hover/press affordance, the kit's own
-   (#336): nothing LIFTS. A hand on a card rings it in one cell of its ink,
+: nothing LIFTS. A hand on a card rings it in one cell of its ink,
    and a press rings it brick, the way the kit's outline button goes ink
    under the hand and brick under the press; a card that leaves the site
    lights its way-out button with it. The lift that stood here was a card
    coming toward the hand, and the kit's parts never travel under it.
    .peerhover is SOMEONE ELSE's pointer resting here, relayed over the
-   presence socket (canvas/presence.js). It paints the affordance your own
+   presence socket (primitives/presence/presence.js). It paints the affordance your own
    hover paints and nothing besides, riding the selector list rather than a
    rule of its own, so the two can never drift into looking like different
    states. */
@@ -1122,7 +1122,7 @@ html.bare #cursors {
 
 /* THE SLIME MOULD (BIBLE.md section 5, 2026-09-17): a dish, boxless, the
    name under it in the label hand like an experiment's. The dish is a canvas
-   the script seats from canvas/slime.js dishBox (the same numbers the guard
+   the script seats from primitives/slime/slime.js dishBox (the same numbers the guard
    reads), painted at one backing pixel a cell and shown a cell a cell, so
    the browser must not smooth it: a smoothed cell is a grey blur. The rim
    is not on the canvas: it is a pixel sprite over it, cell data wired to
@@ -1139,7 +1139,7 @@ html.bare #cursors {
   display: block;
   image-rendering: pixelated;
 }
-/* a spectator's dish takes no tap (issue #260, app.js presence.onSpectate),
+/* a spectator's dish takes no tap (app.js presence.onSpectate),
    so it lets the inherited pointing hand go: the one place on the ground
    where the hand would promise something the room will not do */
 .t-slime[aria-disabled='true'] .dish {
@@ -1150,7 +1150,7 @@ html.bare #cursors {
   pointer-events: none;
   color: var(--cv-ink);
 }
-/* AN ABSENT TAB'S DISH LOSES LIFE (issue #271, app.js slimeAsleep): while
+/* AN ABSENT TAB'S DISH LOSES LIFE (app.js slimeAsleep): while
    this tab has said no to the watch the room sends it nothing, and the dish
    says so: the colour drains and the black dims, the rim with it. Dying is
    at once, because nobody sees it (the tab is hidden or the dish is off
@@ -1191,8 +1191,8 @@ html.bare #cursors {
   white-space: nowrap;
 }
 
-/* weather: THE WINDOW (issue #305). Not a card: a square of sky in a
-   plain frame, drawn whole on one canvas by canvas/outlook.js at a backing
+/* weather: THE WINDOW. Not a card: a square of sky in a
+   plain frame, drawn whole on one canvas by primitives/sky/outlook.js at a backing
    pixel a half cell and shown two world px a pixel. No surface and no
    border of its own; the frame is in the picture. */
 .t-weather .sky {
@@ -1204,7 +1204,7 @@ html.bare #cursors {
   aspect-ratio: 1;
   image-rendering: pixelated;
 }
-/* its name under it on the ground (#339, the author named it "My Sky"): the
+/* its name under it on the ground (it is named "My Sky"): the
    type face, ink, centred, like the player's */
 .t-weather .name {
   display: flex;
@@ -1245,8 +1245,8 @@ html.bare #cursors {
 /* the glyph stands bare on the ground: a pixel accent with nothing around it
    (the surface tile that stood here for an hour on 2026-09-11 was one more
    box around a thing that did not need one). The name sits under it in
-   the type face, ink (#336). */
-/* THE ROW SETS THE BASELINE, NOT THE GLYPH (#339). The mark is one slot
+   the type face, ink. */
+/* THE ROW SETS THE BASELINE, NOT THE GLYPH. The mark is one slot
    twelve cells tall whatever it holds, the glyph centred in it, so every
    name in a dock row sits on one line. The key and the envelope are drawn
    on a 21-cell lattice (below) and their marks were six px shorter, which
@@ -1556,7 +1556,7 @@ button:focus-visible {
 }
 /* ---- the work sheet's bespoke rows ---- */
 /* the two pillars, side by side and stacked when narrow: a drawing and the
-   words under it, standing on the page with no box around them (#336, a UI
+   words under it, standing on the page with no box around them (a UI
    is never wrapped in a labelled container) */
 #sheet .pillar-duo {
   display: grid;
@@ -1758,7 +1758,7 @@ button:focus-visible {
    a hatched square, an inset ring, an ink-invert used as a state. Those
    are restored below, in the system's own colors.
 
-   The weather tile is a canvas (the window, issue #305), and a forced
+   The weather tile is a canvas (the window), and a forced
    palette leaves canvas pixels alone, so it needs nothing here. */
 @media (forced-colors: active) {
   /* the command roster. Arrow keys move .sel while focus stays in the
@@ -1882,13 +1882,13 @@ button:focus-visible {
 .t-stack .slabel .name {
   color: var(--cv-ink);
 }
-/* THE COUNT (#339, the author): a line under the name, the same face and
+/* THE COUNT: a line under the name, the same face and
    size (.k-lbl), one step dimmer. Mute on the ground is a text pair the
    contrast census gates (test/contrast.test.js). */
 .t-stack .slabel .count {
   color: var(--cv-mute);
 }
-/* the pager (BIBLE.md section 5, #338): the kit's snap scrollbar on end,
+/* the pager (BIBLE.md section 5): the kit's snap scrollbar on end,
    as tall as the pile. The thumb is the member the pile shows; a press
    turns the pile for everyone. Controls, so they press like the doors and
    never lift. IT STANDS OFF THE PILE'S RIGHT EDGE and runs DOWN
@@ -1983,7 +1983,7 @@ button:focus-visible {
   gap: var(--cv-sp-1);
 }
 /* the kit's screen-printed label (.k-meta) on the head's ground: the name
-   and its count in the type face, never the pixel one (#336), the name in
+   and its count in the type face, never the pixel one, the name in
    ink and the count in the label's own mute */
 #fan .fanhead .k-meta {
   margin: 0;
@@ -2119,7 +2119,7 @@ html.sheet-open .seam {
 #modal.preview #sheet .inner {
   padding-bottom: var(--cv-sp-8);
 }
-/* the walk between a collection's cards: the kit's snap scrollbar (#336),
+/* the walk between a collection's cards: the kit's snap scrollbar,
    as wide as the card and standing in the strip the card leaves under it
    (the gap under the card is the module and a bit; the bar is the tap
    floor), on the ground so its lines read over the scrim. The same bar
@@ -2214,7 +2214,7 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
   margin-right: auto;
 }
 
-/* ---- the phone's shared slot (#303) ---------------------------------------
+/* ---- the phone's shared slot ---------------------------------------
    One middle slot, the field's measure, and the field and the map take it in
    turns (app.js sizeMap sets data-slot and data-at). The field comes in from
    the left and the map from the right, a module's travel on the stepped ease,
@@ -2256,7 +2256,7 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
   }
 }
 
-/* ---- the plan (#303): the world past the mount floor ----------------------
+/* ---- the plan: the world past the mount floor ----------------------
    Screen-space, over the scene and under every piece of chrome. app.js
    paints each tile's pixelated picture on the tile's own rect and shows it
    only while the camera is out past the mount floor; it takes no pointer,
@@ -2290,7 +2290,7 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
 /* forced-ok: the walls come back as a CanvasText cell under (forced-colors: active) below */
 .t-zone .cell.zonecell {
   border: 0;
-  /* the walls are tone bands, not a cast (#313): one cell of ink inside the
+  /* the walls are tone bands, not a cast: one cell of ink inside the
      top-left, one of ground inside the bottom-right, painted as backgrounds
      so they take no room, over the floor one step under the ground */
   background:
@@ -2471,7 +2471,7 @@ button.k-btn:where(#close, #mapBtn, #findBtn) {
 html.fullpage-open #close {
   display: none;
 }
-/* THE BAR SITS AT THE COLLECTION LAYER AT MOST (author, 2026-09-25, #300):
+/* THE BAR SITS AT THE COLLECTION LAYER AT MOST:
    the canvas, a fan, the feed. An item's page, a case study, an experiment,
    a photo set, is a layer above that, and a search field parked over the
    middle of somebody's experiment is the canvas refusing to let go of it.
@@ -2486,7 +2486,7 @@ html.item-open #topbar {
   transition: none;
   /* nothing is under a full page but the canvas, so a scroll that bounces
      past its end (a trackpad, a phone) would show the world beneath the
-     ground; the page ends where its ground ends (#300) */
+     ground; the page ends where its ground ends */
   overscroll-behavior-y: none;
 }
 #modal.fullpage #gap {
@@ -2514,7 +2514,7 @@ html.item-open #topbar {
   padding: var(--cv-air) var(--cv-sp-6) var(--cv-air);
   min-height: calc(100dvh - var(--page-bar-h) - 2 * var(--cv-air));
 }
-/* AN EXPERIMENT IS AN APP (#338): its head is one tight line, the title and
+/* AN EXPERIMENT IS AN APP: its head is one tight line, the title and
    its meta side by side under the bar, so the thing itself gets the frame.
    --page-head-h above is this line's height; a case study keeps its pixel
    title and its air. */
@@ -2536,7 +2536,7 @@ html.item-open #topbar {
 #modal.fullpage #sheetInner:not(:has(> h1.ptitle)) > .exp-native {
   margin-top: var(--cv-sp-3);
 }
-/* ---- THE PAGE BAR (#338) ---------------------------------------------------
+/* ---- THE PAGE BAR ---------------------------------------------------
    A full page's one navigation: a window's title bar, the sheet's full
    width, stuck to the top of the scroll owner (#mscroll for a full page)
    with a one-cell rule under it, on the sheet's own ground (white on a case
@@ -2547,7 +2547,7 @@ html.item-open #topbar {
    bar's right end the corner close, the one top-right button a page has
    (BIBLE.md section 6), in reach wherever the page is scrolled because the
    bar is. The way back to the top is the page's foot, not the bar's
-   (below). The markup is js/kit-scroll.js pageBarMarkup, SSR'd and painted
+   (below). The markup is primitives/kit/kit-scroll.js pageBarMarkup, SSR'd and painted
    alike. Its height is published as --page-bar-h on the sheet so an
    experiment can size itself to the frame under it (100dvh -
    var(--page-bar-h)); --page-head-h is the compact head under the bar (the
@@ -2648,7 +2648,7 @@ html.item-open #topbar {
 }
 /* the v: a browser strip's tab search, a small arrow standing on its own
    with no box, the tap floor square round it, opening every page of the
-   ring (js/kit-scroll.js ringListMarkup); a hand over it darkens it */
+   ring (primitives/kit/kit-scroll.js ringListMarkup); a hand over it darkens it */
 #modal.fullpage #sheet > .k-bar > .k-ring-v {
   flex: none;
   display: flex;
@@ -2841,25 +2841,25 @@ html.item-open #topbar {
   fill: currentColor;
 }
 
-/* ---- THE PIXEL TITLE (#300) is ptitle.css, one part wherever a title is set
+/* ---- THE PIXEL TITLE is ptitle.css, one part wherever a title is set
    (the canvas, the case-study page, the door pages). What belongs to this
    page is the card's pitch, below. */
 .cs-card .ptitle {
   --tpx: calc(var(--cv-px) / 2);
 }
 
-/* ---- THE CASE-STUDY PAGE (#300) --------------------------------------------
+/* ---- THE CASE-STUDY PAGE --------------------------------------------
    One page, whichever door it came through: the canvas opens it full, and a
    direct load of /work/<slug> is SSR'd full (canvas-sheets.js), so both land
    here. It is the only layout a case study has; no entry overrides it. The
    pixel title is its mark: `:has(> h1.ptitle)` is every case-study page and
    no other page.
 
-   THE AUTHOR'S REVIEW (2026-09-23) set four things, each below:
+   THE CASE-STUDY PAGE sets four things, each below:
    - WHITE GROUND. A case-study page is on --cv-white, the second ground; an
      experiment page stays on the ground. No container: the swap is the whole
      change.
-   - NO SHADOW (#313's law). The sheet's lift and the card's cast go.
+   - NO SHADOW. The sheet's lift and the card's cast go.
    - CENTRED. The study stands in the middle of the desk.
    and the second review (2026-09-24) two more:
    - ONE LADDER. The 13px prose under a 4px-a-pixel title read as two
@@ -2871,7 +2871,7 @@ html.item-open #topbar {
    - THE FIGURES BELONG TO THE WHITE. A figure's frame is the sheet, not the
      ground; its letters are painted for this ground in case-study.css.
 
-   ONE AXIS (author, 2026-09-24). Text and figures share one centred column,
+   ONE AXIS. Text and figures share one centred column,
    at every width, and the column is wide enough that the two read as one
    piece: "it makes no sense to center figures but not text without at least
    making text wider". The measure is 864px at the 16px prose: 72ch when
@@ -2882,14 +2882,11 @@ html.item-open #topbar {
    centred the figures and left the text on the left, and its float hung
    beside whatever came next, a code block or one short paragraph, with a
    hole beside a figure taller than its text. It is gone.
-   THE COLUMN IS THE TEXT'S MEASURE (author, 2026-09-24, measured at 1440:
-   "text lines run from x=289 to about 1005, centre 647. Figures centre at
-   720"). The sheet caps every paragraph at 60ch (#sheet p, above), so in a
+   THE COLUMN IS THE TEXT'S MEASURE. The sheet caps every paragraph at 60ch (#sheet p, above), so in a
    72ch column the text sat on the left of it with the figures centred to
    its right: two axes again. Here the cap is lifted and the column IS the
    measure, 72ch, so text, figures and code share one centre.
-   ONE EDGE RULE FOR EVERY BLOCK (author, 2026-09-24: "code blocks start at
-   x=320 while text starts at 289 ... pick one rule for every block"). A
+   ONE EDGE RULE FOR EVERY BLOCK. A
    block, a code block, a figure, a pictogram grid, aligns to the text's
    edges: it is the column's width, or narrower and centred on the column's
    axis. The 50rem code strip centred wider than the 60ch measure (above)
@@ -2905,12 +2902,12 @@ html.item-open #topbar {
    against, so the lines the browser breaks are the lines pretext counted.
    Everything else is the one column: a figure on its own line, centred, at
    its own width.
-   NO FRAME ON ANY FIGURE (author, 2026-09-24, #325). A figure stands alone:
+   NO FRAME ON ANY FIGURE. A figure stands alone:
    no bordered box, no ground of its own, no label over it. A box round a
    UI "just makes it look worse and confuses people", and the review after
    that threw out the same box round a diagram and a photograph: "the same
    boxes-in-boxes". A figure's title is a plain caption line UNDER it (the
-   markdown keeps the title first, the author's words untouched; the figure
+   markdown keeps the title first, the words untouched; the figure
    lays its column out with the caption last), and a figure-note follows
    the caption. figures.mjs still marks the screens `cf-ui`, which is now
    only a fact about the drawing, not a rule of its own.
@@ -2933,7 +2930,7 @@ html.item-open #topbar {
   font-size: var(--cv-fs-1);
 }
 
-/* ---- THE CASE-STUDY CARD HAS NO CAST (#300, #313's law) --------------------
+/* ---- THE CASE-STUDY CARD HAS NO CAST --------------------
    Every state the tile rules give a shadow is answered here without naming
    a state: `.openable.cs-card .cell` matches the specificity of the tile's
    hover, relayed-hover and focus rules and comes after them, and the pile's
@@ -2945,7 +2942,7 @@ html.item-open #topbar {
   box-shadow: none;
 }
 
-/* PRESENCE ON EVERY PAGE (issue #327). A second cursor layer rides the
+/* PRESENCE ON EVERY PAGE. A second cursor layer rides the
    modal: the peers reading the same page, seated on its blocks
    (presence.js locate, anchor.js). Fixed and pointer-transparent like the
    scene's layer; the cursors themselves take the pointer, because a cursor
@@ -2962,7 +2959,7 @@ html.item-open #topbar {
   pointer-events: auto;
 }
 /* a peer above or below the part of the page on screen is an arrow on that
-   edge (#336: the kit's face, not a drawn chevron): the face's arrow in the
+   edge (the kit's face, not a drawn chevron): the face's arrow in the
    peer's hue, in a cell of ground ruled one cell thick in the same hue, six
    cells square (presence.js EDGE_W seats it); the hand is put away */
 .cursor .edge {

@@ -1,6 +1,6 @@
 // test/one-bayer.test.js
 // BIBLE.md section 0: one Bayer. The ordered dither has one source,
-// js/textmode-settings.js (BAYER4 and what is built from it), and every
+// primitives/textmode-settings.js (BAYER4 and what is built from it), and every
 // dither in the tree imports it: the map's, the sky's, the photograph
 // pixelator's, the dither frames'. A second copy of the threshold order is
 // the same picture drawn two ways the day one of them is retuned, and the

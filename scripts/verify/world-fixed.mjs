@@ -145,7 +145,7 @@ const SAMPLE = `(() => {
   const box = scene.getBoundingClientRect()
   const k = new DOMMatrixReadOnly(getComputedStyle(scene).transform).a
   const painted = []
-  // a cut tile's copy (canvas/mirror.js) is held to the plan like the node
+  // a cut tile's copy (primitives/mirror.js) is held to the plan like the node
   for (const el of document.querySelectorAll('.el[data-hk], #scene > .el.wrap-copy')) {
     if (getComputedStyle(el).display === 'none') continue
     const r = el.getBoundingClientRect()
@@ -175,7 +175,7 @@ const CAMERAS = [
   ['zoom 1:1', "__lab.centerOn('work'); __lab.setZoom(1)"],
   ['zoom max', "__lab.centerOn('instruments'); __lab.setZoom(__lab.zoom.max)"],
   // the lowest zoom that still mounts tiles; past it the plan paints the
-  // world and nothing mounts (#303), which the all-the-way-out probe below holds
+  // world and nothing mounts, which the all-the-way-out probe below holds
   ['mount floor', '__lab.setZoom(__lab.zoom.mount)'],
   // a quarter across and three quarters down: an UNSTEERED camera deep in
   // the world that still lands on the ring. A quarter down used to work and
@@ -231,7 +231,7 @@ const CROWN = `(async () => {
 // Every screen pulls out to cover and no further: the view is never larger
 // than the world in either axis, so no place is on screen twice. A tile the
 // view's edge cuts shows its other part at the opposite edge as a live copy
-// (canvas/mirror.js). A desktop and a phone mount the real world all the way
+// (primitives/mirror.js). A desktop and a phone mount the real world all the way
 // out (layout.js MOUNT_OUT, from scripts/verify/zoom-out-cost.mjs); a watch
 // mounts down to its floor and past it the plan paints the world on one
 // canvas. This is the measurement, at the floor and across a sweep of
@@ -354,12 +354,12 @@ const LIVE_COPY = `(async () => {
   return out
 })()`
 
-// ---- the map's toggle leaves the field alone (#303 review) -----------------
+// ---- the map's toggle leaves the field alone -----------------
 // Changing the map must not move the search bar at all, unless the screen is
 // narrow enough to share the slot. This clicks the toggle both ways and reads
 // the field's rect every frame until the turn has settled, so a slide that
 // ends where it started is still a move.
-// ---- the plan's pictures sit on the tiles (#303) ----------------------------
+// ---- the plan's pictures sit on the tiles ----------------------------
 // At the mount floor the camera is one step from the plan, so this holds
 // the camera still, reads every mounted tile's screen rect, then has the
 // plan draw the SAME camera (__lab.mountAt a hair above it) and reads where
@@ -602,7 +602,7 @@ for (const [vpName, w, h, mobile, dpr] of TOGGLE_VIEWPORTS) {
     if (!!t.before.map === !!t.one.map)
       failures.push(`${vpName} ${w}: the toggle did not change the map`)
   } else {
-    // the slot turns: the map holds it on arrival (#395), gives way to the
+    // the slot turns: the map holds it on arrival, gives way to the
     // field, then comes back home
     if (!t.before.map || t.before.field)
       failures.push(`${vpName} ${w}: the slot does not open on the map`)

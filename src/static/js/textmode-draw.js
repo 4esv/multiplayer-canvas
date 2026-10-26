@@ -3,7 +3,7 @@
 //
 // It is the path the Safari extension runs, ported across: configure the
 // source every frame, then image() it at the grid's size, then the post
-// effects. Settings are js/textmode-settings.js's shape, already normalized.
+// effects. Settings are primitives/textmode-settings.js's shape, already normalized.
 
 import { CONTOUR_DEFAULT_CHARACTERS } from '/js/vendor/textmode/textmode.contour.esm.js'
 import { BAYER_MAP, bayerGlyph, fontSrc } from 'multiplayer-canvas/dither'

@@ -114,7 +114,7 @@ export async function build(opts = {}) {
   registerGridMiddleware(fastify)
   // Before any route: fastify binds a route to the error handler its
   // context had when the route was added, so a handler set after them all
-  // (as this was until #359) reached only routes added later still, and a
+  // (as this once was) reached only routes added later still, and a
   // JSON body the parser refused came back in fastify's own shape.
   registerErrorHandler(fastify)
 
@@ -185,7 +185,7 @@ export async function build(opts = {}) {
         // different file, by convention this repo keeps).
         reply.header('cache-control', 'public, max-age=31536000, immutable')
       } else if (reply.statusCode === 200 && path.startsWith('/img/') && askedAtHash(request)) {
-        // An image asked for at its own hash (issue #319, lib/img-version.js).
+        // An image asked for at its own hash (lib/img-version.js).
         // Every /img URL the site emits carries `?v=<hash8>` of the file's
         // bytes, so a re-bake is a new URL and the promise can be made. Only
         // when the hash is the one on disk: a stale page asking for an old

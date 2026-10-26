@@ -43,9 +43,9 @@ describe('htmlToText: entry bodies to plain text', () => {
 
   it('drops the footnotes section but keeps the [n] markers in prose', () => {
     const html =
-      '<p>ported the flow into Node<sup class="footnote-ref"><a id="fnref-hmac" href="#fn-hmac">1</a></sup>.</p>' +
+      '<p>ported the flow into Node<sup class="footnote-ref"><a id="fnref-sig" href="#fn-sig">1</a></sup>.</p>' +
       '<section class="footnotes"><ol class="footnotes-list">' +
-      '<li id="fn-hmac" class="footnote-item"><p>The signing scheme. <a href="#fnref-hmac" class="footnote-backref">↩</a></p></li>' +
+      '<li id="fn-sig" class="footnote-item"><p>The signing scheme. <a href="#fnref-sig" class="footnote-backref">↩</a></p></li>' +
       '</ol></section>'
     assert.equal(htmlToText(html), 'ported the flow into Node[1].')
   })

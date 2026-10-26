@@ -4,7 +4,7 @@
 // Outputs: linesOf(entries) -> Map(head -> ids behind it); record and sampleAt for the trailing path. Pure.
 //
 // THE CONGA (2026-09-25). Who follows whom is on the wire now (the move
-// frame's `f`, lib/presence-protocol.js), so every tab can draw a follower
+// frame's `f`, primitives/presence/presence-protocol.js), so every tab can draw a follower
 // where following puts it: in line behind the one it follows, walking the
 // same path a beat later. This module is the arithmetic of that and nothing
 // else: pure, so the line can be held in a test with hands written by hand.

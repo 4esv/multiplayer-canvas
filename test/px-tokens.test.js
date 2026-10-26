@@ -73,7 +73,7 @@ function violations(css) {
 }
 
 describe('px literals ride the token scale', () => {
-  // tripwire: pending audit (#265)
+  // tripwire: pending audit
   it('the scale is the token file, not a hand-kept list', () => {
     // If this set ever comes back near-empty the guard has stopped reading the
     // tokens, and every consumer line below would fail for the wrong reason.

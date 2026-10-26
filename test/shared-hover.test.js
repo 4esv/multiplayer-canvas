@@ -45,7 +45,7 @@ describe('a shared hover is the same hover', () => {
     // if this hits zero the two tests below pass by finding nothing
     const n = RULES.filter((r) => r.selectors.some((s) => s.includes('.peerhover'))).length
     assert.ok(n >= 2, `only ${n} rules answer to .peerhover; the feature is unwired`)
-    // A count alone stopped biting when #336 split the card's hover into two
+    // A count alone stopped biting when the card's hover into two
     // rules: one surface could lose its relay and the total still cleared
     // the floor. So each surface a hand lights names its own relayed twin:
     // the cards and the pile's front card.
@@ -146,8 +146,8 @@ describe('the shared set is closed, and mutation is not in it', () => {
     // nearby has one" is not the test. Each of these is checked where it is
     // built: the markup that makes the control must not name it.
     // The theme switch used to head this list and went with the second
-    // theme (2026-09-15); the full page's bar took its place (#338, drawn
-    // in js/kit-scroll.js), and it is the same kind of thing: a control
+    // theme (2026-09-15); the full page's bar took its place (drawn
+    // in kit-scroll.js), and it is the same kind of thing: a control
     // that moves YOU, which nobody else in the room should be dragged along
     // by.
     const controls = [
@@ -179,13 +179,13 @@ describe('the shared set is closed, and mutation is not in it', () => {
     // third fact about the SENDER, next to where it is and what it is over,
     // and not a fourth thing it may ask the room to do; test/presence.test.js
     // holds that line on the parsing side.
-    // The watch (issue #259, 2026-09-17) is a fact about the sender of the
+    // The watch is a fact about the sender of the
     // same kind: whether THIS tab can see the dish, so the room sends the
     // dish to nobody who cannot. One boolean, nothing about anybody else.
-    // The anchor `at` (issue #327) is a fourth fact about the sender: the
+    // The anchor `at` is a fourth fact about the sender: the
     // page block its pointer is on, so a reader of the same page can draw
     // it there. A slug and an index; nothing about another visitor.
-    // With of:'sky' (issue #305) it says the same of the weather window, and
+    // With of:'sky' it says the same of the weather window, and
     // the dish's watch leaves `of` off. The push is the window's hand: a
     // shared mutation of a thing on the ground, like the feed, two capped
     // whole numbers and nothing about anybody.

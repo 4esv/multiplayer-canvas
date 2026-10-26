@@ -234,7 +234,7 @@ export function registerFilters(env) {
     return nunjucks.runtime.markSafe(retroLinkify(escapeHtml(wrapped)))
   })
 
-  // A full page's title in the canvas's own face (#300). pixelTitle escapes
+  // A full page's title in the canvas's own face. pixelTitle escapes
   // the words it keeps for readers; the rest is glyph data, never input.
   env.addFilter('pixelTitle', (s) =>
     nunjucks.runtime.markSafe(pixelTitle(String(s ?? ''), 'display', { tag: 'h1' }))
@@ -267,7 +267,7 @@ function kitImg() {
 export function registerGlobals(env) {
   env.addGlobal('now', new Date())
   // who the site is (site.config.js): every template that prints the
-  // origin, the name, the author or the contact line reads it here, so no
+  // origin, the name, the owner or the contact line reads it here, so no
   // page carries an identity of its own
   env.addGlobal('identity', {
     ...config.site,
@@ -277,9 +277,9 @@ export function registerGlobals(env) {
   // the engine by its package name, for the browser (lib/import-map.js)
   env.addGlobal('importMap', IMPORT_MAP)
   env.addGlobal('speculationRules', SPECULATION_RULES)
-  // an /img URL with its bytes' hash (issue #319, lib/img-version.js)
+  // an /img URL with its bytes' hash (lib/img-version.js)
   env.addGlobal('imgUrl', imgUrl)
-  // every kit part at its hash, keyed by part-state (#313): a page that
+  // every kit part at its hash, keyed by part-state: a page that
   // wears the kit ships this map (kit/parts.njk), kit.css reads it as
   // --kp-<part>-<state> and js/kit.js swaps pictures from it
   env.addGlobal('kitImg', kitImg)

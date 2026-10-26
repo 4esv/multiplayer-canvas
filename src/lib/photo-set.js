@@ -20,7 +20,7 @@
 //    the zero-configuration path is "put the pictures in the folder".
 //
 // The markup is a scroll-snap strip walked by the kit's snap scrollbar
-// (js/kit-scroll.js, the one way a collection is walked: a stepper at each
+// (primitives/kit/kit-scroll.js, the one way a collection is walked: a stepper at each
 // end, a slider between them). Deliberately not the CSS carousel
 // pseudo-elements (::scroll-marker, ::scroll-button): they are Blink-only,
 // absent behind a flag in both other engines, and absent from Interop 2026,

@@ -2,7 +2,7 @@
 // Every page route must arrive fully dressed: a real <title>, a non-empty
 // meta description, and an absolute canonical. base.njk only falls back to the
 // site defaults for / and the error pages, so every other route has to declare
-// its own meta block (CLAUDE.md "Page standards"). This guards the one piece of
+// its own meta block (the README's page furniture). This guards the one piece of
 // furniture og.test.js and sitemap.test.js don't cover.
 import { describe, it, before, after } from 'node:test'
 import assert from 'node:assert/strict'

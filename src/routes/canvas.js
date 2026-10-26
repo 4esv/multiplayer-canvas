@@ -64,7 +64,7 @@ async function buildPagesIndex(fastify, entries) {
       // out of one. Everything else still opens as a sheet.
       full: isFullPage(e),
       // The kind rides along because the ring a full page walks stays inside
-      // it (issue #284): an experiment never steps into a case study, and
+      // it: an experiment never steps into a case study, and
       // the client has no other way to tell the two apart.
       kind: kindOf(e),
     }
@@ -98,7 +98,7 @@ export async function canvasBoot(fastify) {
     pages: await buildPagesIndex(fastify, entries),
     arts: buildArts(entries),
     // every picture the canvas builds a URL for, versioned by its bytes
-    // (issue #319): a re-bake is a new URL, so it reaches a warm cache
+    //: a re-bake is a new URL, so it reaches a warm cache
     img: imgManifest(),
     // { weather } -> ISO of the last live fetch;
     // a key is absent until it has succeeded once.

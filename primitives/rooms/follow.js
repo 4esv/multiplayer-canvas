@@ -2,7 +2,7 @@
 // Inputs: createFollow(on, headOf); pick(id), pointer(x, y), input(), left(id).
 // Outputs: a state handle { id, held, pick, release, ... }; calls on(id) on every change. Pure.
 //
-// Following (issue #327): take somebody's cursor and go where they go. Pure
+// Following: take somebody's cursor and go where they go. Pure
 // state, so the rules can be held in a test: who is followed, and what lets
 // go. The camera, the sheet and the scroll that act on it live in app.js.
 //
@@ -28,7 +28,7 @@
 //   - the followed peer leaving the room: there is nobody to follow
 //   - picking another peer: a follow replaces a follow
 //
-// HELD (2026-09-26). In a follow room (lib/sessions.js KINDS) following the
+// HELD (2026-09-26). In a follow room (primitives/rooms/sessions.js KINDS) following the
 // host is what the guest came for, so none of the follower's own input
 // lets go: steering and the hand walking off are both the follower's own
 // business while the host keeps the frame. Only leaving the room ends it

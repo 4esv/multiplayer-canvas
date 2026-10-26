@@ -7,7 +7,7 @@
 //
 // Sessions (2026-09-25): a room of the owner's own, on the same socket.
 //
-// The public room is everyone on the site at once (lib/presence-room.js
+// The public room is everyone on the site at once (primitives/presence/presence-room.js
 // presenceRoom). A room of the owner's own is a second room he opens on
 // purpose, for a few people he has invited, and it is one of two KINDS
 // (2026-09-26), each a superset of what comes before it:
@@ -56,7 +56,7 @@ const ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789'
 const CODE_LEN = 6
 // the grammar a code off the wire must match before it is looked up, or
 // before the owner's own word becomes one. It is the address's grammar
-// (canvas/finder-url.js ROOM_CODE_RE), stated there because the browser
+// (primitives/rooms/finder-url.js ROOM_CODE_RE), stated there because the browser
 // reads it too, and a generated code is a word of it.
 export const CODE_RE = ROOM_CODE_RE
 // seam: test/sessions.test.js
@@ -64,7 +64,7 @@ export const IDLE_MS = 20 * 60 * 1000
 // seam: test/sessions.test.js
 export const MAX_AGE_MS = 12 * 60 * 60 * 1000
 // Wrong PINs per session code per window, then locked until the window
-// ends. The same shape as a file page's inbox (services/etc.js): four
+// ends. Four
 // digits is ten thousand guesses, and twenty an hour makes that a year.
 // seam: test/sessions.test.js
 export const PIN_TRIES = 20

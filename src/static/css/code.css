@@ -59,7 +59,7 @@ pre.hljs code {
 }
 
 /* the pointed-at line, by the URL (:target) or by a click and a shift-click
-   (.is-lit: canvas/code-refs.js, js/etc.js): a tint of the theme's title
+   (.is-lit: canvas/code-refs.js): a tint of the theme's title
    blue, no third colour, and the number goes bright */
 .hljs .ln:target,
 .hljs .ln.is-lit {

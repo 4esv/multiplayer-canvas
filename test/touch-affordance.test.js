@@ -25,7 +25,7 @@
 //
 // The fifth is the other side of the first: the frame that once swallowed the
 // page by accident then gave every drag back to it on purpose, and a marker
-// that cannot be dragged is not a marker (#282). A frame you play in owns the
+// that cannot be dragged is not a marker. A frame you play in owns the
 // finger, by ONE stated class the entry declares, and the sheet's own gestures
 // stand down for it.
 //

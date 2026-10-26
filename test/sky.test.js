@@ -1,9 +1,9 @@
 // test/sky.test.js
-// Issue #305, round six: the weather window is shared. A hand pushes its
+// The weather window is shared. A hand pushes its
 // clouds, the offset springs home, and every tab watching sees the same
 // whole cells. Round seven: the sun and the moon never move under a hand,
 // and a clear sky pushes nothing; a pushable disc fails the build here.
-// Pinned: the spring both ends share (canvas/outlook.js), what the picture
+// Pinned: the spring both ends share (primitives/sky/outlook.js), what the picture
 // does with the offset, the frames the wire accepts, the service's clock
 // (nothing to a room that is not watching, nothing while the sky is at
 // rest), and the client's side of the same watch the slime taught the wire.

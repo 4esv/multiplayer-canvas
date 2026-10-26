@@ -57,12 +57,6 @@ const JS_SKIP_DIR = new Set(['vendor'])
 // source carries a comment naming the token it mirrors. That comment is the
 // sync contract; this list is the escape hatch, kept as small as the rule.
 const JS_HEX_ALLOW = {
-  // The icon tool's "download" mints a standalone SVG with no --cv-* context.
-  // It used to carry a PAIR (#111/#fff) behind a prefers-color-scheme switch,
-  // because a downloaded file cannot read the page's tokens and the site had
-  // two grounds. One ground, one ink (2026-09-15): the literal mirrors
-  // --cv-ink, and the guard below proves it rather than looking away.
-  'src/static/js/icon.js': ['#18181b'],
   // The textmode tool's starting colours. These are picture values, not UI:
   // they reach a WebGL uniform inside textmode.js (which takes a concrete
   // string, never a custom property) and they describe the artwork a person
@@ -175,7 +169,7 @@ describe('palette: the mandatory literals quote their token', () => {
   // HTML 3.2 has no var(): the retro shell paints its two inks as body
   // attributes. Allowlisted above, so this is where they are held to the
   // tokens: #ffffff and #111111 sat there for months after the ink became
-  // #18181b on #e4e4e7 (#336).
+  // #18181b on #e4e4e7.
   // mutation: palette.retro-old-ground
   it('base-retro.njk: the body attributes are the ground, the ink and the mute', () => {
     const retro = readFileSync(join(ROOT, 'src/templates/base-retro.njk'), 'utf8')
@@ -224,8 +218,8 @@ describe('palette: the mandatory literals quote their token', () => {
   // The icon emitters write standalone SVGs, so a var() cannot reach them
   // either. They keep a light/dark pair (the tab strip's ground is the OS's,
   // see wire.mjs), and the pair is the site's own: ink on light, the fixed
-  // ground on dark. #111/#fff sat one step off both for months (#244). (The
-  // loader's emitter went with the loader picture, #336: the kit's loader
+  // ground on dark. #111/#fff sat one step off both for months. (The
+  // loader's emitter went with the loader picture: the kit's loader
   // is drawn in CSS.)
   for (const rel of ['scripts/icon/wire.mjs']) {
     // mutation: palette.icon-dark-fill-white

@@ -1,5 +1,5 @@
 // scripts/verify/off-cell.mjs
-// Issue #299: WHAT IS STILL OFF THE CELL, COMPUTED FROM THE TREE. The site follows
+// WHAT IS STILL OFF THE CELL, COMPUTED FROM THE TREE. The site follows
 // one toolkit (BIBLE.md section 10); this lists every surface that does not
 // yet, so the follow-up issues work from a list and not from memory. It is
 // an inventory, not a gate: it always exits 0.
@@ -54,10 +54,10 @@ const onTheCell = (svg) =>
   ![...svg.matchAll(/\sd="([^"]*)"/g)].some((m) => /[cCsSqQtTaA]/.test(m[1])) &&
   !/<(circle|ellipse)\b/.test(svg)
 // An inline drawing is held to the same test, plus what only markup can
-// smuggle in: a face of its own, a rotation, a fade (#300: the case-study
+// smuggle in: a face of its own, a rotation, a fade (the case-study
 // figures were redrawn by scripts/img/figures.mjs and leave the list by
 // passing it). A word is <text> with no face on it: the page sets it in its
-// body face (author, 2026-09-24), so a figure reads with the prose.
+// body face, so a figure reads with the prose.
 const inlineOnTheCell = (svg) =>
   onTheCell(svg) && !/<text\b[^>]*\b(font-family|font|style)=|\btransform=|opacity=/.test(svg)
 const MARKUP = files.filter((f) => /^(content\/.*\.md|src\/templates\/.*\.njk)$/.test(f))
@@ -271,7 +271,7 @@ const SURFACES = [
 const KINDS = ['svg', 'soft', 'font', 'off-cell']
 const count = (list) => KINDS.map((k) => list.filter((x) => x.kind === k).length)
 
-console.log(`# What is still off the cell (#299)\n`)
+console.log(`# What is still off the cell\n`)
 console.log(
   `Computed by \`node scripts/verify/off-cell.mjs\` at ${execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim()}. Cell = ${PX}px.\n`
 )

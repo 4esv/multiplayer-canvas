@@ -1,6 +1,6 @@
 // The photo-set carousel: the walker, the counter, and the loading policy.
 //
-// The walker is the kit's snap scrollbar (js/kit-scroll.js wireScroll, the
+// The walker is the kit's snap scrollbar (primitives/kit/kit-scroll.js wireScroll, the
 // one way a collection is walked, markup from lib/photo-set.js): a stepper
 // at each end that steps and wraps, a slider between them, and whatever it
 // commits drives the strip. A move of one photograph glides, anything
@@ -34,7 +34,7 @@
 // is bundled for production (scripts/build-assets.mjs).
 //
 // THE PHOTOGRAPH IS SHARED in a session, and from the one followed to the
-// tabs following them (canvas/view-sync.js): the photograph a strip lands
+// tabs following them (primitives/rooms/view-sync.js): the photograph a strip lands
 // on goes out as an `canvas:view`, said once the strip has settled so a fling
 // through six photographs is one word, and a peer's is jumped to, never
 // glided (a glide would report every photograph it passed). A jump made for

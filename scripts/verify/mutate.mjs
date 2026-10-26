@@ -1,5 +1,5 @@
 // scripts/verify/mutate.mjs
-// Issue #265: A GUARD THAT HAS NEVER FAILED IS A GUESS, SO MAKE IT FAIL.
+// A GUARD THAT HAS NEVER FAILED IS A GUESS, SO MAKE IT FAIL.
 //
 // A test that reads source text (a stylesheet, app.js, a template) and
 // matches it is a text guard. A text guard earns its place one of two ways,

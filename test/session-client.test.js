@@ -2,8 +2,8 @@
 // The browser half of rooms, following and the conga (2026-09-25). The
 // server half (who may open a room, the PIN, the relay) is
 // test/sessions.test.js; this holds what a tab does with it: the arithmetic
-// of a line of followers (canvas/conga.js), what lets a follow go
-// (canvas/follow.js), and presence.js under a stub socket, since the room a
+// of a line of followers (primitives/presence/conga.js), what lets a follow go
+// (primitives/rooms/follow.js), and presence.js under a stub socket, since the room a
 // tab asks for, what it may send and what it does with a refusal are all
 // decided there. The address half (the flag is the room) is
 // test/finder-url.test.js.

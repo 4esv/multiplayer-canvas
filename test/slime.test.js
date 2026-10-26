@@ -2,7 +2,7 @@
 // BIBLE.md section 5: the slime mould. The motion lab's physarum in a round
 // dish on the northwest corner of the ring, alive on the server whether
 // anyone watches, fed by whoever taps it. What is pinned here is the
-// arithmetic both ends share (canvas/slime.js), the dish's seat and measure,
+// arithmetic both ends share (primitives/slime/slime.js), the dish's seat and measure,
 // the rim as cell data, the wire's shape, and the service's clock: that a
 // frame goes out only to a room with someone in it, that a feed lands on the
 // next step, and that a pellet is found and eaten rather than kept.
@@ -142,8 +142,8 @@ describe('the dish is the circle that circumscribes a 5x5 square, inside the 8x8
     assert.deepEqual(SLOTS.slime, [0, 0])
     const box = dishBox()
     assert.equal(box.x % PX, 0, 'the dish is off the cell')
-    // the painted ring's top and left edges are the tile's (the author, #339:
-    // 'the top and left lined up with the top and left of the tile')
+    // the painted ring's top and left edges are the tile's (the top and left
+    // line up with the top and left of the tile)
     assert.deepEqual([box.x, box.y], [0, 0], "the dish is off the tile's top left corner")
     const rim = rimGrid()
     assert.ok(rim[0].some(Boolean), 'the ring does not reach the top edge')
@@ -176,7 +176,7 @@ describe('the dish is the circle that circumscribes a 5x5 square, inside the 8x8
     )
     assert.match(app, /presence\.feed\(/, 'a tap never reaches the wire')
     assert.match(app, /presence\.onSlime\(/, "the room's frames are never painted")
-    // issue #259: the tab says whether it can see the dish, every frame,
+    // The tab says whether it can see the dish, every frame,
     // from the visibility and the render's own verdict on the tile; a
     // delta against a base this tab does not hold asks for a keyframe
     assert.match(
@@ -209,7 +209,7 @@ describe('the dish is the circle that circumscribes a 5x5 square, inside the 8x8
   })
 
   // mutation: slime.wakes-while-away, slime.asleep-fades
-  it("an absent tab's dish loses life: asleep from the no that is sent, awake on the keyframe decoded (issue #271)", () => {
+  it("an absent tab's dish loses life: asleep from the no that is sent, awake on the keyframe decoded", () => {
     const app = read('src/static/canvas/app.js')
     const css = read('src/static/css/canvas-home.css')
     // SET where the watch is sent (presence.js, run in the next test); here,
@@ -258,7 +258,7 @@ describe('the dish is the circle that circumscribes a 5x5 square, inside the 8x8
   })
 
   // mutation: slime.watch-resent-every-frame, slime.hidden-tab-keeps-yes, slime.reconnect-keeps-yes, slime.onwatch-hears-the-unsent
-  it('the client says its watch on change only, says no when hidden, and hands on only what reached the wire (issues #259, #271)', () => {
+  it('the client says its watch on change only, says no when hidden, and hands on only what reached the wire', () => {
     // presence.js under a stub socket and the least DOM it touches, the way
     // test/presence.test.js seats it: sends are observed, not grepped
     const saved = {
@@ -341,7 +341,7 @@ describe('the dish is the circle that circumscribes a 5x5 square, inside the 8x8
   })
 
   // mutation: slime.spectator-keeps-tabstop
-  it("a spectator's dish reads as not-tappable: aria, keyboard and cursor (issue #260)", () => {
+  it("a spectator's dish reads as not-tappable: aria, keyboard and cursor", () => {
     const app = read('src/static/canvas/app.js')
     const on = app.slice(app.indexOf('presence.onSpectate('))
     assert.ok(on.length > 0, 'the dish never hears its role')
@@ -386,7 +386,7 @@ describe('the mould is the lab’s: deterministic, walled in, and it finds its f
       [0.5, 5, 0.5, 0.9, 1.4, 12]
     )
     assert.deepEqual([...TONES], [0.45, 1.1, 2.4])
-    // the departures (canvas/slime.js says why, with the measurement): the
+    // the departures (primitives/slime/slime.js says why, with the measurement): the
     // trail forgets faster than the lab's 0.92 and the colony is thinner
     // than the lab's 12% of the cells
     assert.equal(PARAMS.decay, 0.85)
@@ -514,7 +514,7 @@ describe('the mould is the lab’s: deterministic, walled in, and it finds its f
     assert.ok(decode(g), 'a frame with no food is a frame')
   })
 
-  it('counts pellets by the shape the state paints, not the default (#261)', () => {
+  it('counts pellets by the shape the state paints, not the default', () => {
     const wide = createSlime(3, { pelletRadius: 2 })
     const plain = createSlime(3)
     assert.ok(pelletCells(wide) > PELLET_CELLS, 'a wider drop paints no more cells')
@@ -667,7 +667,7 @@ describe('the service: one dish, on its own clock, spoken to the room', () => {
     [51, 81],
   ]
 
-  it('is one clock: while the dish is full the seam is `step`, byte for byte from one seed (#261)', () => {
+  it('is one clock: while the dish is full the seam is `step`, byte for byte from one seed', () => {
     const a = createSlime(42, { bite: 0 })
     const b = createSlime(42, { bite: 0 })
     for (const s of [a, b]) for (const [x, y] of STANDING_CELLS) feed(s, x, y)
@@ -687,7 +687,7 @@ describe('the service: one dish, on its own clock, spoken to the room', () => {
     })
   })
 
-  it('never dies and never freezes: ten simulated minutes of the service loop (#261)', () => {
+  it('never dies and never freezes: ten simulated minutes of the service loop', () => {
     // pellets count fractionally and a one-hour run was seen at 0.8; what
     // is held is that the dish is never EMPTY for longer than the longest
     // wait, and that the picture keeps changing

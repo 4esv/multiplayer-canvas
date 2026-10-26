@@ -181,10 +181,10 @@ export function glyphSvg(name) {
   return `<svg viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="${glyphPath(rows)}"/></svg>`
 }
 
-// seam: test/desk.test.js, test/textmode.test.js
+// seam: test/desk.test.js
 export const DESK_TOOLS = [
   { id: 'admin', label: 'admin', href: '/admin', glyph: 'mark', bar: true },
-  // live rooms of the owner's own on the presence socket (lib/sessions.js)
+  // live rooms of the owner's own on the presence socket (primitives/rooms/sessions.js)
   { id: 'rooms', label: 'sessions', href: '/admin/sessions', glyph: 'door', bar: true },
   { id: 'kit', label: 'sheet', href: '/admin/kit', glyph: 'kit', bar: true },
 ]

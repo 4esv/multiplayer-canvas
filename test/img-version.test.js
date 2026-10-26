@@ -1,5 +1,5 @@
 // test/img-version.test.js
-// Issue #319: every /img URL the site emits carries the hash of its bytes.
+// every /img URL the site emits carries the hash of its bytes.
 //
 // Pictures keep their names across a re-bake, so a bare /img URL is the same
 // URL before and after, and a returning visitor keeps the old picture for as
@@ -47,7 +47,7 @@ const bootOf = (html) => {
   return m && JSON.parse(m[1])
 }
 
-describe('every /img URL the site emits carries its bytes’ hash (issue #319)', () => {
+describe('every /img URL the site emits carries its bytes’ hash', () => {
   let app, routes, local
   before(async () => {
     app = await build({ logger: false })

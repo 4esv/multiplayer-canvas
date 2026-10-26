@@ -1,6 +1,6 @@
 // test/web-instruments.test.js
-// /web-instruments on the Lo-Hi tech kit (#301, #313), built to the approved
-// Synth board: the author's photographs on the ground, one index card whose
+// /web-instruments on the Lo-Hi tech kit, built to the approved
+// Synth board: photographs on the ground, one index card whose
 // tabs are the instruments, one panel of kit parts in it, every one of them
 // wired to the sound, the playing surface on its lower edge, a scope that
 // draws the real output and no readout. No <svg> anywhere in the entry, and
@@ -148,12 +148,12 @@ describe('web-instruments: the entry', () => {
       assert.ok(!new RegExp(`class="[^"]*\\b${cls}\\b`).test(ENTRY), `.${cls} is back`)
       assert.ok(!new RegExp(`['"\\s]${cls}['"\\s]`).test(PAGE), `instruments.js sets .${cls}`)
     }
-    // the kit's ground is .k-ground; a bare .k is nothing since #313
+    // the kit's ground is .k-ground; a bare .k is nothing
     assert.match(ENTRY, /<section class="rig k-ground"/)
   })
 
   // mutation: web-instruments.line-half-cell
-  // The author's ruling on #336: "the kit becomes 4". Every line the page
+  // Every line the page
   // lays is one cell (--cv-px): a string, a staff line, a ledger and the
   // rules the phone layout tucks under the card's edge.
   it('every line it lays is one cell: no 1px or 2px left in its layout or its script', () => {
@@ -171,7 +171,7 @@ describe('web-instruments: the entry', () => {
 
   // mutation: web-instruments.kit-part-unset
   // kit.css wears its parts through --kp-<part>-<state>, which a template
-  // page sets from kit/parts.njk (#313). This page is an entry, so the rig
+  // page sets from kit/parts.njk. This page is an entry, so the rig
   // sets them itself, at URLs the server versions like every /img URL.
   it('sets every part kit.css wears on the rig, or its pads and radios have no face', () => {
     const KIT = readFileSync(join(ROOT, 'primitives/kit/kit.css'), 'utf8')
@@ -186,7 +186,7 @@ describe('web-instruments: the entry', () => {
   })
 
   // mutation: web-instruments.part-unhashed
-  // #319: every /img URL carries its bytes' hash. The script swaps a control
+  // Every /img URL carries its bytes' hash. The script swaps a control
   // to another part's picture, so every picture it can ask for is named in
   // the entry, where the server versions it, and the script asks for a
   // picture only through that list.
@@ -208,7 +208,7 @@ describe('web-instruments: the entry', () => {
     assert.equal([...code.matchAll(/['"`]\/img\//g)].length, 1, 'an /img URL built outside partSrc')
   })
 
-  // tripwire: the author's correction (#301, 2026-09-24 20:23): keep the
+  // tripwire: keep the
   // index card, lose the nesting inside it
   it('is one index card: five tabs rising out of it, one panel in each card, nothing nested', () => {
     const tabs = [...ENTRY.matchAll(/class="k-cardtab"[^>]*>([^<]+)</g)].map((m) => m[1])
@@ -466,7 +466,7 @@ describe('web-instruments: the computer keyboard', () => {
 })
 
 // The page run in a VM on a stub DOM, with an AudioContext that counts
-// itself: sound starts with the visitor's hand (#322), never on load. The
+// itself: sound starts with the visitor's hand, never on load. The
 // stub keeps what the page does to it (attributes, listeners, the elements
 // it makes, the address it writes, the events it sends) so a test can read
 // it back. With `modules` the layout and a spy for the voices are handed to
@@ -720,8 +720,7 @@ describe('web-instruments: MIDI in', () => {
   })
 })
 
-// Author, 2026-09-24: "the synth shakes enough that someone could think I'm
-// trying to catch an epileptic". Measured (scripts/verify/instrument-motion.mjs,
+// The synth must not shake. Measured (scripts/verify/instrument-motion.mjs,
 // CDP, 60 Hz): the LCD's k-settle ramp restarted on every note (34 luminance
 // changes in 1.5 s of typing), a struck key sank below its scroller and the
 // scrollbar that flipped in moved the whole board 7.5 px, and the press
@@ -939,8 +938,7 @@ function played(inst, o) {
 }
 
 describe('web-instruments: every control changes the sound', () => {
-  // The author (#301, 2026-09-24): "Every control is wired to the audio
-  // graph. Drop a control rather than fake one." Every knob, fader, toggle,
+  // Every knob, fader, toggle,
   // pin and radio button a card draws is turned off its default, and the
   // voice has to build a different graph for it.
   for (const inst of ['rhodes', 'bass', 'ukulele', 'drums', 'synth'])
@@ -1070,8 +1068,7 @@ describe('web-instruments: the screens draw what is useful', () => {
     )
   })
 
-  // The author's summary line: "The piano writes what you play onto a music
-  // sheet." It stays true.
+  // The piano writes what you play onto a music sheet.
   // mutation: web-instruments.sheet-silent
   it('the piano writes what you play onto the sheet, at its pitch', () => {
     assert.match(cardOf('rhodes'), /data-sheet/)
@@ -1141,7 +1138,7 @@ describe('web-instruments: the screens draw what is useful', () => {
 })
 
 describe('web-instruments: the hand', () => {
-  // tripwire: #312's audit listed these as lost; they are back
+  // tripwire: these were once lost and are back
   it('a drag from one key or fret to the next plays each in turn: glissando and strum', () => {
     assert.match(PAGE, /board\.addEventListener\('pointermove'/)
     assert.match(PAGE, /release\(under\)\n\s*under = b\.dataset\.id\n\s*press\(under\)/)
@@ -1167,7 +1164,7 @@ describe('web-instruments: the hand', () => {
     )
   })
   // mutation: web-instruments.sparks-lost
-  // #312's audit on #321 listed the drum-hit ripples as lost: main's pads
+  // The drum-hit ripples: a pad
   // threw three sparks across the drum while it was down
   it('a struck pad throws three sparks across its top, lit while it is down', () => {
     const cells = sparks(PAD.w)
@@ -1186,8 +1183,7 @@ describe('web-instruments: the hand', () => {
   })
 
   // mutation: web-instruments.quaver-lost, web-instruments.quaver-strobes
-  // #312's audit on #321 listed the ukulele's floating note glyph as lost.
-  // The author's ruling on #336 lets a thing move by itself; nothing may
+  // The ukulele's floating note glyph. A thing may move by itself; nothing may
   // shake, strobe or flash, so the quaver rises in steps under three a
   // second and only up
   it('a plucked ukulele lets a quaver go from its soundhole, rising under three steps a second', () => {
@@ -1451,7 +1447,7 @@ describe('web-instruments: a session plays together', () => {
     assert.equal(page.knob.attrs['aria-valuenow'], '6')
   })
 
-  // THE TAB IS A VIEW (canvas/view-sync.js): which instrument is up goes out
+  // THE TAB IS A VIEW (primitives/rooms/view-sync.js): which instrument is up goes out
   // in a session or under a follow, and a peer's is switched to, unsaid.
   // mutation: web-instruments.tab-unsaid
   it('in a session or followed a tab switch goes out as a view; the landing and a lone visitor say nothing', () => {
@@ -1514,7 +1510,7 @@ describe('web-instruments: a session plays together', () => {
 
   // mutation: web-instruments.stack-leaks
   it("the page's sheet stays loaded on the canvas, so no selector in it is a bare class the canvas also uses", () => {
-    // a bare .stack centred the canvas's Just Heard rows over their covers
+    // a bare .stack centred the canvas's rows over their covers
     assert.doesNotMatch(
       CSS,
       /(^|\n|,\s*)\.stack\b/,

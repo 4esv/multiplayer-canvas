@@ -1,7 +1,7 @@
 // The doors' titles are the canvas's pixel face, and the canvas's dust runs
 // on them: a cursor (or a finger) crossing the 404, the 500 or the key
 // disturbs the cells under its path exactly as it disturbs the statement on
-// the home screen. The dust is the canvas's own module (canvas/dust.js); a
+// the home screen. The dust is the canvas's own module (primitives/dust.js); a
 // door hands it the clock and the visitor's choice about motion.
 import { createDust } from 'multiplayer-canvas/dust'
 import { CELL, mountAbyss } from '/canvas/abyss.js'

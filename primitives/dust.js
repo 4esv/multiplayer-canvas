@@ -170,7 +170,7 @@ export function createDust({ now = () => Date.now(), enabled = () => true } = {}
     }
   }
 
-  // A PIXEL TITLE IS DUST TOO (author, 2026-09-23, #300): the case-study title
+  // A PIXEL TITLE IS DUST TOO: the case-study title
   // behaves on its card and on its page the way every other title on the canvas
   // does, one wire per word. pixelTitle draws one svg a word from the words
   // it keeps for readers, so this splits the same words the same way.

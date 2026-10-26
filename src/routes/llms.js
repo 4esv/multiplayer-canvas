@@ -36,8 +36,7 @@ export async function registerLlmsRoute(fastify) {
     const writing = entries.filter(isWriting).sort(byNewest)
     // the root-mounted things are listed as themselves, under a heading that
     // says where they stand (on their own, at the root) rather than filing
-    // them under a word for their kind (author, 2026-09-25: "they can just
-    // be the thing they are")
+    // them under a word for their kind
     const standalone = entries.filter(isExperiment).sort(byNewest)
     const photos = entries.filter(isPhotoSet).sort(byNewest)
 

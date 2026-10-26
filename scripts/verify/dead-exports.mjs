@@ -1,5 +1,5 @@
 // scripts/verify/dead-exports.mjs
-// Issue #263: AN EXPORT NOBODY IMPORTS IS A CORPSE OR A SEAM, AND IT SAYS WHICH.
+// AN EXPORT NOBODY IMPORTS IS A CORPSE OR A SEAM, AND IT SAYS WHICH.
 //
 // Every module under src/ and scripts/ (vendor excluded) is read for what it
 // exports, and every module under src/, scripts/ and test/ for what it

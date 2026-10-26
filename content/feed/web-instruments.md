@@ -15,7 +15,7 @@ extra_js:
 ---
 
 <section class="rig k-ground" aria-label="Five instruments, one at a time" style="--kp-btn-down: url('/img/kit/btn-down.png'); --kp-btn-hot: url('/img/kit/btn-hot.png'); --kp-btn-up: url('/img/kit/btn-up.png'); --kp-cap-thin: url('/img/kit/cap-thin.png'); --kp-key-down: url('/img/kit/key-down.png'); --kp-key-up: url('/img/kit/key-up.png'); --kp-rbtn-down: url('/img/kit/rbtn-down.png'); --kp-rbtn-up: url('/img/kit/rbtn-up.png'); --kp-rbtnw-down: url('/img/kit/rbtnw-down.png'); --kp-rbtnw-up: url('/img/kit/rbtnw-up.png'); --kp-flip-off: url('/img/kit/flip-off.png'); --kp-flip-on: url('/img/kit/flip-on.png')" data-parts="/img/kit/knob-0.png /img/kit/knob-1.png /img/kit/knob-2.png /img/kit/knob-3.png /img/kit/knob-4.png /img/kit/knob-5.png /img/kit/knob-6.png /img/kit/knob-7.png /img/kit/toggle-up.png /img/kit/toggle-down.png /img/kit/pin-out.png /img/kit/pin-in.png /img/kit/white-up.png /img/kit/white-down.png /img/kit/black-up.png /img/kit/black-down.png /img/kit/lamp-off.png /img/kit/lamp-on.png">
-  <!-- One index card (kit.css .k-cardtabs, .k-card, #313): the tab is the
+  <!-- One index card (kit.css .k-cardtabs, .k-card): the tab is the
        instrument, and inside the card there is one panel, its sections
        divided only by one-cell rules and small labels, laid out along what the
        instrument does, with the playing surface on its lower edge. Every
@@ -29,7 +29,7 @@ extra_js:
        The rig's style sets the parts kit.css wears (--kp-<part>-<state>,
        what kit/parts.njk sets on a template page), and data-parts names
        every part picture the script swaps a control to; the server gives
-       each URL its hash (lib/img-version.js, #319), and neither the sheet
+       each URL its hash (lib/img-version.js), and neither the sheet
        nor the script writes one of its own. -->
   <div class="stage carousel-viewport owns-touch">
     <img class="shot k-px" data-for="rhodes" src="/img/instruments/rhodes.png" width="476" height="360" alt="A Rhodes Mark II stage piano on its legs, seen from three-quarters, pixelated" decoding="async">

@@ -4,8 +4,7 @@
 //   normalize(settings) -> a valid settings object. Pure.
 //
 // The textmode settings contract: one shape, validated in one place, used by
-// the store (services/textmode.js), the API (routes/textmode.js) and the
-// browser (js/textmode.js).
+// the server and the browser alike.
 //
 // It lives in the static tree so both sides import the same file rather than
 // a copy of it: node reaches it by path, the browser by URL. routes/home.js
@@ -24,7 +23,7 @@
 // clamped and a nonsense value falls back to the default rather than
 // erroring, because the caller is a slider or a JSON body, not a programmer.
 
-// seam: test/textmode.test.js
+// seam: test/one-bayer.test.js
 export const COLOR_MODES = Object.freeze(['sampled', 'fixed'])
 
 // The fonts textmode.js can parse that this site already serves. Hasklig is
@@ -39,7 +38,7 @@ export const FONTS = Object.freeze([
   Object.freeze({ id: 'bayer', label: 'bayer 4x4', src: null }),
 ])
 
-// seam: test/textmode.test.js
+// seam: test/one-bayer.test.js
 export const FONT_IDS = Object.freeze(FONTS.map((f) => f.id))
 
 // The 18 GPU effects textmode.filters.js installs, in its own catalog order.
@@ -74,7 +73,7 @@ export const POST_FX = Object.freeze([
 // (the one the DitheringShader reference thresholds against): level k lights
 // the pixels whose threshold is under k. The glyph for level k is the k-th
 // character of BAYER_MAP, so a ramp over them reads most ink first.
-// seam: test/textmode.test.js
+// seam: test/one-bayer.test.js
 export const BAYER4 = Object.freeze([0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5])
 export const BAYER_MAP = '0123456789abcdefg'
 

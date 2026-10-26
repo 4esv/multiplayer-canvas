@@ -32,7 +32,7 @@
 //               goes; the white of a drum head or a fret dot inside the
 //               outline stays.
 // --dither      order the cells between the two inks nearest each one on
-//               the 4 x 4 Bayer matrix (js/textmode-settings.js, the one
+//               the 4 x 4 Bayer matrix (primitives/textmode-settings.js, the one
 //               source), so a photo's shading survives three inks as a
 //               pattern of whole cells instead of a flat posterised field.
 // --name NAME   print `export const NAME = [...]` instead of a bare array.

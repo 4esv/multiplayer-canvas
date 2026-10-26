@@ -5,7 +5,7 @@
 // Outputs: a handle { sync, drop, frame, copiesOf } that places, repaints and removes the copies.
 //   DOM, but no globals, so tests drive it on fakes.
 //
-// canvas/mirror.js
+// primitives/mirror.js
 // THE OTHER HALF OF A CUT TILE (BIBLE.md section 2, the honest torus).
 //
 // Out at cover the view is as long as the world on one axis, so a tile the

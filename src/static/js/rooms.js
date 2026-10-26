@@ -2,7 +2,7 @@
 // lib/qr.js); this script drives the buttons through /api/admin/rooms and
 // reloads, so the page and the registry never disagree. No confirm()
 // dialogs: ending a session arms on the first tap and acts on the second
-// (js/kit-arm.js, the one arm), which is an import, so it is bundled
+// (primitives/kit/kit-arm.js, the one arm), which is an import, so it is bundled
 // (scripts/build-assets.mjs).
 import { armed } from 'multiplayer-canvas/kit/arm'
 ;(() => {

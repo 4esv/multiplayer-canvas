@@ -1,5 +1,5 @@
 // scripts/verify/instrument-motion.mjs
-// #301, the author, 2026-09-24: "the synth shakes enough that someone could
+// "the synth shakes enough that someone could
 // think I'm trying to catch an epileptic". Nothing on /web-instruments may
 // shake, strobe or flash (WCAG 2.3.1, three flashes a second at most).
 //
@@ -19,7 +19,7 @@
 //              WCAG 2.3.1 line (a flash is an up-and-down pair). The
 //              ukulele's quaver may drift: up only, a step at a time, under
 //              three steps a second, which is a float and not a shake
-//              (the author's ruling on #336: things may move by themselves;
+//              (the rule: things may move by themselves;
 //              nothing shakes, strobes or flashes)
 // Elements are keyed by their place in the tree, not by identity, so a
 // screen rebuilt on every note is still compared frame to frame (which is

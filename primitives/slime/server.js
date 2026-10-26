@@ -6,7 +6,7 @@
 // The slime mould's one live copy (BIBLE.md section 5). The dish runs in
 // this process on its own clock, visitors or not: a mould that only grew
 // while somebody watched would be an animation, and this is a thing that
-// lives on the ground. The arithmetic is canvas/slime.js, shared with the
+// lives on the ground. The arithmetic is primitives/slime/slime.js, shared with the
 // browser; this file owns the clock, the food the room drops on its own,
 // and the frame that goes out over the presence wire.
 //
@@ -14,7 +14,7 @@
 // revives Maurice and turns every pile back to its first card: the dish is
 // where the room left it, not a fact about anybody.
 //
-// THE WIRE IS COSTED LIKE A RESOURCE (issue #259, 2026-09-17). Measured
+// THE WIRE IS COSTED LIKE A RESOURCE. Measured
 // before this: every open tab, hidden ones included, took the whole picture
 // four times a second, 11.1 KB/s a tab, 2.9 MB/s upstream at the socket cap.
 // Now a tab is sent frames only while it says it is WATCHING (the `watch`
@@ -69,7 +69,7 @@ for (let i = 0; i < SEED_PELLETS; i++) dropFood(state, ...randomCell(state.rand)
 let timer = null
 let lastFrame = 0
 let dirty = false
-// ONE CLOCK (issue #261). While the dish holds its standing pellets the
+// ONE CLOCK. While the dish holds its standing pellets the
 // spawn clock is HELD, a sentinel set once at the count, and the tick draws
 // nothing from the shared rng: that rng also drives the foragers' jitter, so
 // a tick that rolled a wait it never used would put the service's dish out

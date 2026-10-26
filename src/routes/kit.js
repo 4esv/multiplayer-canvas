@@ -1,5 +1,5 @@
 // /admin/kit: THE SHEET, the one page every piece of the site is made of
-// (src/lib/sheet.js). It began as the living specimen of the kit (#313):
+// (src/lib/sheet.js). It began as the living specimen of the kit:
 // every part of kit.css in every state, working, on both grounds (the ground,
 // where experiments stand, and white, where case studies stand), beside the
 // live instruments so the kit can be judged next to the thing that set its bar:

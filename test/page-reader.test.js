@@ -1,5 +1,5 @@
 // test/page-reader.test.js
-// The page as a platform (author, 2026-09-25): "the platform I can later do
+// The page as a platform: "the platform I can later do
 // articles/blogs/reports from that has all the bells and whistles of a
 // page", and "make sure anyone can read it". A page that is read (a case
 // study now) carries the reader's settings under its meta line, the same

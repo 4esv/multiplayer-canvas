@@ -62,16 +62,11 @@ export function pathFor(entry) {
 }
 
 // The kind label a sheet's meta line prints. Chrome copy, not prose: it
-// names the shelf, never the piece. Capitalized as a label is (author,
-// 2026-09-25: "Case Study", not "case study"), here where it is produced,
+// names the shelf, never the piece. Capitalized as a label is, here where it is produced,
 // so the SSR'd page, the canvas's boot index and /api/page print one word.
 //
 // A root-mounted thing (an EXPERIMENT in code) has no shelf to name, so it
-// has no label at all and its meta line is its date (author, 2026-09-25:
-// "Since experiments aren't in a stacked collection that shows an
-// intermediate group view they don't need to be labeled experiments
-// anywhere, they can just be the thing they are ... This way I have more
-// freedom to add things that don't feel like experiments."). The kind keeps
+// has no label at all and its meta line is its date. The kind keeps
 // its name in code, where it routes; it is never said to a reader
 // (test/served-labels.test.js).
 const LABELS = {
@@ -128,7 +123,7 @@ export function isCaseStudy(entry) {
 // they take the frame. ONE predicate, read by the canvas payload and by the
 // direct load, because two copies drifted: the server SSR'd a direct-loaded
 // experiment as a sheet over the canvas while the canvas opened the same
-// entry as a full page, so the one URL was two pages (#300).
+// entry as a full page, so the one URL was two pages.
 export function isFullPage(entry) {
   return isCaseStudy(entry) || !!entry.webOnly
 }

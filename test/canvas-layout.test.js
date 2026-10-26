@@ -231,11 +231,10 @@ describe('the shipped world (tiered shells)', () => {
   })
 
   // mutation: canvas-layout.tile-unlabelled, canvas-layout.label-lower-case
-  it('labels every thing on the ground, each in Title Case (#339)', () => {
-    // the author: "For consistency's sake we should capitalize all labels
-    // and label all things". A word is capitalised unless it is a small
+  it('labels every thing on the ground, each in Title Case', () => {
+    //. A word is capitalised unless it is a small
     // word inside the name (Sisyphus the Slime); a brand keeps its own
-    // casing because it starts in capitals (GitHub, E-ffigy, RSS)
+    // casing because it starts in capitals (GitHub, RSS)
     const SMALL = new Set([
       'a',
       'an',

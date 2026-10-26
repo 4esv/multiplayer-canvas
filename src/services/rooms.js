@@ -1,4 +1,4 @@
-// The desk's one setting for sessions (lib/sessions.js): whether a new
+// The desk's one setting for sessions (primitives/rooms/sessions.js): whether a new
 // session gets a PIN unless told otherwise. One small file under data/ (the
 // prod volume), so the choice survives a deploy while the sessions
 // themselves, which live in memory, do not.

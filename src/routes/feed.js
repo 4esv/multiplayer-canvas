@@ -34,7 +34,7 @@ const SITE_URL = config.site.url
 
 // A photo set brings its own stylesheet and script, so the frontmatter
 // never has to name them: `type: photos` is the whole declaration. The
-// script is a module (it imports the kit's walker, js/kit-scroll.js).
+// script is a module (it imports the kit's walker, primitives/kit/kit-scroll.js).
 const PHOTOSET_CSS = '/css/photoset.css'
 const PHOTOSET_JS = '/js/photoset.js'
 
@@ -240,7 +240,7 @@ export async function registerFeedRoutes(fastify) {
           })
         }
         // the page bar walks the root-mounted entries of the page's own
-        // kind, in the list's order (#338); buildEntrySheet keeps the kind
+        // kind, in the list's order; buildEntrySheet keeps the kind
         const { sheet, assets } = buildEntrySheet(
           entry,
           assetUrl,

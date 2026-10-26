@@ -195,7 +195,7 @@ function listRow({ href, title, line, tags, kind, attrs = '' }) {
 
 // work: the hire-me prose up to the case-studies marker, then the live
 // case-study list. The sheet dresses what the plain-text page states flat,
-// in the kit's parts (#336): the pillars render as two drawings with their
+// in the kit's parts: the pillars render as two drawings with their
 // words, the long "Not clear enough?" pitch folds into the kit's disclosure
 // (.k-disc, its summary the outline button), the keyword line is a still
 // list of screen-printed labels (.k-meta), and get-in-touch renders as the
@@ -349,7 +349,7 @@ export function buildFeedSheet(entries) {
 export function entryCssChain(entry) {
   // the kit draws a case study's foot (the dock); an experiment still wears
   // its own controls, some under the retired kit's k- names, so it is not
-  // handed the kit until it is moved onto it (#336)
+  // handed the kit until it is moved onto it
   return [
     '/css/highlight.css',
     '/css/code.css',
@@ -361,9 +361,9 @@ export function entryCssChain(entry) {
 }
 
 // The module chain: every case study gets canvas/case-study.js, the pretext
-// flow that hangs a narrow figure in its text where there is width (#300),
+// flow that hangs a narrow figure in its text where there is width,
 // and canvas/code-refs.js, the copy key on every block and the prose-to-code
-// mapping (#360, #361), the way every entry gets case-study.css. One
+// mapping, the way every entry gets case-study.css. One
 // layout, no entry names it.
 export function entryJsModules(entry) {
   return [
@@ -372,15 +372,15 @@ export function entryJsModules(entry) {
   ]
 }
 
-// THE PAGE BAR (#338): a full page's one navigation, a strip of tabs at the
+// THE PAGE BAR: a full page's one navigation, a strip of tabs at the
 // top of the sheet the way a browser holds its pages, which the shell
 // (canvas/home.njk) puts before the page's body so it is the sheet's full
 // width and sticks to the top of the scroll. A tab a page of the ring, the
 // close box on the lit one, and the way back to the top. `ring` is the
 // collection the page walks, in order, and it is filtered to the page's own
 // kind here so no list a route hands over can make a case study step into
-// an experiment (issue #284); app.js paintPageBar repaints the same markup
-// (js/kit-scroll.js) from the canvas's ring once it boots.
+// an experiment; app.js paintPageBar repaints the same markup
+// (primitives/kit/kit-scroll.js) from the canvas's ring once it boots.
 function pageBar(entry, ring) {
   const kind = kindOf(entry)
   const mine = (ring || []).filter((e) => kindOf(e) === kind && !e.hidden)
@@ -420,15 +420,15 @@ export function buildEntrySheet(entry, assetUrl, ring = null) {
       // a FULL page on a direct load exactly when the canvas opens it as one
       // (isFullPage): the standalone URL and the page the canvas opens are
       // one page, not two. Only a case study sets its title in the canvas's
-      // own face (#300); an experiment keeps the plain h1 the canvas paints.
+      // own face; an experiment keeps the plain h1 the canvas paints.
       full,
       // an entry is the ITEM layer, above the canvas and its collections:
-      // the bar is not drawn over it (author, 2026-09-25, #300)
+      // the bar is not drawn over it
       item: true,
       pixel: isCaseStudy(entry),
       meta: metaLine(entry),
       // the tags inside the meta block, as markup: the one row the canvas
-      // draws for the same page (js/tags.js). An experiment is the thing it
+      // draws for the same page (primitives/kit/tags.js). An experiment is the thing it
       // is, with no row of words over it.
       tagRow: isRootMounted(entry) ? '' : tagsMarkup(entry.tags, kindOf(entry)),
       // a page that is READ (a case study; the articles and reports after

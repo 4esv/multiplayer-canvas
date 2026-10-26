@@ -3,7 +3,7 @@
 // in a block whose edge is one cell of the line tone. The sheet drew it first
 // (the surfaces plate) and the site wears it now: on a card, under a page's
 // title, on a list row. It is ONE drawing in kit.css and ONE builder in
-// js/tags.js, so a tag reads the same wherever it stands and a place that
+// primitives/kit/tags.js, so a tag reads the same wherever it stands and a place that
 // wants tags cannot draw its own.
 //
 // What is held: the drawing (the code face, a cell of frame, the surface, an

@@ -1,5 +1,5 @@
 // The kit's parts: every control that is a picture of its state, as a
-// shading function (#313, Lo-Hi tech).
+// shading function.
 //
 // A part is a function from a point to a grey, 0 dark to 1 light, or null
 // where there is no part (the ground shows through). That is the whole
@@ -16,11 +16,10 @@
 // The PNG under src/static/img/kit/ is one px per dot and one cell per 4 px,
 // shown 1:1, so a part sits on the cell by construction.
 //
-// Ported from the author's specimen (scratchpad/spec/skeuo.mjs, 2026-09-24):
-// the functions are his, in his units; what changed is the canvas of the
+// Ported from a specimen drawn in its own units; what changed is the canvas of the
 // radio button and the thin cap, each widened one px to a whole cell, and
 // every rim and ring, each widened to a whole cell (two px of a spec, four
-// on the page): a kit line is 4px, drawn or baked (#336).
+// on the page): a kit line is 4px, drawn or baked.
 
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -234,8 +233,8 @@ part('key', ['up', 'down'], 28, 28, (state) => {
   }
 })
 
-// piano keys, the taller ones the author asked for on the Synth board
-// (#301, 2026-09-24: "Taller keys"): a white key is the panel's own tone
+// piano keys, the taller ones on the Synth board:
+// a white key is the panel's own tone
 // (never white) with a lit left edge, a shaded right edge and a dark front
 // lip that sinks when pressed; its left column is the gap to its neighbour,
 // its top row the fallboard's shadow. A black key is a near-ink block with

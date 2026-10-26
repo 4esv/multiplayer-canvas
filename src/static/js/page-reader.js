@@ -1,7 +1,5 @@
 // THE READER'S SETTINGS: what a page that is read (a case study now, the
-// articles and reports after it) offers the one reading it. The author:
-// "the platform I can later do articles/blogs/reports from that has all the
-// bells and whistles of a page", and "make sure anyone can read it".
+// articles and reports after it) offers the one reading it.
 //
 // Three things, one small group under the page's meta line, each a kit
 // control with its word on it:
@@ -31,7 +29,7 @@
 // LISTENING IS SHARED (2026-09-26), the way a video is: in a session, and
 // from the one followed to the tabs following them, starting, pausing and
 // stopping go out as an `canvas:view` with the sentence being read, and a
-// peer's is read along (canvas/view-sync.js stamps and checks the page).
+// peer's is read along (primitives/rooms/view-sync.js stamps and checks the page).
 // The reading order is a pure function of the page, so a sentence's index
 // is the same sentence on every screen. A browser may refuse to speak for a
 // page the visitor has not touched; then Listen says so ("Reading along,
@@ -205,7 +203,7 @@ function readingQueue(root, title) {
 
 // ---- the voice ----
 // A browser left to itself reads with whatever voice the OS never chose:
-// on a Mac that is the compact one, thin and robotic. The author wants one
+// on a Mac that is the compact one, thin and robotic. The wanted result is one
 // voice, male and steady at a natural pace, and the same voice on as many
 // devices as possible (2026-10-01): the one listening should get the same
 // page the next listener gets. The API says nothing about a voice but its

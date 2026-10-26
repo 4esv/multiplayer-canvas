@@ -1,5 +1,5 @@
 /* ============================================================
-   /web-instruments: where the kit's parts stand (#301, #313).
+   /web-instruments: where the kit's parts stand.
 
    Layout only. Every look on this page is kit.css: the index card and its
    tabs, the panel's rules, the knobs, faders, pins, lamps, radio buttons,
@@ -28,7 +28,7 @@
   /* the card is the Synth board's, 316 cells wide where the screen has it:
      it stands out of the reading column, centred on it, and never wider
      than the screen less a gutter each side. The sheet around it is the
-     page shell's (#328). */
+     page shell's. */
   --rig-w: min(calc(316 * var(--cv-px)), calc(100vw - 2 * var(--cv-sp-6)));
   width: var(--rig-w);
   margin: calc(3 * var(--cv-px)) 0 calc(3 * var(--cv-px)) calc(50% - var(--rig-w) / 2);
@@ -112,7 +112,7 @@
   gap: calc(3 * var(--cv-px));
 }
 /* scoped to the panel: this sheet stays loaded after the page closes, and a
-   bare .stack centred the canvas's Just Heard rows over their covers */
+   bare .stack centred the canvas's rows over their covers */
 .panel .stack {
   display: flex;
   flex-direction: column;

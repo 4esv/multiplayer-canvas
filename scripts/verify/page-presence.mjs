@@ -1,6 +1,6 @@
 // scripts/verify/page-presence.mjs
 // BIBLE.md section 2, in a real browser: TWO READERS OF ONE PAGE SEE EACH
-// OTHER ON THE SAME BLOCK (issue #327).
+// OTHER ON THE SAME BLOCK.
 //
 // The pure guards hold the arithmetic (test/presence.test.js: an anchor
 // taken on one column names the same fraction of the same block on

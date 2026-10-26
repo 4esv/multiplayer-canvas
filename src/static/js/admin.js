@@ -5,7 +5,7 @@ import { poof } from 'multiplayer-canvas/pixel-moves'
 import { armed } from 'multiplayer-canvas/kit/arm'
 ;(() => {
   // Sign out one other session, or every other session: the same two-tap
-  // button pointed at a different URL (js/kit-arm.js arms it).
+  // button pointed at a different URL (primitives/kit/kit-arm.js arms it).
   const signOut = (b, url) =>
     armed(b, async () => {
       // DESTRUCTION POOFS (BIBLE.md section 9), and it poofs OPTIMISTICALLY:

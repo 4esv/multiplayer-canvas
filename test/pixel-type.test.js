@@ -50,7 +50,7 @@ const SET_IN = {
     'GitHub',
     'Hugging Face',
     'Kaggle',
-    'Top Albums',
+    'Top Tracks',
     'Found',
   ],
   label: [
@@ -71,7 +71,7 @@ const SET_IN = {
     'GPG',
     'Mail',
     'open',
-    'E-ffigy',
+    'E-Mail',
     'Web Instruments',
     '12. Qxf2# · white wins',
     'e8=Q+ · draw',
@@ -165,7 +165,7 @@ describe('pixel type: the faces are well-formed data', () => {
 
   // A letter is one stroke. The display h, m and n shipped with the pixel
   // that joins the shoulder to the stem missing, so the hero spelled them as
-  // loose strokes (#299). A glyph that is several pieces by design names how
+  // loose strokes. A glyph that is several pieces by design names how
   // many here; everything else is one 8-connected component.
   const PIECES = {
     display: { i: 2, j: 2, ':': 2, '!': 2, '?': 2 },
@@ -314,7 +314,7 @@ describe('pixel type: the buffer as a buffer', () => {
   })
 })
 
-describe('pixel type: the title that wraps where it stands (#300)', () => {
+describe('pixel type: the title that wraps where it stands', () => {
   it('sets one svg a word at the face pitch, and keeps the words readable', () => {
     const html = pixelTitle('NAO robot embodying AI', 'display', { tag: 'h1' })
     assert.match(html, /^<h1 class="ptitle ptitle-display"/)

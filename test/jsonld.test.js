@@ -11,7 +11,7 @@
 //      whose headline and datePublished match the entry's own frontmatter.
 //   5. The rel="me" head links and the served manifest stay inside the
 //      identity the site config names, so no surface tells a different
-//      story about who the author is or where else they live.
+//      story about who the owner is or where else they live.
 import { describe, it, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'

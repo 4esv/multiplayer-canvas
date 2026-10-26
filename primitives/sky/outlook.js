@@ -3,7 +3,7 @@
 //   to colours.
 // Outputs: an RGBA Uint8ClampedArray, SIZE x SIZE, ready for ImageData. Pure.
 //
-// outlook.js: the weather tile is a window, and it is almost all sky (#305).
+// outlook.js: the weather tile is a window, and it is almost all sky.
 //
 // A square of sky behind one ink line, drawn from the live payload and
 // nothing else. Two things pick the picture, the way a sheet of pixel skies
@@ -19,7 +19,7 @@
 //
 // THE SKY is horizontal bands, never a gradient: each band is one flat
 // colour, and the last part of each band steps into the next through the
-// toolkit's ordered dither (BAYER4, js/textmode-settings.js, the site's one
+// toolkit's ordered dither (BAYER4, primitives/textmode-settings.js, the site's one
 // dither), a quarter and then a half. The edges between bands are ragged in
 // long sideways runs of whole cells, the way layered air looks, and a low
 // sun pulls the warm bands up round itself into a mound of glow. Cloud decks
@@ -41,7 +41,7 @@
 //
 // THE SKY IS SHARED (round six). One layer answers a hand: the clouds. A
 // push is an impulse on one offset the server holds for the whole room
-// (services/sky.js); the offset springs home, the clouds rejoin their
+// (primitives/sky/server.js); the offset springs home, the clouds rejoin their
 // drift, and every tab watching draws the same whole cells from it. The
 // arithmetic is here so both ends step the same spring. THE SUN AND THE
 // MOON NEVER MOVE UNDER A HAND (round seven): wind moves clouds, nothing

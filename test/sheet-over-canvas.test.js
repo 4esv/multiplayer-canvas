@@ -17,7 +17,7 @@
 // nothing in a run that reproduces can show you the run that does not. The row
 // is derived now (layout.js optionsBox, x=1440 w=912 hero-wide, centred in
 // CSS, same centre line as the measured 332 at 1730), so there is no longer a
-// success case to sample. See test/canvas-never-half-built.js.
+// success case to sample.
 //
 // That leaves the only other thing on the page: #modal, a position:fixed
 // overlay. Two overlapping fixed layers are the sole way absolutely-placed

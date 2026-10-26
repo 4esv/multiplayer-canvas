@@ -1,5 +1,5 @@
 // test/api-errors.test.js
-// Every JSON error is { error: <word>, message?: <sentence> } (#359). The
+// Every JSON error is { error: <word>, message?: <sentence> }. The
 // word is what a program branches on, so a route may only say a word the
 // vocabulary (lib/api-errors.js) holds, and
 // an /api path answers JSON whatever went wrong, never the HTML door.

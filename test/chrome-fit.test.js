@@ -2,7 +2,7 @@
 // BIBLE.md section 8, mechanized: the chrome fits every screen, and the
 // opening camera clears it without the world reserving a pixel for it.
 //
-// This guard is the one CLAUDE.md and the registry both claimed
+// This guard is the one the registry claimed
 // canvas-layout already carried ("chrome reservation across a viewport
 // matrix") and it did not: the reservation it asserted was a single world
 // constant solved once at the design view, so it was checked at exactly one
@@ -148,7 +148,7 @@ describe('the chrome fits every screen (BIBLE.md section 8)', () => {
     )
     assert.ok(hidden, 'the watch density hides the chrome outright')
     const hides = new Set(hidden[1].split(',').map((s) => s.trim()))
-    // and the kit parts the chrome wears that live outside the bar (#336):
+    // and the kit parts the chrome wears that live outside the bar:
     // the finder's line and the toggles, the menu and the selection mark
     for (const sel of [
       '#topbar',
@@ -205,7 +205,7 @@ describe('the chrome fits every screen (BIBLE.md section 8)', () => {
     // browser asks. A rule later in the file (#close's grid, the map's block,
     // an open #cmds) outranks the media block on order or specificity, and
     // then the hide only held because app.js set [hidden] and the rest sat
-    // in a hidden bar (issue #320). Each element is taken without [hidden]
+    // in a hidden bar. Each element is taken without [hidden]
     // and in its showing state, so the block has to hide it on its own.
     const rules = cssRules(HOME_CSS)
     const html = { tag: 'html', classes: [], attrs: {} }

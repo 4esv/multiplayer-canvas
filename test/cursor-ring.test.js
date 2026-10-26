@@ -345,8 +345,8 @@ describe('the presence cursor has an edge on the canvas', () => {
   })
 
   // mutation: cursor-ring.scrub-clicks, cursor-ring.grabbable-after-pressing
-  it('scrolling a collection is the grab hand: offered over the track, held through the scrub (#339)', () => {
-    // the author: "Scrolling a collection should use the grab hand cursor".
+  it('scrolling a collection is the grab hand: offered over the track, held through the scrub', () => {
+    //.
     // Every collection is walked on the kit's snap scrollbar (the piles, the
     // statement's pile, a fan's), so the scrollbar writes the state and the
     // root wears it, like every other hand

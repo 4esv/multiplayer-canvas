@@ -33,10 +33,10 @@ stands empty for them. Add your own (a photograph you hold the rights to,
 pixelated with the command in the table) as `bass.png`, `ukulele.png` and
 `drums.png`, with an `<img class="shot" data-for="...">` line in the entry.
 
-- **CC BY-SA** (`rhodes.png`): name the author, and the derivative carries
+- **CC BY-SA** (`rhodes.png`): name the creator, and the derivative carries
   the same licence. The pixelated PNG made from that photograph, and the
   canvas object made from the same one, are therefore offered under
   CC BY-SA 3.0; the rest of the site is not.
-- **CC BY** (`synth.png`): name the author and the licence, and say it was
+- **CC BY** (`synth.png`): name the creator and the licence, and say it was
   changed (it was: quantised to the cell and to three greys). The pixelated
   PNG carries no share-alike condition.

@@ -1,5 +1,5 @@
 // test/bible-prose.test.js
-// BIBLE.md is a consistency contract, not a lab notebook (#262). The prose
+// BIBLE.md is a consistency contract, not a lab notebook. The prose
 // states what must stay consistent and names the guard that holds it. The
 // story of how a value was chosen lives in a comment beside the value, the
 // measurement lives in the test that holds it. bible-sync reads the
@@ -78,12 +78,12 @@ describe('BIBLE.md prose carries no numbers the sync guard cannot read', () => {
   it('the lint bites (a guard that never failed is a guess)', () => {
     assert.equal(strayNumerals('found in about 7 seconds').length, 1)
     assert.equal(strayNumerals('retired 2026-09-17').length, 3)
-    assert.equal(strayNumerals('see #227').length, 1)
+    assert.equal(strayNumerals('see 227').length, 1)
     assert.equal(strayNumerals('laundered as `102`').length, 1)
     assert.equal(strayNumerals('ratio 4.5:1').length, 2)
     assert.equal(strayNumerals('ink is #18181b, not #111').length, 1)
     assert.deepEqual(strayNumerals('the module is 48px, the cell 4px'), [])
-    assert.deepEqual(strayNumerals('`--cv-fs-1` and `src/og/v2.js`, an h1 in woff2'), [])
+    assert.deepEqual(strayNumerals('`--cv-fs-1` and `src/lib/kit-parts.js`, an h1 in woff2'), [])
     assert.deepEqual(strayNumerals('see section 5 and sections 9 and 11'), [])
     assert.equal(strayNumerals('see section 99').length, 1)
   })

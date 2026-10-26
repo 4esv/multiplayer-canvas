@@ -1,5 +1,5 @@
 // test/case-study-page.test.js
-// Issue #300: a case study is ONE page and ONE card, in the pixel law.
+// a case study is ONE page and ONE card, in the pixel law.
 //
 //   - a direct load of /work/<slug> is the same full page the canvas opens,
 //     not a sheet with the canvas showing above it
@@ -67,7 +67,7 @@ describe('case study: one page', () => {
   }
 })
 
-// the same test off-cell.mjs applies (#299), inline: rectangles on an
+// the same test off-cell.mjs applies, inline: rectangles on an
 // integer viewBox, crispEdges, no curve, no circle, no rotation, no fade,
 // and a word is <text> with no face of its own (the page's body face)
 const onTheCell = (svg) =>
@@ -99,7 +99,7 @@ describe('case study: figures on the cell', () => {
   })
 })
 
-// The author's review of #311 (2026-09-23): a white ground, no shadow, type a
+// A case study's rules: a white ground, no shadow, type a
 // step down, a title that answers the pointer as the canvas's titles do, the
 // site's own cursor in the figures, and no thumbnails in the page's nav.
 const CSS = readFileSync(join(ROOT, 'src/static/css/canvas-home.css'), 'utf8')
@@ -118,7 +118,7 @@ const rule = (sel, sheet = CSS) => {
   return i < 0 ? '' : sheet.slice(i, sheet.indexOf('}', i))
 }
 
-describe('case study: the author review', () => {
+describe('case study: the page rules', () => {
   // mutation: case-study-page.ground-ground
   it('a case-study page stands on --cv-white, a white of its own', () => {
     assert.match(TOKENS, /--cv-white: #ffffff;/)
@@ -180,9 +180,7 @@ describe('case study: the author review', () => {
     assert.match(rule('#modal.fullpage #sheet'), /min-height: 100dvh;/)
   })
 
-  // THE COLUMN IS THE TEXT'S MEASURE and ONE EDGE RULE (author, 2026-09-24,
-  // measured at 1440: text 289..1005 centred at 647 under figures centred
-  // at 720, code from 320). The sheet's 60ch paragraph cap is lifted on the
+  // THE COLUMN IS THE TEXT'S MEASURE and ONE EDGE RULE. The sheet's 60ch paragraph cap is lifted on the
   // page, and the 50rem code strip is off it: a block is the column's
   // width or centred on its axis. The painted half is figure-fit.mjs
   // (measure and edges readings at 390, 768, 1280, 1440, 1920).
@@ -198,7 +196,7 @@ describe('case study: the author review', () => {
     )
   })
 
-  // ONE AXIS (author, 2026-09-24): text and figures share one centred
+  // ONE AXIS: text and figures share one centred
   // column, wide enough to read as one piece; the two-track desk is gone.
   // The painted half is figure-fit.mjs (the column centred in the frame at
   // 390, 768, 1280, 1440 and 1920).
@@ -207,7 +205,7 @@ describe('case study: the author review', () => {
     assert.match(rule('#modal.fullpage #sheetInner:has(> h1.ptitle)'), /--cs-measure: 864px;/)
     assert.doesNotMatch(CSS, /@media \(min-width: 1202px\)/)
     // the only float on the page is the one the flow module hangs
-    const page = CSS.slice(CSS.indexOf('THE CASE-STUDY PAGE (#300)'))
+    const page = CSS.slice(CSS.indexOf('THE CASE-STUDY PAGE'))
     const floats = [page, CS_CSS, ENTRY_CSS].flatMap((sheet) =>
       [...sheet.matchAll(/^([^\n]*)\{[^}]*float: (?!none)/gm)].map((m) => m[1].trim())
     )
@@ -216,7 +214,7 @@ describe('case study: the author review', () => {
     ])
   })
 
-  // NO FRAME ON ANY FIGURE (author, 2026-09-24, #325): a UI, a diagram, a
+  // NO FRAME ON ANY FIGURE: a UI, a diagram, a
   // photo, each stands as itself, no bordered box, no ground, no label over
   // it; its title is a plain caption line under it. figures.mjs still marks
   // the screens (a fact about the drawing), and no rule hangs on the mark.
@@ -239,8 +237,7 @@ describe('case study: the author review', () => {
     assert.match(FIGS, /const ui = fig\.ui \? ' cf-ui' : ''/)
   })
 
-  // THE TEXT FLOWS ROUND THE FIGURES WHERE THERE IS WIDTH (author,
-  // 2026-09-24): pretext lays the paragraphs after a narrow figure at the
+  // THE TEXT FLOWS ROUND THE FIGURES WHERE THERE IS WIDTH: pretext lays the paragraphs after a narrow figure at the
   // width beside it and hangs the figure only where that text is wide
   // enough and outlasts it. The painted half is figure-fit.mjs (hung
   // figures on the column's edge, no line across one, none orphaned, none
@@ -354,13 +351,13 @@ describe('case study: the author review', () => {
   // mutation: case-study-page.primitives-deleted
   it('the documented case-study primitives are still there', () => {
     // (.unit-pict and .inline-token had no content using them and went with
-    // #336; the grid they sat in is still the kit for a dictogram)
+    // the kit; the grid they sat in is still the kit for a dictogram)
     for (const sel of ['.unit-grid {', '.pipeline {', '.math-aside {'])
       assert.ok(CS_CSS.includes('\n' + sel), sel)
   })
 })
 
-// Author, 2026-09-23: experiment pages let the canvas peek out at the bottom
+// Experiment pages let the canvas peek out at the bottom
 // too; fix it in the shared shell, not per kind. The painted half of this is
 // scripts/verify/page-ground.mjs (a browser, both sizes, scrolled to the end);
 // these hold the two halves of the shell it measures.
@@ -397,7 +394,7 @@ describe('every full page: one shell', () => {
   })
 })
 
-// Author, 2026-09-25: the search bar is not visible with an experiment open;
+// The search bar is not visible with an experiment open;
 // it sits at the collection layer at most. The layer is marked on <html>
 // (item-open) by the server for a direct load and by paintSheet for a page
 // the canvas opens, and the bar reads the layer, not the full-page skin. On

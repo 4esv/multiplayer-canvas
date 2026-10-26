@@ -8,7 +8,7 @@ export default {
   // it, so a staging box can run the same tree.
   url: 'https://example.com',
   // One sentence, for meta descriptions, llms.txt and the feed.
-  description: 'A personal site on a shared canvas. Anyone with it open sees everyone else.',
+  description: 'A site on a shared canvas. Anyone with it open sees everyone else.',
   // The person the site belongs to: JSON-LD Person, article bylines,
   // humans.txt and the contact line.
   author: {

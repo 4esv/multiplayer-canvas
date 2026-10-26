@@ -120,11 +120,11 @@ describe('entry routes render the canvas shell with the entry sheet open', () =>
     const r = await app.inject({ method: 'GET', url: `/work/${FIXTURES.caseStudy}` })
     assert.equal(r.statusCode, 200)
     assert.ok(r.body.includes('id="stage"'))
-    // a case study is a full page on a direct load too (#300)
+    // a case study is a full page on a direct load too
     assert.match(r.body, /id="modal" role="dialog" class="open fullpage( reading)?"/)
     assert.ok(r.body.includes('<article class="prose">'), 'the real markup is in the document')
     assert.match(r.body, /<link rel="stylesheet" href="[^"]*case-study[^"]*\.css" data-sheet-css>/)
-    // the way back is the page bar's close box (#338)
+    // the way back is the page bar's close box
     assert.ok(
       r.body.includes('<a class="k-btn k-ico k-close" href="/work"'),
       'the way back is real'
@@ -148,7 +148,7 @@ describe('entry routes render the canvas shell with the entry sheet open', () =>
     assert.ok(r.body.includes('<article class="prose">'))
     // Experiments used to ship no backlink at all, which left a small touch
     // screen (a watch) trapped in the sheet: no Escape, no reachable gap.
-    // The way back is the page bar's close box now (#338), a real link.
+    // The way back is the page bar's close box now, a real link.
     assert.ok(
       r.body.includes(
         '<a class="k-btn k-ico k-close" href="/" aria-label="Close: back to canvas">'
@@ -171,7 +171,7 @@ describe('entry routes render the canvas shell with the entry sheet open', () =>
     //
     // The position:fixed failure it was hired to prevent has since been
     // retired by construction: under the watch density nothing on the page is
-    // fixed or transformed at all, and no canvas boots (canvas/boot.js). So
+    // fixed or transformed at all, and no canvas boots (src/static/canvas/app.js). So
     // the tag has nothing left to protect and one thing left to break, and
     // the watch gets the adaptation every other site on the web gets.
     for (const url of ['/', '/login']) {
@@ -223,7 +223,7 @@ describe('entry routes render the canvas shell with the entry sheet open', () =>
       'a section sheet is a card, not a destination'
     )
     // and the script that adopts it keeps it one: the page bar at its top,
-    // repainted from the canvas's ring (#338)
+    // repainted from the canvas's ring
     const adopt = APP.match(/function adoptSsrSheet\(slug\)\{[\s\S]*?\n\}/)?.[0] ?? ''
     assert.match(
       adopt,
@@ -268,7 +268,7 @@ describe('/api/sheet/:slug serves the client router', () => {
       "the longer pitch folds into the kit's disclosure"
     )
     // the keywords are a still list of the kit's tags, not a ribbon that
-    // scrolls forever (#336)
+    // scrolls forever
     assert.match(
       sheet.body,
       /<ul class="k-tags kwList"[^>]*><li class="k-tag">/,

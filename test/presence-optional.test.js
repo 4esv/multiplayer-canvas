@@ -105,7 +105,7 @@ describe('presence is optional, and the canvas is not', () => {
       assert.equal(tried, 1, 'the real path never reached the socket, so this proved nothing')
       assert.equal(typeof api.post, 'function')
       // the same answer on the tally too: a refused socket measured nothing,
-      // so it says null like a missing one, not zero (issue #320), and not
+      // so it says null like a missing one, not zero, and not
       // the page's count either
       let seen = 'never called'
       api.onCount((n) => (seen = n))

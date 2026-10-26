@@ -217,7 +217,7 @@ const BOOT = (()=>{ try{ return JSON.parse(document.getElementById('boot').textC
   catch{ console.warn('boot payload missing: serving skeleton'); return null; } })();
 // the site's name (site.config.js), for the tab title as the camera moves
 const SITE_NAME = BOOT?.siteName || 'canvas';
-// every picture's URL, from the server's map (issue #319): each carries the
+// every picture's URL, from the server's map: each carries the
 // hash of its bytes, so a re-baked picture is a new URL and reaches a warm
 // cache on the next load. Build no /img URL anywhere else.
 const imgSrc = p => BOOT?.img?.[p] || '/img/'+p;
@@ -329,7 +329,7 @@ function pixelGlyph(key, svgHtml){
   GLYPHS[key] = out;
   return out;
 }
-// THE DUST (BIBLE.md section 10) is canvas/dust.js: this page hands it the
+// THE DUST (BIBLE.md section 10) is primitives/dust.js: this page hands it the
 // room's clock and says when it is off. The door pages (js/door.js) run the
 // same module on their titles.
 // ?nodust turns the dust off for a session, to bisect a stutter by hand. It
@@ -396,7 +396,7 @@ addEventListener('beforeunload', persist);
 const nodes = {};
 // data-hk is the tile's name on the presence wire: what a peer says its
 // cursor is over, so every other tab can light the same thing (presence.js,
-// lib/presence-protocol.js). Every tile carries one, and the STYLESHEET
+// primitives/presence/presence-protocol.js). Every tile carries one, and the STYLESHEET
 // decides what a hover on it looks like, exactly as it does for your own
 // pointer: a tile with no :hover rule shows nothing for a peer either,
 // because there is nothing to show. Controls INSIDE a tile are a different
@@ -435,7 +435,7 @@ function mkTile(t, seat = true){
     const open = t.ext ? ()=>exit(t.ext) : ()=>openPage(t.slug);
     // no eyebrow (2026-09-11): the title is the first line, the chips say
     // the kind, and the date is the page's
-    // THE CASE-STUDY CARD IS THE PAGE'S TITLE, SMALLER (#300): the same
+    // THE CASE-STUDY CARD IS THE PAGE'S TITLE, SMALLER: the same
     // pixelTitle in the same face the page sets, at half a cell (--tpx on
     // .cs-card), so the card and the page it opens read as one thing. The
     // pile's front and the /work fan are both this node.
@@ -458,7 +458,7 @@ function mkTile(t, seat = true){
       const qd = n.querySelector('.qdate');
       if(qd && pg.date) qd.textContent = `· ${pg.date}`;
       const tags = n.querySelector('.k-tags');
-      // the kit's tags (js/tags.js): a tag that repeats the kind is chrome saying itself twice
+      // the kit's tags (primitives/kit/tags.js): a tag that repeats the kind is chrome saying itself twice
       for(const x of visibleTags(pg.tags, kind)){
         const s=document.createElement('span'); s.className='k-tag'; s.textContent=x; tags.appendChild(s);
       }
@@ -480,9 +480,9 @@ function mkTile(t, seat = true){
   } else if(t.type==='zone'){
     buildZone(t, n);
   } else if(t.type==='weather'){
-    // THE WINDOW (issue #305): a square of sky in a plain frame, the hour
+    // THE WINDOW: a square of sky in a plain frame, the hour
     // and the weather over the configured place now. One <canvas> at a backing pixel a
-    // half cell, drawn by canvas/outlook.js (banded sky through the Bayer
+    // half cell, drawn by primitives/sky/outlook.js (banded sky through the Bayer
     // dither, sun or moon, clouds, rain; nothing written on it) and
     // stepped by paintOutlook below. The label says what the picture says.
     n.innerHTML = `<canvas class="sky" width="${OUTLOOK_SIZE}" height="${OUTLOOK_SIZE}" role="img" aria-label="${esc(outlookLabel())}"></canvas><div class="name k-lbl">${esc(t.label)}</div>`;
@@ -515,7 +515,7 @@ function mkTile(t, seat = true){
     wireDust(n.querySelector('.mark svg'), glyph.g);
     // every mark in the ring has its link: a glyph with nowhere to go is
     // not put on the ground (the dimmed "handle pending" state and its native
-    // tooltip went out with #336; a faded glyph read as broken, not as soon)
+    // tooltip went out; a faded glyph read as broken, not as soon)
     const gosocial = ()=>exit(s.url);
     n.addEventListener('click', gosocial); keyable(n, name, gosocial);
   } else if(t.type==='bug'){
@@ -531,22 +531,22 @@ function mkTile(t, seat = true){
     // the room's own length (five minutes live, five seconds while developing),
     // baked into the boot; the room's answer overrides this guess anyway.
     // A spectator's guess would never be answered (the room drops the
-    // frame), so a spectator makes none (issue #260)
+    // frame), so a spectator makes none
     const squish = ()=>{ if(!presence.mayAct() || mauriceUntil > presence.now()) return; setMaurice(presence.now() + (Number(BOOT?.maurice?.ms) || 5 * 60 * 1000)); presence.squish(); };
     n.addEventListener('click', squish);
     keyable(n, 'Maurice, a ladybug: squish him', squish);
   } else if(t.type==='slime'){
     // THE SLIME MOULD (BIBLE.md section 5, 2026-09-17): the motion lab's
     // physarum in a round dish, drawn on the cell from the frame the server
-    // paints (canvas/slime.js is the arithmetic, services/slime.js the
+    // paints (primitives/slime/slime.js is the arithmetic, primitives/slime/slime.js the
     // clock). The dish is a <canvas> at one backing pixel a cell, shown a
     // cell a cell; the RIM is a line one cell thick over it, cell data
     // through pathFromGrid and wired to the dust, so a cursor entering the
     // dish breaks the rim the way it breaks a title. His name under it is
-    // the type face, two lines (#336).
+    // the type face, two lines.
     // A tap drops food where it lands: on this tab at once, and on every
     // tab when the room's next frame comes back with it. Unless this tab
-    // spectates (issue #260): then the send would be silent and the next
+    // spectates: then the send would be silent and the next
     // frame would erase the guess, so the guess is not made. The dish reads
     // as not-tappable meanwhile (aria-disabled, no tab stop, plain cursor),
     // set by presence.onSpectate below the frame decoder.
@@ -679,7 +679,7 @@ const stackTile = id => LIVE_TILES.find(t => t.id === id && t.type === 'stack');
 // the boot payload and turned over the wire; a tab with no socket turns
 // its own
 const stackFront = Object.assign({}, BOOT?.fronts || {});
-// the snap scrollbar beside each pile (js/kit-scroll.js), by stack id, so a
+// the snap scrollbar beside each pile (primitives/kit/kit-scroll.js), by stack id, so a
 // turn from anywhere (a stepper, the room, a scrub) moves the thumb
 const stackBars = {};
 // `peek` is a scrub in flight: the card under the thumb shows, the room is
@@ -726,7 +726,7 @@ function turnUp(f){
   f.addEventListener('animationend', () => f.classList.remove('turnup'), { once: true });
 }
 // `send` is this tab's own hand; the room's echo arrives with send=false.
-// A spectator's hand does nothing here (issue #260): the room would drop the
+// A spectator's hand does nothing here: the room would drop the
 // frame and never echo it, so the pile would turn on this tab alone and stay
 // turned, out of step with everyone, until the next reload.
 function setFront(id, i, send){
@@ -752,7 +752,7 @@ function buildStack(t, n){
   });
   const g = pileGeometry(t, defs[0] ? dims(defs[0]) : undefined);
   const card = (c, cls, z) => `<div class="card ${cls}" style="left:${c.x}px;top:${c.y}px;width:${g.card.w}px;height:${g.card.h}px;z-index:${z}"></div>`;
-  // THE PAGER IS A SNAP SCROLLBAR (BIBLE.md section 5, #338): the kit's
+  // THE PAGER IS A SNAP SCROLLBAR (BIBLE.md section 5): the kit's
   // .k-scroll on end beside the pile, as tall as the pile, the thumb at the
   // front card's slot. It turns the pile to another member's card, and it
   // turns it for EVERYONE: the front of a pile is the room's, over the
@@ -760,7 +760,7 @@ function buildStack(t, n){
   // A scrub shows the card under the thumb to this tab alone and the
   // release commits it. Opening the pile is still the visitor's own.
   const titles = defs.map(d => (d.slug && PAGES[d.slug]?.title) || d.label || t.count);
-  // THE COUNT, ON ITS OWN LINE (#339): the name, then under it how many,
+  // THE COUNT, ON ITS OWN LINE: the name, then under it how many,
   // in the same face and size one step dimmer (mute is the note beside a
   // name).
   const count = countLine(t, defs.length);
@@ -804,7 +804,7 @@ const etchedN = document.createElement('div');
 etchedN.id = 'etched';
 // the class is the style hook: a cut tile's copy loses its ids (mirror.js)
 etchedN.className = 'etched';
-// set in the type face (#336: the pixel face is for the hero titles and
+// set in the type face (the pixel face is for the hero titles and
 // the logo alone), and the tally is the kit's split flaps (.k-flaps), the
 // part that exists for a number everyone shares, a cell's air off its words.
 // It is born hidden: the zeros in it are placeholders, not a count, and the
@@ -884,9 +884,7 @@ function renderGrid(){
   gridFineN.style.opacity = String(Math.max(0, Math.min(1, (cell - 4) / 4)));
 }
 // ---- the minimap (BIBLE.md section 8) -------------------------------------------
-// The world in the corner, as it looks: an actual map (author, 2026-09-26:
-// "the minimap should be a full size screenshot of the world ran through
-// textmode or shrunken otherwise. An actual minimap"). Every tile's own
+// The world in the corner, as it looks: an actual map. Every tile's own
 // picture (the plan's, below: the tile as it renders, one pixel per world
 // cell) laid on the ground where the tile sits, shrunk to the map's cell by
 // averaging, and each map cell set back in the site's inks through the
@@ -935,7 +933,7 @@ function frameCorners(){
 // THE WORLD, SHRUNK: every tile's plan picture on the ground at the map's
 // cell, averaged down, then each cell put back in the inks (ink, mute,
 // ground, and brick where the picture is warm) by the 4x4 Bayer order, the
-// kit's dither, imported from its one source (js/textmode-settings.js). A
+// kit's dither, imported from its one source (primitives/textmode-settings.js). A
 // tile whose picture has not landed yet is its footprint in the mute until
 // it does.
 let mapWorld = null;
@@ -1031,10 +1029,10 @@ function drawMinimap(){
   }
   c.restore();
   // NOTE: the first draw is what shows the map; until then it is laid out but
-  // unseen, so it never sits in the corner as a blank tile (#242)
+  // unseen, so it never sits in the corner as a blank tile
   if(minimap.style.visibility) minimap.style.visibility = '';
 }
-// ---- the plan: the world past the mount floor (#303) ------------------------
+// ---- the plan: the world past the mount floor ------------------------
 // Out past the mount floor (only a watch has one short of cover,
 // layout.js MOUNT_OUT) the camera holds more world than the device should
 // mount, so nothing mounts and this one canvas paints the world: ground, and
@@ -1087,7 +1085,7 @@ function drawPlan(on){
       }
   }
 }
-// ---- the map's toggle and the phone's shared slot (#303) --------------------
+// ---- the map's toggle and the phone's shared slot --------------------
 // Open on a desktop and on a phone (layout.js mapOpenAt), and a
 // density change puts it back to that density's default. A desktop's map
 // sits in the corner beside its toggle; a phone has one middle slot, the
@@ -1311,7 +1309,7 @@ window.__layout = () => ({
 
 // ---- toroidal render ------------------------------------------------------------
 // wrapPos and wrapSpots live in layout.js. A tile the frame's edge cuts shows
-// its other part at the opposite edge, as a LIVE copy (canvas/mirror.js):
+// its other part at the opposite edge, as a LIVE copy (primitives/mirror.js):
 // repainted every frame, re-cloned on any change, never the same part twice.
 // A node's own style writes (the transform render() moves it with) are not a
 // change of content, so they do not re-clone.
@@ -1326,7 +1324,7 @@ const mirror = createMirror({
   },
 });
 
-// ---- the window (issue #305) ---------------------------------------------------
+// ---- the window ---------------------------------------------------
 // The weather tile's canvas, stepped on the wall clock so every tab shows
 // the same drop in the same place. A step is drawn only when the tile is
 // on screen and the page is showing, and only when the step has changed.
@@ -1335,7 +1333,7 @@ const mirror = createMirror({
 // what kills the wrist.
 const OUTLOOK_STILL = REDUCED || BARE;
 let outlookKey = null, outlookCanvas = null, outlookInks = null, outlookStillNow = OUTLOOK_STILL;
-// the room's offset, whole cells (services/sky.js); a still sky ignores it
+// the room's offset, whole cells (primitives/sky/server.js); a still sky ignores it
 let skyAt = [0, 0];
 function outlookLabel(){
   const t = WEATHER.tempF !== '' && WEATHER.tempF != null ? WEATHER.tempF + '°' : '';
@@ -1369,7 +1367,7 @@ if(!OUTLOOK_STILL) setInterval(()=>{ if(!document.hidden) paintOutlook(); }, OUT
 // Same-origin socket, live-only, no storage. The pointer maps to a world
 // fraction by inverting wrapPos (screen -> stage -> world, mod the seams);
 // peers render through wrapPos above, so they wrap at the edges like tiles do.
-// PRESENCE ON EVERY PAGE (issue #327): the same socket carries a reader's
+// PRESENCE ON EVERY PAGE: the same socket carries a reader's
 // place on a page, as the block under the pointer and a fraction of its box
 // (anchor.js), and the modal hosts a second cursor layer for the peers on
 // the same page. locateAt is the way back: an anchor to a screen point, on
@@ -1408,9 +1406,9 @@ presence.onSquish(setMaurice);
 // The server paints, this decodes and puts cells on the dish: one backing
 // pixel a cell, three flat tones off the kit's grey ramp (mid, mute, ink)
 // read from the tokens at paint time, and food in brick, because food is
-// live (#336: brick means armed or live). Nothing here is mixed, dithered
+// live (brick means armed or live). Nothing here is mixed, dithered
 // or smoothed; the rim is a sprite over the canvas, not painted here.
-// A delta repaints only the cells it moved (slime.js paintDish, issue #264),
+// A delta repaints only the cells it moved (slime.js paintDish),
 // which is safe only on the canvas that holds the last picture: a canvas
 // this tab has not fully painted, or one whose backing store the browser
 // dropped, gets the whole picture again.
@@ -1447,11 +1445,11 @@ function slimeFood(cx, cy){
   paintSlime();
 }
 // The tick of the picture held, so a delta is applied only to the base it
-// was cut from (issue #259). A delta against another base is a delta this
+// was cut from. A delta against another base is a delta this
 // tab cannot use: it is dropped and the room is asked for a keyframe.
 let slimeTick = -1;
 function setSlime(g, f){ const d = decodeSlime(g, f); if(!d) return false; slimeTones = d.tones; slimeFoodList = d.food; paintSlime(); return true; }
-// AN ABSENT TAB'S DISH LOSES LIFE (issue #271). A tab that said no to the
+// AN ABSENT TAB'S DISH LOSES LIFE. A tab that said no to the
 // watch is sent nothing, and that is drawn, not just gated: the tile wears
 // data-asleep from the moment the no is SENT (presence.onWatch, the same
 // fact the room acts on) until the keyframe the next yes brings is DECODED.
@@ -1479,12 +1477,12 @@ function onSlimeFrame(m){
 }
 presence.onSlime(onSlimeFrame);
 if(BOOT?.slime?.g) setTimeout(()=>{ setSlime(BOOT.slime.g, BOOT.slime.f); if(Number.isInteger(BOOT.slime.t)) slimeTick = BOOT.slime.t; }, 0);
-// THE DISH IS SENT ONLY TO TABS THAT CAN SEE IT (issue #259): document
+// THE DISH IS SENT ONLY TO TABS THAT CAN SEE IT: document
 // visible and the dish on camera, which render() already decides for every
 // node (o.hidden). Said every frame, sent on change (presence.js watch).
 function watchSlime(){ presence.watch(!document.hidden && !!nodes.slime && !nodes.slime.hidden); }
-// ---- the shared sky (issue #305, round six) --------------------------------------
-// The window is watched the dish's way (services/sky.js): said when the tile
+// ---- the shared sky --------------------------------------
+// The window is watched the dish's way (primitives/sky/server.js): said when the tile
 // is on camera and the page showing, and never by a still sky, which draws
 // no push and so is sent none. A sweep is summed and flushed at most ten
 // times a second in whole cells; a spectator neither pushes nor guesses.
@@ -1509,7 +1507,7 @@ function skySweep(dx, dy){
   skySent = t; skySum = [0, 0];
   skyGust(x, y);
 }
-// The dish reads as what it is for this tab (issue #260): a spectator's
+// The dish reads as what it is for this tab: a spectator's
 // dish is a picture, not a button. aria-disabled rather than a stripped
 // role, so a screen reader hears "unavailable" instead of the control
 // silently ceasing to exist; no tab stop, because a stop that does nothing
@@ -1577,9 +1575,9 @@ setMaurice(mauriceUntil);
 // is four people wrestling for one control. In the public room at large
 // those stay each visitor's own. Inside a session, and from the one followed
 // to the tabs following them, they are shared as VIEWS on the act bridge
-// (canvas/view-sync.js), where the room decides who hears them (BIBLE.md
+// (primitives/rooms/view-sync.js), where the room decides who hears them (BIBLE.md
 // section 2). The hover frame itself still carries no mutation
-// (lib/presence-protocol.js).
+// (primitives/presence/presence-protocol.js).
 const hkOf = el => (el?.closest?.('[data-hk]')?.dataset.hk) || null;
 // Whether THIS tab's button is down, which picks which of the two hands the
 // room draws for it (BIBLE.md section 2). It is self-description, not a
@@ -1605,7 +1603,7 @@ const repost = () => {
   presence.post(-1, -1, lastAt ? null : lastHk, ptrDown, lastAt);
 };
 let lastFx = -1, lastFy = -1, lastHk = null;
-// the page block this pointer is on, null on the canvas (issue #327)
+// the page block this pointer is on, null on the canvas
 let lastAt = null;
 // CAPTURE, and it has to be. Whether the pointer is down is a fact about the
 // pointer, and several controls stop pointerdown from propagating so their
@@ -1995,7 +1993,7 @@ addEventListener('keyup', e=>{ if(keys.delete(e.key) && !keys.size){ restCam(); 
 // ---- a zoom comes to rest ---------------------------------------------------
 // When a gesture rests, the camera lands on the pixel ladder. The doors row
 // used to be cleared from under the bar here too; the row emptied on
-// 2026-09-16 and that flight went with it (#243).
+// 2026-09-16 and that flight went with it.
 let zoomSettleT = 0;
 function settleZoom(){
   if(modalOpen() || dragging || pinch || homeTween) return;
@@ -2109,7 +2107,7 @@ function tick(){
     setSceneTransform();
   }
   render();
-  // the copies of a cut tile catch up with it (canvas/mirror.js)
+  // the copies of a cut tile catch up with it (primitives/mirror.js)
   mirror.frame();
   // the band a page cursor is on screen in rides the frame: above it or
   // under the bar a page peer shows as an edge marker (presence.js)
@@ -2156,7 +2154,7 @@ let heroLines = [];   // the mounted <svg> per line, for the scatter
 // wrapped in the face's own cells, then measured in world px by the caller
 const heroWrap = (phrase) => wrapText(phrase, 'display', Math.floor((HERO_W - 80) / HERO_PX));
 
-// the scatter (canvas/dust.js) is both halves of the cycle and the hover
+// the scatter (primitives/dust.js) is both halves of the cycle and the hover
 const scatterAll = (spread, ttl) => { for(const svg of heroLines) scatter(svg, spread, ttl); };
 
 // mount a phrase: one svg a line, centred, each wired for the dust so a
@@ -2202,7 +2200,7 @@ function showHero(i, animate){
   }, DUST_MS * 5);
 }
 // turning it is a shared hand, the same one that turns a pile, and a
-// spectator's hand turns nothing (issue #260, as setFront)
+// spectator's hand turns nothing (as setFront)
 const turnHero = (by) => {
   if(!presence.mayAct()) return;
   const next = ((heroIndex + by) % PHRASES.length + PHRASES.length) % PHRASES.length;
@@ -2228,7 +2226,7 @@ const turnHero = (by) => {
 // control. In the flow the cell does the work, "above the statement" stays
 // true when a phrase wraps to a different number of lines, and nothing here
 // has to know the flex arithmetic.
-// THE DOTS BECAME THE SNAP SCROLLBAR (#336): a row of nine squares said
+// THE DOTS BECAME THE SNAP SCROLLBAR: a row of nine squares said
 // "this turns" and nothing else, and every other collection on the site is
 // walked with the kit's .k-scroll now (the piles, a card's siblings, a full
 // page's ring), so the statement is too: laid on its side under the words,
@@ -2241,7 +2239,7 @@ hdotsN.innerHTML = scrollMarkup({ titles: PHRASES, at: heroIndex, label: 'which 
 const heroBar = wireScroll(hdotsN.querySelector('.k-scroll'), {
   titles: PHRASES,
   onCommit: i => {
-    // a spectator's hand turns nothing (issue #260): the thumb goes back
+    // a spectator's hand turns nothing: the thumb goes back
     if(!presence.mayAct()){ heroBar.set(heroIndex); return; }
     showHero(i, true);
     presence.front('hero', i);
@@ -2273,7 +2271,7 @@ heroText.addEventListener('keydown', e => {
   turnHero(by);
 });
 // and whoever turns it turns it for everyone: the pile's own frame, with the
-// hero as the pile (lib/presence-protocol.js parseFront)
+// hero as the pile (primitives/presence/presence-protocol.js parseFront)
 presence.onFront((id, i) => {
   if(id === 'hero'){ showHero(i, true); return; }
 });
@@ -2299,7 +2297,7 @@ function sizeSheet(){
   $('#modal').style.setProperty('--cv-band', bandH() + 'px');
   gapEl.style.height = preview ? '' : Math.round(VH*0.10)+'px';
   // a full page hides the gap, so 90% of the frame left the canvas showing
-  // under a short entry (author, #300); its CSS 100dvh is the whole height
+  // under a short entry; its CSS 100dvh is the whole height
   const full = $('#modal').classList.contains('fullpage');
   $('#sheet').style.minHeight = preview || full ? '' : Math.round(VH*0.90)+'px';
 }
@@ -2523,7 +2521,7 @@ function showFanSet(kind, label, count, set, from){
   const shown = new Set(set.map(m => m.node));
   for(const list of Object.values(fanMembers)) for(const mn of list) if(!shown.has(mn)) mn.hidden = true;
   // the head of a collection is its name and its count in the type face
-  // (#336): the pixel face is for the hero and the mark alone
+  //: the pixel face is for the hero and the mark alone
   fanTitle.textContent = label;
   fanN.querySelector('.fancount').textContent = count;
   fanN.hidden = false;
@@ -2604,7 +2602,7 @@ function openStack(id){
 function closeStack(){
   if(!curFan) return;
   // a fan the one followed spread stays up until a hand of the follower's
-  // own folds it, or theirs does (canvas/view-sync.js holdsFan)
+  // own folds it, or theirs does (primitives/rooms/view-sync.js holdsFan)
   if(holdsFan(curFan)) return;
   // the search's layer closes by letting the query go
   if(history.state && history.state.direct){
@@ -2629,7 +2627,7 @@ function paintRoute(path){
   const land = landForPath(path);
   if(land) goZone(land, false);
 }
-// THE FAN IS A VIEW (canvas/view-sync.js). Which collection is spread and
+// THE FAN IS A VIEW (primitives/rooms/view-sync.js). Which collection is spread and
 // which of its cards is up are the visitor's own in the public room at
 // large; in a session they are everyone's, and under a follow the one
 // followed spreads them for the tabs following. The state is said after
@@ -2658,7 +2656,7 @@ wireViewSync({ page: () => curSheet, sheet: () => $('#sheetInner'), following: (
 // studies. The world and the fan stay fixed below it; the effect sits
 // between the card and the collection, never stacked: the fan's own scrim
 // steps aside while the card's backdrop does the dimming.
-// THE WALK IS THE SNAP SCROLLBAR (#336): the kit's .k-scroll over the
+// THE WALK IS THE SNAP SCROLLBAR: the kit's .k-scroll over the
 // card's siblings, the same bar that turns a pile on the ground and walks a
 // full page's ring, so a collection is walked one way everywhere. It used
 // to be a hand-drawn chevron in a box on each side of the card. The bar is
@@ -2808,7 +2806,7 @@ function goZone(id, push = true){
   const z = landZoom(o), aim = landAim(o, z);
   flightTo(aimX(aim.x), aimY(aim.y), z);
 }
-// THE PAGE BAR (#338). ONE navigation for every full page, a case study or
+// THE PAGE BAR. ONE navigation for every full page, a case study or
 // an experiment, opened from the canvas or loaded direct: a strip of TABS at
 // the top of the sheet, the way a browser holds its pages, pinned there
 // while the page scrolls under it (position: sticky in #mscroll, the full
@@ -2816,17 +2814,14 @@ function goZone(id, push = true){
 // only, the open collection setting the order), each a real link, the page
 // you are on the lit tab in one piece with the sheet, and the close box on
 // that tab and no other. The way back to the top is not in it: it is the
-// page's foot (footTop, below). The author, on the
-// scrollbar that stood here first: "When going to full screen it doesn't
-// make sense to keep the scroll bar up top ... switch to tabs like a web
-// browser ... It's intuitive because it's familiar." It replaced three
+// page's foot (footTop, below). It replaced three
 // things that each did a third of this somewhere else: the corner nav an
 // experiment wore (`‹ canvas` and `next ›` boxes pinned over the page), the
 // foot dock a case study ended in (four truncated titles in a row, "a
 // packed limbo UI at the bottom") and the foot's old way back to the top.
-// The author's brief: "the intuition someone builds using one side of the
-// site should work on the other", and the same scrollbar turns the piles on
-// the ground. The markup is js/kit-scroll.js pageBarMarkup, which the server
+// The intuition someone builds using one side of the site should work on
+// the other, and the same scrollbar turns the piles on
+// the ground. The markup is primitives/kit/kit-scroll.js pageBarMarkup, which the server
 // SSRs on a direct load (canvas-sheets.js), so the two paths are one string.
 // THE RING A PAGE WALKS IS ITS OWN KIND (2026-09-16, closed 2026-09-18).
 // `next` used to be the next entry in PAGES, which is every full page there
@@ -2966,10 +2961,7 @@ function paintPageBar(slug){
   // switch paints from memory and the swap is the whole of the wait
   for(const s of ring) if(PAGES[s].embed && !pageFetches.has(PAGES[s].embed)) fetchPage(PAGES[s].embed).catch(()=>{});
 }
-// THE TAB SWITCH (author, 2026-09-25: "I don't think the transition back to
-// the collection is necessary anymore; switching tabs should be its own
-// quick and snappy animation. Do keep the rect for opening and closing
-// pages."). A tab is a page of the ring the reader is already in, so going
+// THE TAB SWITCH. A tab is a page of the ring the reader is already in, so going
 // to it is not leaving: nothing closes, nothing shrinks into its card and
 // grows out of the next, the collection behind the page is not scrolled,
 // and the canvas never shows. The page swaps where it stands. The lit tab
@@ -3013,9 +3005,7 @@ function switchTab(slug){
   void inner.offsetWidth;   // restart the frames on a switch made mid-switch
   inner.classList.add('tab-in');
 }
-// THE WAY BACK TO THE TOP IS THE PAGE'S FOOT (author, 2026-09-25: "The back
-// to top button should show at the bottom of long things not be a confusing
-// arrow up top. Intuitive please. We're not inventing any wheels here.").
+// THE WAY BACK TO THE TOP IS THE PAGE'S FOOT.
 // Where the web puts it: after the last of the page's content, in its flow,
 // one outline button that says what it does. Only on a page long enough to
 // have lost you, its scroll owner more than two screens tall, measured once
@@ -3153,7 +3143,7 @@ function warmPages(set){
 // (the anchors a follower reads, below). A section or an experiment has none.
 const metaMarkup = (p, slug) => `<div class="meta">${esc(p.meta)}${tagsMarkup(BOOT?.arts?.[slug]?.tags, p.kind)}</div>`;
 // the page's title: a case study wears the canvas's display face, set by
-// the same pixelTitle its card uses (#300). The markup literals still write
+// the same pixelTitle its card uses. The markup literals still write
 // the escaped <h1> every sheet gets; this swaps it for the pixel one, whose
 // kept words pixelTitle escapes itself.
 function pixelHead(p){
@@ -3379,7 +3369,7 @@ function adoptSsrSheet(slug){
   openChrome($('#modal').getAttribute('aria-label') || slug);
   // the server drew the bar over the list's order; the swipe walks the
   // canvas's ring, so the bar is repainted from that ring to agree with it
-  // (the same markup either way: js/kit-scroll.js pageBarMarkup), and the
+  // (the same markup either way: primitives/kit/kit-scroll.js pageBarMarkup), and the
   // repaint is what wires it
   if(full) paintPageBar(slug);
   if(full) footTop();
@@ -3419,7 +3409,7 @@ function paintSheet(slug){
     reader?.stop(); reader = null;
     applyReader($('#modal'), isReading(slug));
     // the layer: a section (the feed) is a collection, anything else in
-    // PAGES is an item, and the bar is not drawn over an item (#300)
+    // PAGES is an item, and the bar is not drawn over an item
     document.documentElement.classList.toggle('item-open', !SECTIONS[slug]);
     const card = fanShown.find(m => m.def.slug === slug);
     openChrome(p.title, card ? card.node.getBoundingClientRect() : null);
@@ -3495,7 +3485,7 @@ const closeBtn=$('#close');
 function syncClose(){ closeBtn.hidden = !(modalOpen() || curFan); syncMapBtn(); }
 closeBtn.addEventListener('click', e=>{ e.stopPropagation(); if(modalOpen() || curSheet) closePage(); else if(curFan) closeStack(); });
 
-// ---- presence on every page, and following (issue #327) ------------------------
+// ---- presence on every page, and following ------------------------
 // A page is a column of blocks, and a block is the same block at every
 // width, so a reader's place on it travels as the block's index and a
 // fraction of its box (anchor.js). The blocks are the sheet's CONTENT: its
@@ -3590,13 +3580,12 @@ document.addEventListener('selectionchange', () => {
 const followTag = document.createElement('div');
 followTag.id = 'following';
 followTag.hidden = true;
-// On the kit (#336): a panel of two sections, the one who is followed and the
+// On the kit: a panel of two sections, the one who is followed and the
 // x that lets go, set in the kit's face (the pixel face is for hero titles).
 followTag.className = 'k-panel k-ground';
 followTag.innerHTML = `<span class="k-sec"><span class="swatch" aria-hidden="true"></span><span class="k-lbl">following</span></span><button type="button" class="letgo k-btn k-ico" aria-label="stop following"><span aria-hidden="true">×</span></button>`;
 document.body.appendChild(followTag);
-// THE FRAME (author, 2026-09-26: "I like the figma frame for following,
-// that sort of intuitive association"). While you follow somebody, your
+// THE FRAME. While you follow somebody, your
 // whole screen is framed in their colour, the way Figma frames the view of
 // the person you are watching: a view that is not your own says so at its
 // edges, wherever you look, not only in a corner. The tag wears the same
@@ -3963,7 +3952,7 @@ presence.onAct((ch, d, id, color) => {
 
 // ---- omni search: everything on the canvas and every page --------------------
 const searchEl = $('#search'), searchWrap = $('#searchWrap'), topbarEl = $('#topbar');
-// the bar's caret, and the room pin's, at the insertion point (js/kit-caret.js)
+// the bar's caret, and the room pin's, at the insertion point (primitives/kit/kit-caret.js)
 wireCarets();
 // The lens has no bar to live on at the watch density (layout.js
 // chromeDensity: under 352px wide or 240px tall there is no chrome at all),
@@ -3980,7 +3969,7 @@ function closeSearch(){
   topbarEl.classList.remove('searching'); searchWrap.classList.remove('open');
   addressSearch();
 }
-// THE FINDER IN THE ADDRESS (BIBLE.md section 8, canvas/finder-url.js): the
+// THE FINDER IN THE ADDRESS (BIBLE.md section 8, primitives/rooms/finder-url.js): the
 // bar's state is `?search=` in the URL, so a find can be sent and opens for
 // the one it was sent to. The bar is open while the field has the focus or
 // holds a query: `?search=` open and empty, `?search=<query>` holding one,
@@ -4115,7 +4104,7 @@ function buildIndex(){
     else if(t.type==='weather'){ extra='weather '+WEATHER.place+' '+WEATHER.cond; }
     else if(t.type==='bug'){ extra='ladybug bug beetle'; }
     else if(t.type==='slime'){ extra='slime simulation mould physarum petri dish alive feed'; }
-    // the finder says a thing's name the way the ground does (#339): the
+    // the finder says a thing's name the way the ground does: the
     // label as set, one line; matching stays in lower case
     label = label.replace(/\n/g, ' ');
     // tags ride the haystack: the compass areas are searchable words, so
@@ -4177,8 +4166,8 @@ function findAll(q){
 // the line is also the cycler (2026-09-12): a phone has no arrow keys, so
 // two steppers flank the count when there is more than one find. They
 // take the pointer without taking the keyboard's focus from the field.
-// The kit's dock (#336): the steppers are its icon buttons wearing its
-// chevrons (js/kit-scroll.js), the line between them is the type face.
+// The kit's dock: the steppers are its icon buttons wearing its
+// chevrons (primitives/kit/kit-scroll.js), the line between them is the type face.
 function sayFound(){
   if(!foundEl) return;
   const r = found[foundAt];
@@ -4237,7 +4226,7 @@ function goFound(){
   clearAura();
   if(r.kind === 'tile') nodes[r.id].n.click(); else r.node.click();
 }
-// THE SELECTION MARK (BIBLE.md section 9, #336): what the finder lit. The
+// THE SELECTION MARK (BIBLE.md section 9): what the finder lit. The
 // kit's .k-sel, set inside the thing's own box so it goes wherever the
 // node goes and scales with the camera like every other line on the ground:
 // a one-cell ink outline a cell off the box, a solid handle on each corner.
@@ -4261,7 +4250,7 @@ function aura(node){
 // still talks), and typing past the slash filters it down, the names that
 // start so first. Everything else stays the lens.
 //
-// THE BAR IS A COMMAND LINE (2026-09-26). The author: "slash based", "do
+// THE BAR IS A COMMAND LINE (2026-09-26). , "do
 // add params and flags". What a command is, the grammar a line is read
 // with and who is shown what all live in canvas/commands.js, pure and
 // tested; this is only what each one DOES. A runner gets the parsed line
@@ -4993,7 +4982,7 @@ async function refreshCanvas(){
     const res = await fetch('/api/canvas');
     if(!res.ok) return;
     const fresh = await res.json();
-    // Which keys moved: the diff the server's push asks too (canvas/wire.js),
+    // Which keys moved: the diff the server's push asks too (primitives/presence/wire.js),
     // against what this tab holds. A key that moved is taken only when the
     // payload has one worth drawing.
     const moved = new Set(changedKeys({ weather: WEATHER }, fresh));

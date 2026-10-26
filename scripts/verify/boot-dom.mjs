@@ -1,9 +1,9 @@
 // scripts/verify/boot-dom.mjs
-// Issue #264, in a real browser: A NODE IS A RESOURCE. Counts the elements
+// In a real browser: A NODE IS A RESOURCE. Counts the elements
 // in the document once the page has booted and settled, and fails above a
 // recorded ceiling. The ceiling is the measured count plus room for content
 // churn (a new tile, a longer feed), not a target: a node that nothing
-// shows, like the zero-height doors row #263 finally deleted, is exactly
+// shows, like the zero-height doors row since deleted, is exactly
 // the kind of thing that sits under a loose ceiling for a week, so the
 // ceiling is kept close and moved on purpose, with the number that moved it.
 //
@@ -12,17 +12,14 @@
 // tab with the dish on camera is WATCHING and is owed its deltas; the idle
 // floor for a socket that is not watching is held by test/waste.test.js.
 //
-// Measured 2026-09-23 (issue #264), headless Chrome against `npm start`,
-// the same before and after this pass (the zero-height doors row the issue
-// names had already gone in #263, one node):
+// Measured 2026-09-23, headless Chrome against `npm start`,
+// the same before and after this pass (the zero-height doors row that was
+// deleted had already gone, one node):
 //   home  laptop 1440x900   1154 elements
 //   home  phone  390x844    1154 elements
-//   file  gate   1440x900     24 elements
 //
 // Runs against a served build (the smoke container in CI, `npm start`
-// locally). The etc host is reached as file.localhost, which Chrome
-// resolves to loopback and the server answers as the etc host (server.js
-// isEtcHost). Usage:
+// locally). Usage:
 //   node scripts/verify/boot-dom.mjs [baseUrl]
 import { spawn } from 'node:child_process'
 import { existsSync, mkdtempSync, rmSync } from 'node:fs'
@@ -32,16 +29,11 @@ import { join } from 'node:path'
 const BASE = process.argv[2] || process.env.BASE_URL || 'http://localhost:3000'
 const PORT = Number(process.env.CDP_PORT || 9223)
 const IDLE_MS = Number(process.env.IDLE_MS || 10000)
-const ETC = BASE.replace('://localhost', '://file.localhost').replace(
-  '://127.0.0.1',
-  '://file.localhost'
-)
 
 // name, url, width, height, mobile, dpr, ceiling (elements at boot)
 const PAGES = [
   ['home laptop', BASE + '/', 1440, 900, false, 1, 1250],
   ['home phone', BASE + '/', 390, 844, true, 3, 1250],
-  ['file gate', ETC + '/', 1440, 900, false, 1, 32],
 ]
 
 const CHROME_CANDIDATES = [

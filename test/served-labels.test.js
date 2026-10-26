@@ -11,7 +11,7 @@
 // a page from, and fails on the word anywhere a reader or a crawler gets
 // it.
 //
-// Tags are content, not labels: an entry's own `tags:` list is its author's
+// Tags are content, not labels: an entry's own `tags:` list is its owner's
 // and is taken out of each body before the scan, by the exact strings the
 // entry carries, so a label that happens to share a tag's spelling is still
 // caught everywhere else.

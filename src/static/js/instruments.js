@@ -1,7 +1,7 @@
 /* ============================================================
    WEB INSTRUMENTS
 
-   Four instruments and a synth on one index card (#301, the Synth board).
+   Four instruments and a synth on one index card (the Synth board).
    The tab is the instrument; inside the card, one panel of kit parts along
    what the instrument does, and the playing surface on its lower edge. A
    mouse, a finger, the computer keyboard or a MIDI keyboard all land on
@@ -18,7 +18,7 @@
    scope shows the wave its switches are about to make.
 
    IN A SESSION THE ROOM PLAYS TOGETHER. Outside one, playing is yours
-   alone and nothing here goes on the wire (#327). Inside one, a note, a
+   alone and nothing here goes on the wire. Inside one, a note, a
    key let go and a control moved go out as an `canvas:act` window event
    (the canvas forwards it to the room and drops it anywhere else), and a
    peer's come back as `canvas:peer-act`: read strictly (peerAct in
@@ -29,7 +29,7 @@
    on that instrument, and switching writes it back without a new history
    entry, so a link hands someone the instrument you were on. In a session,
    or while somebody follows this tab, the tab is shared too: a switch goes
-   out as an `canvas:view` and a peer's is switched to (canvas/view-sync.js).
+   out as an `canvas:view` and a peer's is switched to (primitives/rooms/view-sync.js).
    ============================================================ */
 
 ;(() => {
@@ -130,7 +130,7 @@
   }
   // What the visitor is LOOKING AT goes the same way, as a view: which
   // instrument is up. The canvas stamps it with the page and hands it to the
-  // room (canvas/view-sync.js), and a peer's comes back as `canvas:peer-view`,
+  // room (primitives/rooms/view-sync.js), and a peer's comes back as `canvas:peer-view`,
   // switched to under `replaying` so it is never said again.
   function view(d) {
     const ds = document.documentElement?.dataset
@@ -302,7 +302,7 @@
   }
 
   // The ukulele lets a quaver go from its soundhole when a string is
-  // plucked (main's note glyph, back after #312's audit): ink cells on the
+  // plucked (the note glyph): ink cells on the
   // stage over the photograph, rising two cells a step, three steps under
   // three a second, then gone. One is in the air at a time; a pluck while it
   // flies lets none go. Under reduced motion it stands where it was let go.
@@ -356,7 +356,7 @@
      Each writes one value into OPT[instrument]; the synth's also redraw
      the pictures they change (its resting scope, the envelope view).
      ============================================================ */
-  // A part's picture at its hash (#319): the entry names every one the
+  // A part's picture at its hash: the entry names every one the
   // script swaps to in the rig's data-parts, and the server writes each
   // with its ?v=; the bare path is only for a page that lost the list.
   const PART_URL = new Map(

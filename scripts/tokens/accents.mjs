@@ -1,5 +1,5 @@
 // The accent inventory: every accent token, who reads it, and whether
-// anything on the site still needs it (#313, author review of #315).
+// anything on the site still needs it.
 //
 //   node scripts/tokens/accents.mjs          print the table
 //   node scripts/tokens/accents.mjs --json   the same, as JSON
@@ -32,7 +32,7 @@ const GROUND = new Set([
   'scrim',
   'hatch',
   'recess',
-  // the parts ramp (#313, Lo-Hi tech): greys a part is dithered onto, read
+  // the parts ramp: greys a part is dithered onto, read
   // by name in src/lib/kit-parts.js, which is a consumer the regex below
   // cannot see because it builds the name
   'deep',
@@ -59,7 +59,7 @@ const SPECIMEN = [
   'src/lib/kit-parts.js',
   'test/kit.test.js',
 ]
-const SCAN = ['src', 'scripts', 'test', 'content', 'BIBLE.md', 'CLAUDE.md']
+const SCAN = ['src', 'scripts', 'test', 'content', 'BIBLE.md']
 const EXT = /\.(css|js|mjs|njk|md|json|html)$/
 
 // seam: test/accents.test.js

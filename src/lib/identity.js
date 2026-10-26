@@ -1,4 +1,4 @@
-// The one machine-readable identity: who the author is, where else they are
+// The one machine-readable identity: who owns the site, where else they are
 // on the web, and the JSON-LD shapes crawlers read. Every surface that tells
 // a machine who owns this site (home, /about, entry pages, /llms.txt, the
 // rel="me" head links) builds from this module, so the picture cannot fork.
@@ -16,7 +16,7 @@ export const PERSON = Object.freeze({
   url: `${SITE_URL}/`,
 })
 
-// Every profile the site publishes as the author's, one row per host.
+// Every profile the site publishes as the owner's, one row per host.
 // Person.sameAs is Object.values of this; llms.txt and the rel="me" links
 // pick by key.
 export const PROFILES = config.site.social
@@ -57,7 +57,7 @@ export function profilePageNode(canonical) {
   }
 }
 
-// A published entry as schema.org Article. The author carries name and url
+// A published entry as schema.org Article. Its author field carries name and url
 // inline (validators want a self-contained node) plus the @id, so a reader
 // that stitches pages resolves it to the home Person.
 export function articleNode(entry, canonical, image) {

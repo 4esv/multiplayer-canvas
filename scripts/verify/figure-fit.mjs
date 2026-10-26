@@ -1,6 +1,6 @@
 // scripts/verify/figure-fit.mjs
-// Issue #300, in a real browser: EVERY FIGURE FITS A PHONE. The author's
-// review of #311 (2026-09-24): at 390x844 in mobile emulation every figure
+// In a real browser: EVERY FIGURE FITS A PHONE. The
+// rule: at 390x844 in mobile emulation every figure
 // must fit its column with no horizontal scroll and no clipped label, and
 // scale down legibly. Measured before the fix: the board and the builder
 // were drawn at 688 and 636 px and scrolled inside their boxes, a 342 px
@@ -16,11 +16,10 @@
 //   legible  every word in a drawn figure paints at 11 px or more, after
 //            whatever the drawing was scaled by to fit
 //   centred  the picture sits in the middle of its figure's box, and a box
-//            in the flow in the middle of the column (author, 2026-09-24:
-//            every figure centred, every width). Measured before: the board
+//            in the flow in the middle of the column. Measured before: the board
 //            and the builder sat 384 and 436 px off centre at 1440, every
 //            drawing 4 px off at 390.
-// and, from the review after that (author, 2026-09-24, "one axis"), at 390,
+// and, from the review after that, at 390,
 // 768, 1280 and 1920 as asked, and 1440:
 //   axis     the prose column itself is centred in the frame, so text and
 //            figures share one axis: a column on the left of a wider page
@@ -36,9 +35,8 @@
 //            would be a guess
 //   ui       a figure that is a UI (cf-ui: the board, the builder, the
 //            modal) exists, three of them, and like every figure stands
-//            unboxed (author: no container around a UI)
-// and, from the review of that (author, 2026-09-24, measured at 1440: text
-// 289..1005 with its centre at 647, figures centred at 720, code from 320):
+//            unboxed
+// and, from the review of that:
 //   measure  every paragraph and head spans the column, edge to edge: the
 //            column IS the text's measure, so text, figures and code share
 //            one centre
@@ -47,10 +45,10 @@
 //            one rule for every block; a code block is text, so it spans
 //            (the 50rem strip, centred 31px inside the text, fails)
 //   frame    no figure has a border, padding or a ground of its own; its
-//            title is a plain caption line UNDER its picture (#325: an
+//            title is a plain caption line UNDER its picture (an
 //            object stands alone, no frame, no label over it)
 //   bar      the page bar is one, full width, stuck to the top once scrolled,
-//            and the only previous/next on the page (#338)
+//            and the only previous/next on the page
 //   foot     the way back to the top is never in the bar: a page over two
 //            screens tall ends in exactly one, the last thing in its flow,
 //            and a shorter page shows none
@@ -259,7 +257,7 @@ const READ = `(async () => {
     // code is text: it sits on the text's edges, never inset inside them
     else if (el.tagName === 'PRE' && !spans) wrong.push(tag + ' ' + r1(b.left) + '..' + r1(b.right) + ': code inset from the text edges ' + r1(left) + '..' + r1(right))
   })
-  // the page bar (#338): one, the sheet's full width, stuck to the top of
+  // the page bar: one, the sheet's full width, stuck to the top of
   // the frame once the page is scrolled, its tabs the only previous/next
   const bars = document.querySelectorAll('#sheet > .k-bar')
   let row = bars.length
@@ -273,7 +271,7 @@ const READ = `(async () => {
     // that wrapped would sit below the bar)
     const off = seats.filter((e) => { const s = e.getBoundingClientRect(); return s.top < b.top - 0.5 || s.bottom > b.bottom + 0.5 })
     if (off.length) wrong.push('the bar is on more than one row: ' + off.map((e) => e.className).join(', ') + ' outside it')
-    // the bar is a strip of tabs over the ring (#338): one lit, the close on
+    // the bar is a strip of tabs over the ring: one lit, the close on
     // it alone. Every tab keeps a readable title (ten characters of its face
     // at the least) and a strip too long for the bar scrolls inside itself
     // rather than squeeze them, with the lit tab wholly in view and the

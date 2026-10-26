@@ -1,4 +1,4 @@
-// The /ws/cursors endpoint: the socket layer over lib/presence-room.js.
+// The /ws/cursors endpoint: the socket layer over primitives/presence/presence-room.js.
 // Nothing is stored: the room holds each open connection's latest {fx,fy} in
 // memory and fans moves out to the other open sockets. Close the socket and
 // you vanish, no history, no replay. Coordinates arrive as world fractions in
@@ -16,10 +16,10 @@
 // open tab, sender included, {type:'squish', until}) and the piles' fronts
 // ({type:'front', stack, i} in, the same out to everyone), and the slime
 // mould's food ({type:'feed', x, y} in; the dish's next frame out, from
-// services/slime.js, to the tabs that said {type:'watch', on:true} and have
+// primitives/slime/slime.js, to the tabs that said {type:'watch', on:true} and have
 // not since said otherwise: a keyframe first, then the changed cells), and
 // the weather window's push ({type:'push', dx, dy} in; the sky's offset out,
-// from services/sky.js, to the tabs watching it with of:'sky').
+// from primitives/sky/server.js, to the tabs watching it with of:'sky').
 //
 // SESSIONS (2026-09-25) ride the same endpoint. `?session=new&kind=...` from
 // the owner (the session cookie AND our own Origin) opens one with a
@@ -30,8 +30,8 @@
 // the PIN when it has one. Joining, the room's own kind wins over the
 // query's: a follow room asked for as a session is still a follow room. The
 // owner's `pin` when he opens one is absent (the desk's default), four
-// digits (that PIN) or `off` (none) (lib/sessions.js pinAsked). A session
-// is a room of its own (lib/sessions.js), so nothing said in it reaches the
+// digits (that PIN) or `off` (none) (primitives/rooms/sessions.js pinAsked). A session
+// is a room of its own (primitives/rooms/sessions.js), so nothing said in it reaches the
 // public room or the other way round, and in it a participant's act
 // (presence-protocol.js actOf) is relayed at once to the others (in a
 // follow room, the host's only). In the public room an act goes to the
@@ -45,7 +45,7 @@
 //   1013 busy     the room is full (as ever)
 //
 // Deploy note: the endpoint lives in this same Node process, so any reverse
-// proxy that upgrades WebSockets (Caddy and nginx both can) serves it with
+// proxy that upgrades WebSockets (nginx can) serves it with
 // no separate route.
 import fastifyWebsocket from '@fastify/websocket'
 
@@ -78,7 +78,7 @@ const floor = (ms) => {
     return true
   }
 }
-// Moves take RATE_MS (canvas/wire.js), the pace the tab keeps too. It gates
+// Moves take RATE_MS (primitives/presence/wire.js), the pace the tab keeps too. It gates
 // the cursor side; the data push stays server to client only, so it never
 // contends with it.
 // The squish has a gate of its OWN, and it must. The move gate DROPS what
@@ -199,7 +199,7 @@ async function enterSession(socket, request, q) {
 /**
  * One socket in one room: the per-socket gates and the event wiring.
  * @param {object} socket
- * @param {object} room a presence room (lib/presence-room.js)
+ * @param {object} room a presence room (primitives/presence/presence-room.js)
  * @param {{host?:boolean}} [opts]
  */
 function admit(socket, room, { host = false } = {}) {
@@ -233,7 +233,7 @@ function admit(socket, room, { host = false } = {}) {
     // the watch is the one other frame a spectator may send: it asks for
     // nothing on anybody's canvas, it says whether THIS tab can see the
     // dish, and a spectator that cannot must not be sent the picture
-    // any more than a participant that cannot (services/slime.js)
+    // any more than a participant that cannot (primitives/slime/slime.js)
     if (frame.kind === 'watch') {
       if (frame.of === 'sky') watchSky(socket, frame.on)
       else watchSlime(socket, frame.on)

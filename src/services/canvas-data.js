@@ -112,5 +112,5 @@ export function getCanvasBoot() {
 
 // Which keys moved between two of these payloads: the push asks it here and
 // the tab asks it in app.js, so the diff and its key list are stated once,
-// where the browser can load them (canvas/wire.js).
+// where the browser can load them (primitives/presence/wire.js).
 export { changedKeys } from 'multiplayer-canvas/presence/wire'

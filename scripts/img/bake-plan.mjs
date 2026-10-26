@@ -1,4 +1,4 @@
-// The plan's pictures (#303): every tile as it renders, pixelated once.
+// The plan's pictures: every tile as it renders, pixelated once.
 //
 //   node scripts/img/bake-plan.mjs [baseUrl]
 //

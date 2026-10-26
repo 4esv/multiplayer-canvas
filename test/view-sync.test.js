@@ -1,6 +1,5 @@
 // test/view-sync.test.js
-// THE VIEW, SHARED (2026-09-26). The author: "Ensure everything that can be
-// synced (even video playback if possible) is." What a visitor is looking
+// THE VIEW, SHARED (2026-09-26).  What a visitor is looking
 // at (a video's playback, the instrument up, a photograph, the sentence read
 // aloud, the fan spread) rides the act bridge as one more
 // channel, `view`, so the room's audience rules hold it unchanged: a follow

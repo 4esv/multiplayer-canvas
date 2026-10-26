@@ -47,7 +47,7 @@ export function isHoverKey(k) {
   return typeof k === 'string' && k.length <= HOVER_KEY_MAX && HOVER_KEY.test(k)
 }
 
-// THE ANCHOR (issue #327): where a cursor is on a PAGE. A page is a column
+// THE ANCHOR: where a cursor is on a PAGE. A page is a column
 // of blocks (a heading, a paragraph, a figure) and a block is the same block
 // on a phone and on a billboard, so a position on a page travels as the
 // page's slug, the block's index and a fraction of that block's box. The
@@ -80,7 +80,7 @@ export function isAt(v) {
  * `k` rides along optionally: what this peer's cursor is over right now, or
  * null for nothing. It is on the MOVE frame rather than a frame of its own,
  * and that is the design, not a shortcut. A move passes a floor (RATE_MS,
- * canvas/wire.js) and a pointer that is moving is always at it, so a
+ * primitives/presence/wire.js) and a pointer that is moving is always at it, so a
  * separate hover frame would be a second stream racing the first, and the
  * highlight it carried could land before or after the cursor it belongs to.
  * Hover only ever changes BECAUSE the pointer moved, so the move frame is
@@ -115,13 +115,13 @@ function moveOf(m) {
   if (!Number.isFinite(fx) || !Number.isFinite(fy)) return null
   if (fx < 0 || fx >= 1 || fy < 0 || fy >= 1) return null
   // `d` is whether that peer's button is down right now, which picks which of
-  // the two hands the room draws for them (canvas/presence.js). It rides the
+  // the two hands the room draws for them (primitives/presence/presence.js). It rides the
   // move frame for the same reason the hover key does: it is a fact about
   // where a pointer IS, not a request to change anything, and the inbound
   // rate gate is shared, so a frame of its own would queue behind a cursor
   // that is always moving. Coerced to a boolean rather than validated: there
   // is no malformed value, only true and everything else.
-  // `at` (issue #327) says the peer is on a page, and WHICH block of it:
+  // `at` says the peer is on a page, and WHICH block of it:
   // with it set, fx and fy are fractions of that block's box instead of the
   // world's. Malformed drops to null like a bad key: a peer reading a page
   // does not vanish because its anchor was junk, it shows on the canvas
@@ -130,7 +130,7 @@ function moveOf(m) {
   // for nobody. It is the one field on the move that names somebody else,
   // and it names them without reaching them: nothing on the followed tab
   // changes because of it, and the view a follower keeps is still its own
-  // (canvas/follow.js). It rides the move for the reason `k` and `d` do.
+  // (primitives/rooms/follow.js). It rides the move for the reason `k` and `d` do.
   // Anything that is not a peer id is nobody, rather than a dropped frame.
   return {
     fx,
@@ -213,7 +213,7 @@ export function parseSquish(raw) {
 
 // The feed (2026-09-17): food dropped in the slime mould's dish, for
 // everyone, since the dish is one dish. The frame names a cell, two whole
-// numbers inside the dish's square (canvas/slime.js DISH); whether the cell
+// numbers inside the dish's square (primitives/slime/slime.js DISH); whether the cell
 // is inside the circle is the arithmetic's call on the other side, and a
 // frame off the square is dropped whole here.
 /**
@@ -234,7 +234,7 @@ function feedOf(m) {
   return { x, y }
 }
 
-// The watch (issue #259, 2026-09-17): whether this tab can SEE the slime
+// The watch: whether this tab can SEE the slime
 // mould's dish right now (document visible and the dish on camera). It is a
 // fact about the sender, like `k` and `d` on the move, and not a mutation:
 // nothing on anybody else's canvas changes because of it. It is a frame of
@@ -253,13 +253,13 @@ export function parseWatch(raw) {
   if (!m || m.type !== 'watch') return null
   return watchOf(m)
 }
-// The same frame says it for the weather window (issue #305, round six),
+// The same frame says it for the weather window,
 // with of:'sky'. A watch without it is the dish's, as it always was, so a
 // tab running yesterday's script still watches the dish and nothing else.
 const watchOf = (m) => (m.of === 'sky' ? { on: m.on === true, of: 'sky' } : { on: m.on === true })
 
-// The push (issue #305, round six): a hand on the weather window, whole
-// cells either way, each within PUSH_IN (canvas/outlook.js). A push of
+// The push: a hand on the weather window, whole
+// cells either way, each within PUSH_IN (primitives/sky/outlook.js). A push of
 // nothing is no push. Like the feed it is a shared mutation, of a thing on
 // the ground, so the route takes it from participants only.
 /**
@@ -281,7 +281,7 @@ function pushOf(m) {
 }
 
 // THE ACTS (sessions, 2026-09-25). A session is a room of its own that the
-// owner opened (lib/sessions.js), and in it a tab may say one more kind of
+// owner opened (primitives/rooms/sessions.js), and in it a tab may say one more kind of
 // thing: what it just DID, on a named channel, so the other tabs in the room
 // can do it too (a note played, a knob turned). A
 // selection on a page is not an act: it is everyone's, in every room, as the
@@ -307,7 +307,7 @@ function pushOf(m) {
 // sentence read aloud) or on the ground (the fan spread),
 // its kind in a `what` key. It is an act like the others, so the room's
 // audience rules hold it unchanged: a follow hears the one followed, a
-// session hears everyone (canvas/view-sync.js reads the payload).
+// session hears everyone (primitives/rooms/view-sync.js reads the payload).
 // seam: test/sessions.test.js
 export const ACT_CHANNELS = Object.freeze(['note', 'off', 'patch', 'egg', 'view'])
 const ACT_KEY = /^[a-z]{1,8}$/
@@ -351,7 +351,7 @@ export function actOf(m) {
 // in that reader's hue. Like `k` and `d` it is a fact about the sender and
 // not a mutation: nothing on anybody's page changes but a highlight, and it
 // is theirs to draw or not (a page whose words differ draws nothing). The
-// frame is canvas/anchor.js selOf and nothing more: the first block, the
+// frame is primitives/presence/anchor.js selOf and nothing more: the first block, the
 // character it starts at, the last block, the character it ends before, and
 // up to SEL_QUOTE characters of the words at each end for the reader's
 // check. `at: null` is the selection collapsing. A frame with anything out
@@ -462,7 +462,7 @@ export function rosterOf(peerValues) {
     // the button state ships too, for the same reason the hover key does: a
     // hand already held down when you arrive is part of what the room looks
     // like, and without it that peer would point until they moved again
-    // and the anchor (issue #327): a joiner has to know who is reading
+    // and the anchor: a joiner has to know who is reading
     // which page, or the who's-here list would say everyone is on the canvas
     // and who follows whom, with the sequence the room stamped when they
     // started (0 for nobody): a joiner has to see the conga already

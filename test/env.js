@@ -4,6 +4,6 @@
 // routes/api.js gates its boot refresh on it: outside 'test' every build()
 // fires the real loader at open-meteo. `npm test`
 // sets the variable, a bare `node --test` does not, and a guard that is only
-// green under one of the two spellings is a flake (issue #273). ESM evaluates
+// green under one of the two spellings is a flake. ESM evaluates
 // imports in order, so this line lands before src/ is read.
 process.env.NODE_ENV = 'test'

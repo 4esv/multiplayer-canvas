@@ -45,7 +45,7 @@ import { etchedBox } from '../src/static/canvas/layout.js'
 const ROOT = join(import.meta.dirname, '..')
 const APP = readFileSync(join(ROOT, 'src/static/canvas/app.js'), 'utf8')
 const CSS = readFileSync(join(ROOT, 'src/static/css/canvas-home.css'), 'utf8')
-// the dust is its own module now (canvas/dust.js): the scatter lives there
+// the dust is its own module now (primitives/dust.js): the scatter lives there
 const DUST = readFileSync(join(ROOT, 'primitives/dust.js'), 'utf8')
 const NJK = readFileSync(join(ROOT, 'src/templates/canvas/home.njk'), 'utf8')
 

@@ -83,7 +83,7 @@
 /* Generic dictogram-of-N grid: one cell a countable item (a device, a
    form, a request). The drawn button dot that filled it (unit-pict), the
    inline token, the pipeline step, the aphorism, the sweep legend and the
-   footnote claim had no content using them and went with #336; the
+   footnote claim had no content using them and went with the kit; the
    pictogram cards and the wider column counts went with the snap. */
 .unit-grid {
   display: grid;
@@ -130,7 +130,7 @@
   width: 100%;
   height: auto;
 }
-/* EVERY FIGURE CENTRED IN ITS COLUMN (author, 2026-09-24), at every
+/* EVERY FIGURE CENTRED IN ITS COLUMN, at every
    width: a drawing narrower than its box (the board's 688 in a desk's
    1106, a 304 draw in a phone's 312) sits in the middle of it, not
    against its left edge. scripts/verify/figure-fit.mjs measures it. */
@@ -140,21 +140,21 @@
   margin-inline: auto;
 }
 
-/* --- figures on the cell (#300) ----------------------------- */
+/* --- figures on the cell ----------------------------- */
 /* scripts/img/figures.mjs draws every case-study figure from the
    toolkit: rectangles on the half-cell lattice, a letter a colour (the
    sprite alphabet), and words in the page's body face. The letters are
    painted here from the tokens, for the white page a case study stands
-   on (author, 2026-09-24): the figure's own ground is the sheet, and its
+   on: the figure's own ground is the sheet, and its
    recess is ink let into the sheet, the step a recess is below the
    ground on the canvas. There is no lavender letter.
-   WORDS ARE THE TYPE FACE (author, 2026-09-24; 2026-09-25): the pixel
+   WORDS ARE THE TYPE FACE: the pixel
    face is for hero titles and the logo glyph. Every word is DotGothic16
    at 16px when the drawing draws one to one, the ladder's first rung (a
    box's name, .n, too: one size, one ladder). The sizes are in the
    drawing's half cells. No tracking: figures.mjs placed every word by the
    face's own advance widths.
-   NOTHING SCROLLS SIDEWAYS (author, 2026-09-24). A narrow figure draws
+   NOTHING SCROLLS SIDEWAYS. A narrow figure draws
    one to one on a phone. A redrawn screen is drawn twice, the screen
    (.cf-wide) and the screen stood up in a narrow figure's width
    (.cf-narrow), and its box shows the screen from thirteen modules wide

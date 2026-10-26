@@ -1,5 +1,5 @@
 // test/mirror.test.js
-// A cut tile's copy is the same tile NOW (canvas/mirror.js, BIBLE.md
+// A cut tile's copy is the same tile NOW (primitives/mirror.js, BIBLE.md
 // section 2). The copies of the old fake were cloned once and froze: a live
 // widget across the seam showed a stale twin. These drive the mirror on a
 // minimal fake DOM, so a copy that stops repainting, stops following a

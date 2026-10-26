@@ -1,10 +1,8 @@
 // test/finder-url.test.js
 // BIBLE.md section 8: the finder's bar is `?search=` in the address, so a
-// find can be sent. The arithmetic (canvas/finder-url.js), held: the three
+// find can be sent. The arithmetic (primitives/rooms/finder-url.js), held: the three
 // states of the bar read back as written, the query survives any
 // character, and every other param in the address stays byte for byte.
-// The browser half (a load of /?search=slime opens the bar and finds) is
-// scripts/verify/music-windows.mjs.
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 

@@ -1,5 +1,5 @@
 // test/dust.test.js
-// THE DUST (BIBLE.md section 10, canvas/dust.js). A cursor crossing a glyph
+// THE DUST (BIBLE.md section 10, primitives/dust.js). A cursor crossing a glyph
 // or a title disturbs the cells under its path: each lit cell within reach
 // hops one cell the clock decides, stays away for its dwell, comes home whole,
 // and rests before it can be lifted again. The canvas and the door pages run

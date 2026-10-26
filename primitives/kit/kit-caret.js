@@ -9,7 +9,7 @@
 // whatever the text and wherever the insertion point was: a picture of a
 // caret, not a caret.
 //
-// Two halves in one file, the way js/kit-scroll.js keeps them: the
+// Two halves in one file, the way primitives/kit/kit-scroll.js keeps them: the
 // arithmetic is pure (node imports this file and the tests hold it), the
 // WIRING is DOM only and runs once, from the entries that load it (kit.js
 // for the doors and the desk; canvas/app.js for the bar).

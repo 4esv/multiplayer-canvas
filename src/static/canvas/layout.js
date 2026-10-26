@@ -120,7 +120,7 @@ export const TILES = [
   // THE SLIME MOULD (BIBLE.md section 5): a Physarum in a round dish, alive
   // on the server whether anyone is watching or not, fed by whoever taps
   // it. The tile is the 8 x 8 square and the dish is the circle that
-  // circumscribes a 5 x 5 square (86 cells, 344px, canvas/slime.js DISH),
+  // circumscribes a 5 x 5 square (86 cells, 344px, primitives/slime/slime.js DISH),
   // seated in the tile's top left corner. His name, two lines of the label
   // hand, hangs off the dish's south edge into the slot's slack. The name
   // breaks at the newline, one label line each.
@@ -168,7 +168,7 @@ export const MEMBERS = [
 ]
 // seam: test/stacks.test.js
 export const STACKS = TILES.filter((t) => t.type === 'stack')
-// the count a pile carries on the line under its name (#339): "10 Albums",
+// the count a pile carries on the line under its name: "10 Datasets",
 // "1 Dataset", in the name's own Title Case. `count` is the noun for many
 // and `one`, when the pile can hold a single member, the noun for one.
 export function countLine(stack, n) {
@@ -203,7 +203,7 @@ export const FRONT_OF = {
 // slivers was never the step: it was that each back drew its own half-cell
 // ink border inside an eight px band, so four of those eight px were line.
 // The backs are solid blocks now (canvas-home.css), and the step stayed.
-// THE LABEL BLOCK IS TWO LINES (2026-09-25, #339): the name, and under it
+// THE LABEL BLOCK IS TWO LINES: the name, and under it
 // the count (countLine above), each one line of the type face (six cells,
 // kit.css .k-lbl), the count a step dimmer. It was one line from
 // 2026-09-16, when the count went because the backs already said how many
@@ -211,7 +211,7 @@ export const FRONT_OF = {
 // pager stays at the pile's right edge, beside the thing it turns.
 // seam: test/stacks.test.js
 // pagerInset: the pager stands a few cells short of the pile at each end
-// (#338): a bar flush with the cards read as one more card edge
+//: a bar flush with the cards read as one more card edge
 export const PILE = {
   backs: 2,
   step: 2 * PX,
@@ -622,7 +622,7 @@ const FURNITURE = {
   south: 80, // the hero's south line, where the doors used to sit
   etchGap: 0, // the mark sits ON the south line now, not a row below it
   // the mark is the instruction block, sp-6, then the tally: two lines of
-  // the type face (how the canvas moves, and that it wraps; #336, the pixel
+  // the type face (how the canvas moves, and that it wraps; the pixel
   // face is for the hero alone), then the kit's small flaps, one type line
   // tall
   markH: 2 * TYPE_LINE + 24 + TYPE_LINE,
@@ -671,7 +671,7 @@ export const CHROME = {
 export const mapOpenAt = (density) => density === 'desktop' || density === 'phone'
 // Whether the field and the map take turns in one slot. Only a phone: a
 // desktop's map has its own corner, so its toggle never touches the field
-// (#303 review: toggling the map slid the search bar a module on a desktop).
+// (toggling the map slid the search bar a module on a desktop).
 // seam: test/canvas-layout.test.js
 export const slotShared = (density) => density === 'phone'
 // The width the bar needs. The bar is the field (2026-09-10: the logo and the

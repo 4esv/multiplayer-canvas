@@ -5,7 +5,7 @@
 //   node scripts/tokens/ramp.mjs --write   rewrite the generated blocks in
 //                                          canvas-tokens.css and BIBLE.md
 //
-// A ramp is COMPUTED, not picked (#313). From the base token it takes fixed
+// A ramp is COMPUTED, not picked. From the base token it takes fixed
 // lightness steps in OKLab, where equal steps look equal, and keeps the hue:
 // a step that lands outside sRGB pulls its chroma in until it fits, rather
 // than clipping a channel and turning the hue. Five tones, named for what

@@ -1,5 +1,5 @@
 // scripts/verify/waste.mjs
-// Issue #264: WHAT THE DISH COSTS, IN NUMBERS. The pure half of the audit,
+// WHAT THE DISH COSTS, IN NUMBERS. The pure half of the audit,
 // no server and no browser: a node, a byte, an allocation and a scan are
 // resources, and this prints what each one costs so a change can say what it
 // moved. The browser half (DOM nodes at boot) is scripts/verify/boot-dom.mjs;
@@ -7,7 +7,7 @@
 //
 // Measured over a seeded dish run for WARM ticks and then FRAMES frames of
 // the service's shape (FRAME_MS / TICK_MS ticks apart), the same arithmetic
-// services/slime.js runs:
+// primitives/slime/slime.js runs:
 //   tick       ms per server tick (step + the standing-food count)
 //   count      us per pelletCount
 //   decode     heap bytes allocated per keyframe decode and per delta applied
@@ -92,7 +92,7 @@ const deltaBytes = allocated((i) => S.applyDelta(toneRuns[i].prev, deltas[i]), F
 
 // ---- canvas calls per painted frame ------------------------------------------------
 // a context that only counts: the full paint is the one app.js did before
-// #264 (clear, then every lit cell, then every food cell), counted the same
+// the delta (clear, then every lit cell, then every food cell), counted the same
 // way whether or not paintDish exists, so the before is measurable on main
 const counter = () => {
   const c = { calls: 0 }

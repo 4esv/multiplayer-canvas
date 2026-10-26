@@ -13,7 +13,7 @@
 import { fmt, parseText, splitSections } from './canvas-sheets.js'
 import { DOCS } from './docs.js'
 
-// the two sections by their titles; the ways to reach the author are the
+// the two sections by their titles; the ways to reach the owner are the
 // dock's job, and a zone never repeats what the
 // ground says, so the Pages block and everything under it stay off
 const ABOUT_BLOCKS = ['Me', 'This Site']

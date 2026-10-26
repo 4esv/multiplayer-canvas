@@ -1,5 +1,5 @@
 // test/page-ring.test.js
-// An experiment never walks into a case study (issue #284).
+// An experiment never walks into a case study.
 //
 // The bug this exists for: pageRing() walked the open collection and fell
 // back to every full page when there was none. An experiment opens straight

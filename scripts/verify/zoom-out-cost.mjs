@@ -1,5 +1,5 @@
 // scripts/verify/zoom-out-cost.mjs
-// Issue #303, in a real browser: WHAT THE WORLD IN VIEW COSTS. Pulls the
+// In a real browser: WHAT THE WORLD IN VIEW COSTS. Pulls the
 // camera out as far as it goes (cover, layout.js cameraBounds) and measures the page two ways: as
 // the device's own mount floor leaves it (`plan`), and with every tile
 // mounted all the way out (`mounted`, via __lab.mountAt). For each it

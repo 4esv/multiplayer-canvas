@@ -1,7 +1,6 @@
 // test/canvas-chrome-kit.test.js
-// The canvas chrome speaks the kit (#336, group c). The author approved the
-// kit and asked for it everywhere: "GLOBAL, CONSISTENT and INTUITIVE UI".
-// The doors, the desk and the page bar moved first; this holds the canvas's
+// The canvas chrome speaks the kit.
+// The doors and the page bar moved first; this holds the canvas's
 // own chrome to it: the field, the command roster, the finder's line and its
 // selection mark, the toggles and the close, the skip link, the loader and
 // its retry, the fan's head, the watchdog line and the diag overlay are the
@@ -59,7 +58,7 @@ describe('the canvas chrome speaks the kit', () => {
 
   // mutation: canvas-chrome-kit.field-unboxed, canvas-chrome-kit.boxed-field-unlined
   it('the search field is boxed, and the roster stands flush on the box', () => {
-    // the author: "Give the search bar a border, it's blending in". A rule
+    //. A rule
     // under the words alone read as one more line of the world under the bar.
     assert.match(HOME, /<div class="k-field k-sm k-boxed" id="searchField">/)
     const box = cssRules(read('primitives/kit/kit.css')).find((r) =>
@@ -81,7 +80,7 @@ describe('the canvas chrome speaks the kit', () => {
 
   // mutation: canvas-chrome-kit.owner-border-resizes, canvas-chrome-kit.owner-border-off-brick, canvas-chrome-kit.owner-class-elsewhere
   it("the owner's field is the guest's box with its line in brick, and nothing else moves", () => {
-    // the author: "just give me a special border". Brick is the one accent
+    //. Brick is the one accent
     // chrome may wear (armed or live, BIBLE.md section 1), and a colour is
     // the one thing that can change without the box changing size: the bar,
     // the map and CHROME.searchW are measured off the guest's field.

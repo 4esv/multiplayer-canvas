@@ -1,5 +1,5 @@
 // scripts/verify/slime-asleep.mjs
-// Issue #271, in a real browser: AN ABSENT TAB'S DISH LOSES LIFE.
+// In a real browser: AN ABSENT TAB'S DISH LOSES LIFE.
 //
 // Drives headless Chrome over CDP (the harness is world-fixed.mjs's, ported)
 // through the three states and screenshots the dish in each:

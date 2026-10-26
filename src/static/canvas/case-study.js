@@ -1,11 +1,10 @@
-// canvas/case-study.js: the text flows round the figures where there is width (#300)
+// canvas/case-study.js: the text flows round the figures where there is width
 //
 // A case study is ONE centred column (case-study.css, THE CASE-STUDY PAGE),
 // and a narrow figure in it, a photo, a flow, a modal, is centred on its
 // own line. On a desk that column is 864px wide and a narrow figure 304, so
 // a figure on its own line leaves the width on either side of it empty. The
-// old answer was a CSS float into a second track, and the author's review of
-// it (2026-09-24): "on closer inspection it's just broken and ugly". A float
+// old answer was a CSS float into a second track, and it looked broken. A float
 // hangs beside WHATEVER comes next, a heading, a code block, one short
 // paragraph, and a figure taller than the text beside it hangs on into the
 // next thing with a hole beside it.

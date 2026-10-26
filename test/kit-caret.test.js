@@ -1,4 +1,4 @@
-// The field's caret stands at the insertion point (js/kit-caret.js, kit.css
+// The field's caret stands at the insertion point (primitives/kit/kit-caret.js, kit.css
 // .k-field). It used to be a flex sibling after a flex:1 input and sat at
 // the far end of the rule whatever was typed: every field on the site had
 // a caret stuck to the end of the line (2026-09-26).

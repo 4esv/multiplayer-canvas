@@ -18,7 +18,7 @@
 //     fronts and Maurice, for every route that boots the canvas
 //   - the client holds the head count honestly: the tally is told the page's
 //     word, then the roster's, holds it through a drop, and is told nothing
-//     (null) rather than zero wherever it has not heard (issue #320's
+//     (null) rather than zero wherever it has not heard (the
 //     principle, for the windows it did not cover)
 //   - app.js paints the first frame from the page, and a count that appears
 //     is born on its digits instead of turning from a zero
@@ -112,7 +112,7 @@ describe('the server says where the room stands', () => {
 })
 
 // presence.js under a stub socket and the least DOM it touches (the same
-// shape as test/presence.test.js's harness for issue #260), with a roster the
+// shape as test/presence.test.js's harness for the dish), with a roster the
 // welcome can fill and the retry timers held rather than fired. Every value
 // the tally is told is kept, in order.
 function harness({ others, room } = {}) {

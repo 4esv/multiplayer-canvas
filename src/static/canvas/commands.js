@@ -361,7 +361,7 @@ export function deskTool(q, tools = DESK) {
  * name a command accepts, and no second copy can drift from it.
  */
 export const ROOM_CODE = ROOM_CODE_RE
-/** A room's PIN: four digits, the only PIN the room's door takes (lib/sessions.js). */
+/** A room's PIN: four digits, the only PIN the room's door takes (primitives/rooms/sessions.js). */
 export const ROOM_PIN = /^[0-9]{4}$/
 
 // every flag a room command writes, plus the finder's own (a command
@@ -375,7 +375,7 @@ const keyOf = (part) => {
     return k
   }
 }
-// every other param, byte for byte and in its order (canvas/finder-url.js)
+// every other param, byte for byte and in its order (primitives/rooms/finder-url.js)
 const others = (search) =>
   String(search || '')
     .replace(/^\?/, '')

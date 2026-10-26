@@ -1,5 +1,5 @@
 // test/waste.test.js
-// Issue #264: a node, a byte on the wire, an allocation per frame and a scan
+// a node, a byte on the wire, an allocation per frame and a scan
 // per tick are resources. The numbers were measured before and after the
 // pass (scripts/verify/waste.mjs prints the dish's; scripts/verify/boot-dom.mjs
 // holds the DOM node count at boot in a real browser); this holds the ones a
@@ -14,7 +14,7 @@
 //     dish across a long run of feeding and eating
 //   - THE DECODE: heap bytes allocated per keyframe and per delta, under a ceiling
 //     that the per-quad arrays of the old fromBase64 were far above
-import './env.js' // first: no boot refresh over the network (issue #273)
+import './env.js' // first: no boot refresh over the network
 
 import { describe, it, before, after, mock } from 'node:test'
 import assert from 'node:assert/strict'
